@@ -1,0 +1,64 @@
+extends header
+
+block content
+    include index_menu
+
+    .app-content
+        .signup-content
+            .uk-card.uk-card-default.uk-card-body.card-border-radius
+                .uk-card-title
+                    | SIGN UP
+
+                form.uk-grid-small(method='POST', action='/user_signup')
+                    .uk-margin
+                        label.text-label(for='strEmail') Email:
+                        input.uk-input(name='strEmail', type='email', required)
+                    .uk-margin
+                        label.text-label(for='strFname') First Name:
+                        input.uk-input(name='strFname', type='text', required)
+                    .uk-margin
+                        label.text-label(for='strLname') Last Name:
+                        input.uk-input(name='strLname', type='text', required)
+                    .uk-margin
+                        label.text-label(for='strLname') University:
+                        select.uk-select(name='strUniversity', required)
+                            option(value='') select university
+                            option(value='test') test
+                            option(value='test2') test2
+                    .uk-margin
+                        label.text-label(for='strPassw1') Password:
+                        input.uk-input(name='strPassw1', type='password', required)
+                    .uk-margin
+                        label.text-label(for='strPassw2') Re-Enter Password:
+                        input.uk-input(name='strPassw2', type='password', required)
+                    .uk-margin
+                        .uk-text-right
+                            button.uk-button.uk-button-primary(name='btnSignup', type='submit') SIGN UP
+
+                            a(href='/signin')
+                                button.uk-button.uk-button-default(type='button') SIGN IN
+
+                //Alert the user
+                if (alert == 'success')
+                    .uk-margin
+                        .uk-alert-primary(uk-alert)
+                            a.uk-alert-close(uk-close)
+                            p User registered successfully
+
+                if (alert == 'duplicate')
+                    .uk-margin
+                        .uk-alert-warning(uk-alert)
+                            a.uk-alert-close(uk-close)
+                            p User already exists, <a href='/signin'>Sign In<a>
+
+                if (alert == 'passw')
+                    .uk-margin
+                        .uk-alert-warning(uk-alert)
+                            a.uk-alert-close(uk-close)
+                            p Passwords do not match, Try Again
+                
+                if (alert == 'error')
+                    .uk-margin
+                        .uk-alert-danger(uk-alert)
+                            a.uk-alert-close(uk-close)
+                            p Something went wrong, Try Again

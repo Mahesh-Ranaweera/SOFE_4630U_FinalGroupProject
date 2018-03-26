@@ -1,5 +1,21 @@
-extends layout
+
+extends header
 
 block content
-  h1= title
-  p Welcome to #{title}
+    .app-menu-transparent
+        .app-nav-left
+            .app-logo
+            .app-name
+                | #{title}
+                
+        .app-nav-right
+            a(href='/signup')
+                .app-nav-title.signup-btn
+                    | SIGN UP
+            a(href='/signin')
+                .app-nav-title
+                    | SIGN IN
+                
+    .app-content
+        .card-holder.full_w
+            .uk-card.uk-card-default.uk-card-hover.uk-card-body
