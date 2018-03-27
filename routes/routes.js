@@ -217,6 +217,27 @@ router.get('/settings', function(req, res, next){
     }
 });
 
+/**GET user groups */
+router.get('/groups', function(req, res, next){
+    /**Makesure user session exists */
+    if (req.session.usersess) {
+
+        var alert = null;
+
+        if(req.query.notify != null){
+            alert = req.query.notify;
+        }
+
+        res.render('groups', {
+            title: 'Groups',
+            udata: req.session.udata,
+            alert: alert
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
 
 /**SIGNOUT*/
 router.get('/signout', function(req, res, next) {

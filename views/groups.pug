@@ -1,0 +1,70 @@
+extends dashb_layout
+
+block dashb
+    include dashb_menu
+    //.content-card
+    .section
+        .group-header
+            .group-icon-g.smooth(uk-toggle="target: #createGroup")
+                .group-icon
+                    span(uk-icon='icon: plus')
+                .group-txt
+                    | Create Group
+
+            .group-icon-g.smooth(uk-toggle="target: #joinGroup")
+                .group-icon
+                    span(uk-icon='icon: users')
+                .group-txt
+                    | Join Group
+
+            .group-search
+                form.uk-search.uk-search-default.uk-width-1-1
+                    input.uk-search-input(type='search' placeholder='Seach Groups...')
+
+
+    //-modal for creating and joining groups
+    div.uk-flex-top(id="createGroup", uk-modal)
+        .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+            button.uk-modal-close-default(type='button', uk-close)
+            .uk-modal-header
+                h2.uk-modal-title Create New Group
+            
+            .uk-modal-body
+                form.uk-grid-small(method='POST', action='/create_group')
+                    .uk-width-1-1
+                        label(for='groupName') Enter Group Name:
+                        input.uk-input(name='groupName', type='text', required)
+
+                    .uk-margin
+                        .uk-text-right
+                            button.uk-button.uk-button-primary(name='btncreateGroup', type='submit') CREATE GROUP
+            
+
+    div.uk-flex-top(id="joinGroup", uk-modal)
+        .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+            button.uk-modal-close-default(type='button', uk-close)
+            .uk-modal-header
+                h2.uk-modal-title Join Group
+
+            .uk-modal-body
+                form.uk-grid-small(method='POST', action='/join_group')
+                    .uk-width-1-1
+                        label(for='groupID') Enter Group ID:
+                        input.uk-input(name='groupID', type='password' required)
+
+                    .uk-margin
+                        .uk-text-right
+                            button.uk-button.uk-button-primary(name='btnjoinGroup', type='submit') JOIN GROUP
+
+
+    if (alert == 'registered')
+        script.
+            UIkit.notification({message: 'Already Registered', status: 'primary', pos: 'top-center'})
+
+    if (alert == 'error')
+        script.
+            UIkit.notification({message: 'Something went wrong, try again', status: 'warning', pos: 'top-center'})
+
+    if (alert == 'invalidid')
+        script.
+            UIkit.notification({message: 'Invalid groupID, makesure you enter the correct groupID', status: 'danger', pos: 'top-center'})
