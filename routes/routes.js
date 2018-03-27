@@ -85,9 +85,7 @@ router.get('/dashboard', function(req, res, next){
 
         res.render('dashboard', {
             title: 'Dashboard',
-            name: username,
-            uemail: useremail,
-            uimg: uimg,
+            udata: req.session.udata,
             alert: alert
         });
     } else {
@@ -111,9 +109,12 @@ router.post('/user_signin', function(req, res, next){
                 sess = req.session;
                 sess.usersess = true;
                 req.session.usersess = true;
-                req.session.email = state.email;
-                req.session.name = state.fname + ' ' + state.lname;
-                req.session.uimg = state.u_img;
+                req.session.udata = {
+                    email: state.email,
+                    name: state.fname + ' ' + state.lname, 
+                    uimg: state.u_img,
+                    univ: state.school
+                }
 
                 //console.log(req.session);
                 res.redirect('/dashboard');
@@ -169,6 +170,51 @@ router.post('/user_signup', function(req, res, next){
     }else{
         res.redirect('/signup?notify=passw');
 }
+});
+
+
+/**GET user calendar */
+router.get('/calendar', function(req, res, next){
+    /**Makesure user session exists */
+    if (req.session.usersess) {
+
+        var alert = null;
+
+        if(req.query.notify != null){
+            alert = req.query.notify;
+        }
+
+        res.render('calendar', {
+            title: 'Calendar',
+            udata: req.session.udata,
+            alert: alert
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
+
+/**GET user settings */
+router.get('/settings', function(req, res, next){
+    /**Makesure user session exists */
+    if (req.session.usersess) {
+
+        var alert = null;
+
+        if(req.query.notify != null){
+            alert = req.query.notify;
+        }
+
+        res.render('settings', {
+            title: 'Settings',
+            udata: req.session.udata,
+            univ_list: univ_list,
+            alert: alert
+        });
+    } else {
+        res.redirect('/');
+    }
 });
 
 

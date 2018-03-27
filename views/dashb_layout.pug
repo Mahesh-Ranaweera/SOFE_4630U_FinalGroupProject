@@ -11,10 +11,10 @@ block content
 
         .app-nav-right.smooth
             .app-logo
-                - var src = 'data:image/svg+xml;utf8,'+uimg
+                - var src = 'data:image/svg+xml;utf8,'+udata.uimg
                 img(src=src)
             .app-name
-                | #{name}
+                | #{udata.name}
             a(href='/signout')
                 .app-nav-title
                     span(uk-icon='icon: sign-out' title='SIGN OUT')
