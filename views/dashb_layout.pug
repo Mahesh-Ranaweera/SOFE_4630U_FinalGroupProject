@@ -1,0 +1,23 @@
+
+extends header
+
+block content
+    .app-menu
+        .app-nav-left
+            .app-logo(uk-toggle='target: #dashb_menu')
+                span(uk-icon="icon: menu; ratio: 2")
+            .app-name
+                | HIVE:
+
+        .app-nav-right.smooth
+            .app-logo
+                - var src = 'data:image/svg+xml;utf8,'+uimg
+                img(src=src)
+            .app-name
+                | #{name}
+            a(href='/signout')
+                .app-nav-title
+                    span(uk-icon='icon: sign-out' title='SIGN OUT')
+
+    .app-content
+        block dashb

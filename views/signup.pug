@@ -20,11 +20,12 @@ block content
                         label.text-label(for='strLname') Last Name:
                         input.uk-input(name='strLname', type='text', required)
                     .uk-margin
-                        label.text-label(for='strLname') University:
+                        label.text-label(for='strLname') Select your university/colleage:
                         select.uk-select(name='strUniversity', required)
                             option(value='') select university
-                            option(value='test') test
-                            option(value='test2') test2
+
+                            for item, i in univ_list
+                                option(value=item.university) #{item.university}
                     .uk-margin
                         label.text-label(for='strPassw1') Password:
                         input.uk-input(name='strPassw1', type='password', required)

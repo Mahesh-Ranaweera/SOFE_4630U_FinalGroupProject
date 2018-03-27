@@ -1,0 +1,21 @@
+extends dashb_layout
+
+block dashb
+    include dashb_menu
+    //.content-card
+    .section
+        | content
+
+
+
+    if (alert == 'registered')
+        script.
+            UIkit.notification({message: 'Already Registered', status: 'primary', pos: 'top-center'})
+
+    if (alert == 'error')
+        script.
+            UIkit.notification({message: 'Something went wrong, try again', status: 'warning', pos: 'top-center'})
+
+    if (alert == 'invalidid')
+        script.
+            UIkit.notification({message: 'Invalid groupID, makesure you enter the correct groupID', status: 'danger', pos: 'top-center'})
