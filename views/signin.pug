@@ -1,37 +1,52 @@
-extends header
+doctype html
+html
+    head
+        title= title
+        meta(name='viewport' content='width=device-width, initial-scale=1, user-scalable=no')
+        link(rel='stylesheet', href='/css/style.css')
+        link(rel='stylesheet', href='/uikit/css/uikit.min.css')
+        
+        script(src='/js/jquery.min.js')
+        script(src='/uikit/js/uikit.min.js')
+        script(src='/uikit/js/uikit-icons.min.js')
+        script(src='/js/socket.io.js')
+        script(src='/js/main.js')
 
-block content
-    include index_menu
+        script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase.js')
+        script.
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyAN2TjQBsWx0TH3epeHpWSFnOxAzrH6PJM",
+                authDomain: "cloud-final-3d3f6.firebaseapp.com",
+                databaseURL: "https://cloud-final-3d3f6.firebaseio.com",
+                projectId: "cloud-final-3d3f6",
+                storageBucket: "cloud-final-3d3f6.appspot.com",
+                messagingSenderId: "987346344951"
+            };
+            firebase.initializeApp(config);
+        script(src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js")
+        link(rel="stylesheet", href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css")
 
-    .app-content
-        .signup-content
-            .uk-card.uk-card-default.uk-card-body.card-border-radius
-                    .uk-card-title
-                        | SIGN IN 
+        script.
+            var ui = new firebaseui.auth.AuthUI(firebase.auth())
+            ui.start('#firebase-auth-container', {
+                signInSuccessUrl: '/dashboard',
+                signInOptions: [
+                    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                    firebase.auth.FacebookAuthProvider.PROVIDER_ID
+                ]
+            })
 
-                    form.uk-grid-small(method='POST', action='/user_signin')
-                        .uk-margin
-                            .uk-width-1-1
-                                label.text-label(for='strEmail') Email:
-                                input.uk-input(name='strEmail', type='email', required)
-                            .uk-margin
-                                label.text-label(for='strPassw') Re-Enter Password:
-                                input.uk-input(name='strPassw', type='password', required)
-                            .uk-margin
-                                .uk-text-right
-                                    button.uk-button.uk-button-primary(name='btnSigin', type='submit') SIGN IN
+body
+    block content
+        include index_menu
 
-                                    a(href='/signup')
-                                        button.uk-button.uk-button-default(type='button') SIGN UP
-                    //Alert the user
-                    if (alert == 'passw')
-                        .uk-margin
-                            .uk-alert-warning(uk-alert)
-                                a.uk-alert-close(uk-close)
-                                p Authentication failed, Try Again
-
-                    if (alert == 'notfound')
-                        .uk-margin
-                            .uk-alert-warning(uk-alert)
-                                a.uk-alert-close(uk-close)
-                                p User email not found, <a href='/signup'>Sign Up<a>
+        .app-content
+            .signup-content
+                .uk-card.uk-card-default.uk-card-body.card-border-radius
+                        .uk-card-title
+                            | SIGN IN 
+                        p If you have not created an account yet and want to "Sign in with email", you will automatically be asked to provide a name and password for your account.
+                            
+                        #firebase-auth-container
