@@ -867,6 +867,7 @@ a {
     line-height: 34px;
     font-size: 14px;
     padding: 4px;
+    margin-bottom: 10px;
     text-align: center;
     box-sizing: border-box;
     background-color: var(--white-prim);
