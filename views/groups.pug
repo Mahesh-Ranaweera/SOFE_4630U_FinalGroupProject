@@ -21,6 +21,37 @@ block dashb
                 form.uk-search.uk-search-default.uk-width-1-1
                     input.uk-search-input(type='search' placeholder='Seach Groups...')
 
+    .section
+        .card-holder.three_w
+            a(href='/groupboard')
+                .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
+                    .card-body.smooth
+                        .uk-card-title Group name
+                        .uk-margin | university name
+                        .uk-margin
+                            progress.uk-progress(value='10' max='100')
+                    .card-footer
+                        .date-info 
+                            | date
+
+        .card-holder.three_w
+            a(href='/groupboard')
+                .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
+                    .card-body.smooth
+                        .uk-card-title SOFE 4690
+                        .uk-margin
+                            progress.uk-progress(value='10' max='100')
+                    .card-footer
+                        .date-info
+
+        .card-holder.three_w
+            a(href='/groupboard')
+                .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
+                    .card-body.smooth
+                        .uk-card-title
+                    .card-footer
+                        .date-info
+
 
     //-modal for creating and joining groups
     div.uk-flex-top(id="createGroup", uk-modal)

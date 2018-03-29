@@ -238,6 +238,48 @@ router.get('/groups', function(req, res, next){
     }
 });
 
+/**GET user groups  /groupboard/:gid */
+router.get('/groupboard', function(req, res, next){
+    /**Makesure user session exists */
+    if (req.session.usersess) {
+
+        var alert = null;
+
+        if(req.query.notify != null){
+            alert = req.query.notify;
+        }
+
+        res.render('agileboard', {
+            title: 'Group Board',
+            udata: req.session.udata,
+            alert: alert
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
+/**GET user groups  /groupchat/:gid */
+router.get('/groupchat', function(req, res, next){
+    /**Makesure user session exists */
+    if (req.session.usersess) {
+
+        var alert = null;
+
+        if(req.query.notify != null){
+            alert = req.query.notify;
+        }
+
+        res.render('agileboard', {
+            title: 'Groups',
+            udata: req.session.udata,
+            alert: alert
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
 
 /**SIGNOUT*/
 router.get('/signout', function(req, res, next) {

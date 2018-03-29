@@ -1,0 +1,30 @@
+#dashb_menu(uk-offcanvas='overlay: true')
+    .uk-offcanvas-bar
+        button.uk-offcanvas-close(type="button" uk-close)
+        .uk-column-1-1
+            - var src = 'data:image/svg+xml;utf8,'+udata.uimg
+            img(src=src, width=100, height=100)
+
+        h4.side_bar_content #{udata.name}
+        
+        .uk-nav.uk-nav-default.tm-nav.uk-nav-parent-icon
+            li.uk-nav-header Navigation
+            a(href='/dashboard')
+                li.nav-selected.smooth
+                    span.uk-margin-small-right.uk-icon(uk-icon='icon: home')
+                    span.uk-text-middle Go back to Dashboard
+
+            a(href='/groupboard')
+                li.nav-selected.smooth
+                    span.uk-margin-small-right.uk-icon(uk-icon='icon: thumbnails')
+                    span.uk-text-middle Group Board
+
+            a(href='/groupchat')
+                li.nav-selected.smooth
+                    span.uk-margin-small-right.uk-icon(uk-icon='icon: comments')
+                    span.uk-text-middle Chat
+
+            a(href='/groupmembers')
+                li.nav-selected.smooth
+                    span.uk-margin-small-right.uk-icon(uk-icon='icon: users')
+                    span.uk-text-middle Members

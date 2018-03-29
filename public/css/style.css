@@ -85,6 +85,9 @@
     .three_w {
         width: 100%;
     }
+    .four_w{
+        width: 100%;
+    }
     .right_30w {
         width: 100%;
     }
@@ -101,6 +104,9 @@
         width: 100%;
     }
     .three_w {
+        width: 100%;
+    }
+    .four_w{
         width: 100%;
     }
     .right_30w {
@@ -124,6 +130,9 @@
     .right_30w {
         width: 100%;
     }
+    .four_w{
+        width: 100%;
+    }
     .right_70w {
         width: 100%;
     }
@@ -138,6 +147,9 @@
     }
     .three_w {
         width: 33.333%;
+    }
+    .four_w{
+        width: 25%;
     }
     .right_30w {
         width: 30%;
@@ -157,6 +169,9 @@
     .three_w {
         width: 33.3333%;
     }
+    .four_w{
+        width: 25%;
+    }
     .right_30w {
         width: 30%;
     }
@@ -175,6 +190,9 @@
     .three_w {
         width: 33.333%;
     }
+    .four_w{
+        width: 25%;
+    }
     .right_30w {
         width: 30%;
     }
@@ -186,6 +204,7 @@
 .full_w,
 .half_w,
 .three_w,
+.four_w,
 .right_30w,
 .right_70w {
     float: left;
@@ -837,4 +856,71 @@ a {
     flex: 1;
     padding: 10px;
     box-sizing: border-box;
+}
+
+
+/*** agile board **/
+.todo_header{
+    width: 100%;
+    height: 42px;
+    float: left;
+    line-height: 34px;
+    font-size: 14px;
+    padding: 4px;
+    text-align: center;
+    box-sizing: border-box;
+    background-color: var(--white-prim);
+}
+
+.todo_card{
+    width: 100%;
+    height: auto;
+    float: left;
+    background-color: var(--white-prim);
+    box-sizing: border-box;;
+    font-size: 12px;
+    margin-bottom: 6px;
+    border-radius: 2px;
+    border: 1px solid var(--darkgrey-sec);
+}
+
+.todo_desc{
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 8px;
+    box-sizing: border-box;
+    word-break: all;
+}
+
+.todo_footer{
+    width: 100%;
+    height: 40px;
+    float: left;
+    background-color: rgba(33, 150, 243, 0.05);
+}
+
+.todo_btn{
+    width: 40px;
+    height: 40px;
+    float: left;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.todo_check{
+    color: var(--green-prim);
+}
+
+.todo_check:hover{
+    color: var(--green-sec);
+}
+
+.todo_close{
+    color: var(--red-prim);
+}
+
+.todo_close:hover{
+    color: var(--red-sec);
 }
