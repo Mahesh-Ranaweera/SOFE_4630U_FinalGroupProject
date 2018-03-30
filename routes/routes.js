@@ -96,29 +96,66 @@ router.get('/dashboard', function(req, res, next){
 
 /**POST user signin */
 router.post('/user_signin', function(req, res, next){
-    var email = req.body.strEmail.toLowerCase();
-    var passw = req.body.strPassw;
+
+    var auth = req.body.auth_method;
+
+    if (auth == "form-auth"){
+        var email = req.body.strEmail.toLowerCase();
+        var passw = req.body.strPassw;
+    }else if(auth == "firebase"){
+        var payload = JSON.parse(req.body.strpayload);
+        var email = payload.email;
+    }else{
+        console.log("invalid");
+        res.redirect('/signin?notify=error');
+    }
+
 
     dbconn.getUSER(email, function(state){
         //console.log(state);
 
         /**check if user exists */
         if(state != null){
-            if(state.email == email && encrypt.compareHASH(passw, state.passw)){
-                /**Create a user session */
-                sess = req.session;
-                sess.usersess = true;
-                req.session.usersess = true;
-                req.session.udata = {
-                    email: state.email,
-                    name: state.uname, 
-                    uimg: state.u_img
-                }
 
-                //console.log(req.session);
-                res.redirect('/dashboard');
-            }else{
-                res.redirect('/signin?notify=passw');
+            //form-auth
+            if(state.auth.method == "form-auth"){
+                //auth from email and password
+                if(state.email == email && encrypt.compareHASH(passw, state.auth.passw)){
+                    /**Create a user session */
+                    sess = req.session;
+                    sess.usersess = true;
+                    req.session.usersess = true;
+                    req.session.udata = {
+                        email: state.email,
+                        name: state.uname, 
+                        uimg: state.u_img
+                    }
+
+                    //console.log(req.session);
+                    res.redirect('/dashboard');
+                }else{
+                    res.redirect('/signin?notify=passw');
+                }
+            }
+
+            if(state.auth.method == "firebase"){
+                //auth from email, provider and uid
+                if(state.email == email && state.auth.uid == payload.uid && state.auth.providerID == payload.providerId){
+                    /**Create a user session */
+                    sess = req.session;
+                    sess.usersess = true;
+                    req.session.usersess = true;
+                    req.session.udata = {
+                        email: state.email,
+                        name: state.uname, 
+                        uimg: state.u_img
+                    }
+
+                    //console.log(req.session);
+                    res.redirect('/dashboard');
+                }else{
+                    res.redirect('/signin?notify=error');
+                }
             }
         }else{
             res.redirect('/signin?notify=notfound');

@@ -40,3 +40,9 @@ block content
                             .uk-alert-warning(uk-alert)
                                 a.uk-alert-close(uk-close)
                                 p User email not found, <a href='/signup'>Sign Up<a>
+
+                    if (alert == 'error')
+                        .uk-margin
+                            .uk-alert-danger(uk-alert)
+                                a.uk-alert-close(uk-close)
+                                p Something went wrong, Try Again
