@@ -12,7 +12,7 @@ block dashb
                     img(src=src, width=100, height=100)
                 .section
                     .uk-margin
-                        form.uk-form-horizontal.uk-margin-small
+                        form.uk-form-horizontal.uk-margin-small(method='POST', action='/school_update')
                             .uk-margin
                                 label.uk-form-label User Email:
                                 .uk-form-controls
@@ -26,7 +26,8 @@ block dashb
                             .uk-margin
                                 label.uk-form-label University/Colleage:
                                 .uk-form-controls
-                                    select.uk-select(name='strUniversity')
+                                    select.uk-select(name='strSchool')
+                                        option(value="0") Select your University/Colleage
                                         for item, i in univ_list
                                             if item.university == udata.univ
                                                 option(value=item.university selected) #{item.university}
@@ -37,31 +38,33 @@ block dashb
                                 .uk-text-right
                                     button.uk-button.uk-button-primary(name='profileUpdate`', type='submit') UPDATE
 
-        .card-holder.full_w
-            .uk-card.uk-card-default.uk-card-body
-                .section
-                    h4 Change Password
-                .section
-                    .uk-margin
-                        form.uk-form-horizontal.uk-margin-small
-                            .uk-margin
-                                label.uk-form-label Current Password:
-                                .uk-form-controls
-                                    input.uk-input(type='password')
 
-                            .uk-margin
-                                label.uk-form-label Enter New Password:
-                                .uk-form-controls
-                                    input.uk-input(type='password')
+        if (udata.auth == "form-auth")
+            .card-holder.full_w
+                .uk-card.uk-card-default.uk-card-body
+                    .section
+                        h4 Change Password
+                    .section
+                        .uk-margin
+                            form.uk-form-horizontal.uk-margin-small(method='POST', action='/passw_update')
+                                .uk-margin
+                                    label.uk-form-label Current Password:
+                                    .uk-form-controls
+                                        input.uk-input(type='password', name='strOldpassw', required)
 
-                            .uk-margin
-                                label.uk-form-label Re-enter New Password:
-                                .uk-form-controls
-                                    input.uk-input(type='password')
+                                .uk-margin
+                                    label.uk-form-label Enter New Password:
+                                    .uk-form-controls
+                                        input.uk-input(type='password', name='strPassw1', required)
 
-                            .uk-margin
-                                .uk-text-right
-                                    button.uk-button.uk-button-primary(name='passwordUpdate', type='submit') UPDATE PASSWORD
+                                .uk-margin
+                                    label.uk-form-label Re-enter New Password:
+                                    .uk-form-controls
+                                        input.uk-input(type='password', name='strPassw2', required)
+
+                                .uk-margin
+                                    .uk-text-right
+                                        button.uk-button.uk-button-primary(name='passwordUpdate', type='submit') UPDATE PASSWORD
 
 
     if (alert == 'updates')
@@ -75,3 +78,7 @@ block dashb
     if (alert == 'error')
         script.
             UIkit.notification({message: 'Something went wrong, try again', status: 'warning', pos: 'top-center'})
+
+    if (alert == 'oldpassw')
+        script.
+            UIkit.notification({message: 'Makesure current password is correct', status: 'warning', pos: 'top-center'})

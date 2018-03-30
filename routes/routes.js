@@ -73,9 +73,6 @@ router.get('/signup', function(req, res, next){
 router.get('/dashboard', function(req, res, next){
     /**Makesure user session exists */
     if (req.session.usersess) {
-        username = req.session.name;
-        useremail = req.session.email;
-        uimg = req.session.uimg;
 
         var alert = null;
 
@@ -128,7 +125,9 @@ router.post('/user_signin', function(req, res, next){
                     req.session.udata = {
                         email: state.email,
                         name: state.uname, 
-                        uimg: state.u_img
+                        uimg: state.u_img,
+                        auth: state.auth.method,
+                        univ: state.school
                     }
 
                     //console.log(req.session);
@@ -148,7 +147,9 @@ router.post('/user_signin', function(req, res, next){
                     req.session.udata = {
                         email: state.email,
                         name: state.uname, 
-                        uimg: state.u_img
+                        uimg: state.u_img,
+                        auth: state.auth.method,
+                        univ: state.school
                     }
 
                     //console.log(req.session);
@@ -190,6 +191,7 @@ router.post('/user_signup', function(req, res, next){
                     method: "form-auth",
                     passw: encrypt.passwHASH(passw1)
                 },
+                school: null,
                 groups: []
             }
         }else{
@@ -213,6 +215,7 @@ router.post('/user_signup', function(req, res, next){
                     uid: payload.uid,
                     providerID: payload.providerId
                 },
+                school: null,
                 groups: []
             }
         } else{
@@ -346,6 +349,60 @@ router.get('/groupchat', function(req, res, next){
         });
     } else {
         res.redirect('/');
+    }
+});
+
+
+/** Dashboard actions **/
+/** Update the user school **/
+router.post('/school_update', function(req, res, next){
+    //check school
+    if (req.body.strSchool != 0){
+        data = {
+            school: req.body.strSchool,
+            email: req.session.udata.email
+        }
+
+        dbconn.updateSCHOOL(data, function(state){
+            //console.log(state);
+
+            if(state == 1){
+                //update the session
+                req.session.udata.univ = data.school;
+                res.redirect('/settings?notify=updates');
+            }else{
+                res.redirect('/settings?notify=error');
+            }
+        });
+    }else{
+        res.redirect('/settings');
+    }
+});
+
+/** Update the user password **/
+router.post('/passw_update', function(req, res, next){
+    //update the users password
+    if(req.body.strPassw1 ==  req.body.strPassw2){
+        data = {
+            passw: encrypt.passwHASH(req.body.strPassw1),
+            email: req.session.udata.email
+        }
+
+        dbconn.getUSER(req.session.udata.email, function(state){
+            if(state.email == data.email && encrypt.compareHASH(req.body.strOldpassw, state.auth.passw)){
+                dbconn.updatePASSWD(data, function(state2){
+                    if(state2 == 1){
+                        res.redirect('/settings?notify=updates');
+                    }else{
+                        res.redirect('/settings?notify=error');
+                    }
+                })
+            }else{
+                res.redirect('/settings?notify=oldpassw');
+            }
+        });
+    }else{
+        res.redirect('/settings?notify=passw');
     }
 });
 

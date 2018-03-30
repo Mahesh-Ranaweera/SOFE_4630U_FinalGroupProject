@@ -87,10 +87,50 @@ var getUSER = function(useremail, callback){
             }
         }).catch(function(err){
             console.log(err);
+            callback(null);
         });
-}
+};
 
+/**UPDATE user school**/
+var updateSCHOOL = function(data, callback){
+    //update school
+    r.db(dbname).table(tbusers).get(data.email).update({
+        school: data.school
+    }).run()
+    .then(function(response){
+        if(response.replaced == 1){
+            callback(1);
+        }else{
+            callback(0);
+        }
+    })
+    .catch(function(err){
+        callback(0);
+    })
+};
+
+/**UPDATE user password **/
+var updatePASSWD = function(data, callback){
+    //update the users password
+    r.db(dbname).table(tbusers).get(data.email).update({
+        auth: {
+            passw: data.passw
+        }
+    }).run()
+    .then(function(response){
+        if(response.replaced == 1){
+            callback(1);
+        }else{
+            callback(0);
+        }
+    })
+    .catch(function(err){
+        callback(0);
+    })
+}
 
 /**Export the modules */
 module.exports.addUSER = addUSER;
 module.exports.getUSER = getUSER;
+module.exports.updateSCHOOL = updateSCHOOL;
+module.exports.updatePASSWD = updatePASSWD;
