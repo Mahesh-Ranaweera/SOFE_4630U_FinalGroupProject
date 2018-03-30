@@ -1,11 +1,11 @@
-extends header
+extends index_header
 
 block content
     include index_menu
 
     .app-content
         .signup-content
-            .uk-card.uk-card-default.uk-card-body.card-border-radius
+            .uk-card.uk-card-default.uk-card-body
                 .uk-card-title
                     | SIGN UP
 
@@ -38,6 +38,9 @@ block content
 
                             a(href='/signin')
                                 button.uk-button.uk-button-default(type='button') SIGN IN
+
+                    .uk-margin
+                        #firebase-auth-container
 
                 //Alert the user
                 if (alert == 'success')
