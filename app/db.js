@@ -63,10 +63,8 @@ var addUSER = function(data, callback) {
                 //insert the new user
                 r.db(dbname).table(tbusers).insert({
                     'email': data.email,
-                    'fname': data.fname,
-                    'lname': data.lname,
+                    'uname': data.fname + ' ' + data.lname,
                     'passw': data.passw,
-                    'school': data.school,
                     'u_img': data.u_img,
                     'groups': []
                 }).run();

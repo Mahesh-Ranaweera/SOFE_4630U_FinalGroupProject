@@ -12,7 +12,7 @@ firebase.initializeApp(config);
 
 var ui = new firebaseui.auth.AuthUI(firebase.auth())
 ui.start('#firebase-auth-container', {
-    signInSuccessUrl: '/signin',
+    signInSuccessUrl: '/signup',
     signInOptions: [
         //firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -35,11 +35,39 @@ function login(){
     if (user != null) {
       user.providerData.forEach(function (profile) {
         console.log(profile);
-        console.log("Sign-in provider: " + profile.providerId);
-        console.log("  Provider-specific UID: " + profile.uid);
-        console.log("  Name: " + profile.displayName);
-        console.log("  Email: " + profile.email);
-        console.log("  Photo URL: " + profile.photoURL);
+        userSIGNUP(profile);
       });
     }
+
+    //signout()
+}
+
+
+function signout(){
+    //signout the user
+    firebase.auth().signOut().then(function() {
+      console.log('Signed Out');
+    }, function(error) {
+      console.error('Sign Out Error', error);
+    });
+}
+
+
+function userSIGNUP(userdata){
+    //perform the post request
+    var form = document.createElement("form");
+    form.setAttribute("method", "POST");
+    form.setAttribute("action", "/user_signup");
+
+    var payload = document.createElement("input");
+    payload.setAttribute("type", "hidden");
+    payload.setAttribute("name", "strpayload");
+    payload.setAttribute("value", JSON.stringify(userdata));
+
+    form.appendChild(payload);
+    document.body.append(form);
+
+    console.log(form);
+    form.submit();
+    console.log("form submitted");
 }

@@ -111,9 +111,8 @@ router.post('/user_signin', function(req, res, next){
                 req.session.usersess = true;
                 req.session.udata = {
                     email: state.email,
-                    name: state.fname + ' ' + state.lname, 
-                    uimg: state.u_img,
-                    univ: state.school
+                    name: state.uname, 
+                    uimg: state.u_img
                 }
 
                 //console.log(req.session);
@@ -130,46 +129,47 @@ router.post('/user_signin', function(req, res, next){
 
 /**POST user signup */
 router.post('/user_signup', function(req, res, next){
-    var email = req.body.strEmail.toLowerCase();
-    var fname = req.body.strFname;
-    var lname = req.body.strLname;
-    var school= req.body.strUniversity;
 
-    var passw1 = req.body.strPassw1;
-    var passw2 = req.body.strPassw2;
+    console.log(req.body.strpayload);
 
-    if(passw1 == passw2){
-        //console.log('login');
+    // var email = req.body.strEmail.toLowerCase();
+    // var fname = req.body.strFname;
+    // var lname = req.body.strLname;
 
-        //data to insert into user
-        data = {
-            email: email,
-            fname: fname,
-            lname: lname,
-            school: school,
-            u_img: new Identicon(encrypt.passwHASH(email), Iden_options).toString('base64'),
-            passw: encrypt.passwHASH(passw1)
-        }
+    // var passw1 = req.body.strPassw1;
+    // var passw2 = req.body.strPassw2;
 
-        console.log(data);
+    // if(passw1 == passw2){
+    //     //console.log('login');
+
+    //     //data to insert into user
+    //     data = {
+    //         email: email,
+    //         fname: fname,
+    //         lname: lname,
+    //         u_img: new Identicon(encrypt.passwHASH(email), Iden_options).toString('base64'),
+    //         passw: encrypt.passwHASH(passw1)
+    //     }
+
+    //     console.log(data);
 
 
-        /**Add data to db */
-        dbconn.addUSER(data, function(state){
-            if(state == 1){
-                //console.log('Entered');
-                res.redirect('/signup?notify=success');
-            } else if(state == -1){
-                //console.log('Duplicate');
-                res.redirect('/signup?notify=duplicate');
-            } else{
-                //console.log('Error');
-                res.redirect('/signup?notify=error');
-            }
-        });
-    }else{
-        res.redirect('/signup?notify=passw');
-}
+    //     /**Add data to db */
+    //     dbconn.addUSER(data, function(state){
+    //         if(state == 1){
+    //             //console.log('Entered');
+    //             res.redirect('/signup?notify=success');
+    //         } else if(state == -1){
+    //             //console.log('Duplicate');
+    //             res.redirect('/signup?notify=duplicate');
+    //         } else{
+    //             //console.log('Error');
+    //             res.redirect('/signup?notify=error');
+    //         }
+    //     });
+    // }else{
+    //     res.redirect('/signup?notify=passw');
+    // }
 });
 
 
