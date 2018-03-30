@@ -8,37 +8,54 @@ block dashb
             .uk-card.uk-card-default.uk-card-body
                 | Page
 
-
     .section
-        .card-holder.three_w
-            a(href='/groupboard')
-                .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
-                    .card-body.smooth
-                        .uk-card-title Group name
-                        .uk-margin | university name
-                        .uk-margin
-                            progress.uk-progress(value='10' max='100')
-                    .card-footer
-                        .date-info 
-                            | date
+        if groups != null
+            for item, i in groups
+                .card-holder.three_w
+                    - var url = '/grouproom/'+item.groupid
+                    a(href=url)
+                        .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
+                            .card-body.smooth
+                                .uk-card-title #{item.groupname}
+                                .uk-margin #{item.school}
+                                .uk-margin
+                                    progress.uk-progress(value='10' max='100')
+                            .card-footer
+                                .date-info 
+                                    | date
 
-        .card-holder.three_w
-            a(href='/groupboard')
-                .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
-                    .card-body.smooth
-                        .uk-card-title SOFE 4690
-                        .uk-margin
-                            progress.uk-progress(value='10' max='100')
-                    .card-footer
-                        .date-info
 
-        .card-holder.three_w
-            a(href='/groupboard')
-                .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
-                    .card-body.smooth
-                        .uk-card-title
-                    .card-footer
-                        .date-info
+
+    //- .section
+    //-     .card-holder.three_w
+    //-         a(href='/groupboard')
+    //-             .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
+    //-                 .card-body.smooth
+    //-                     .uk-card-title Group name
+    //-                     .uk-margin | university name
+    //-                     .uk-margin
+    //-                         progress.uk-progress(value='10' max='100')
+    //-                 .card-footer
+    //-                     .date-info 
+    //-                         | date
+
+    //-     .card-holder.three_w
+    //-         a(href='/groupboard')
+    //-             .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
+    //-                 .card-body.smooth
+    //-                     .uk-card-title SOFE 4690
+    //-                     .uk-margin
+    //-                         progress.uk-progress(value='10' max='100')
+    //-                 .card-footer
+    //-                     .date-info
+
+    //-     .card-holder.three_w
+    //-         a(href='/groupboard')
+    //-             .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
+    //-                 .card-body.smooth
+    //-                     .uk-card-title
+    //-                 .card-footer
+    //-                     .date-info
 
 
     if (alert == 'registered')

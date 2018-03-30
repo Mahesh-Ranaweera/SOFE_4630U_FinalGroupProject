@@ -80,16 +80,29 @@ router.get('/dashboard', function(req, res, next){
             alert = req.query.notify;
         }
 
-        res.render('dashboard', {
-            title: 'Dashboard',
-            udata: req.session.udata,
-            alert: alert
+        console.log(req.session.udata.email);
+
+        //get the groups for the user
+        dbconn.getGROUPS(req.session.udata.email, function(state){
+
+            console.log(state);
+
+            res.render('dashboard', {
+                title: 'Dashboard',
+                udata: req.session.udata,
+                groups: state,
+                alert: alert
+            });
         });
     } else {
         res.redirect('/');
     }
 });
 
+/**GET user group**/
+router.get('/grouproom/:gid', function(req, res, next){
+    
+})
 
 /**POST user signin */
 router.post('/user_signin', function(req, res, next){
@@ -404,6 +417,35 @@ router.post('/passw_update', function(req, res, next){
     }else{
         res.redirect('/settings?notify=passw');
     }
+});
+
+/**create group**/
+router.post('/create_group', function(req, res, next){
+
+    data = {
+        gname: req.body.groupName,
+        email: req.session.udata.email,
+        school: req.session.udata.univ
+    }
+
+    //create user group
+    dbconn.createGROUP(data, function(state){
+        if(state == 1){
+            res.redirect('/groups?notify=added');
+        }else{
+            res.redirect('/groups?notify=error')
+        }
+    });
+});
+
+/**join group **/
+router.post('/join_group', function(req, res, next){
+
+});
+
+/**search group**/
+router.post('/search_group', function(req, res, next){
+
 });
 
 

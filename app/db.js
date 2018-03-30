@@ -129,8 +129,78 @@ var updatePASSWD = function(data, callback){
     })
 }
 
+/**CREATE Group */
+var createGROUP = function(data, callback){
+    //console.log(data)
+
+    //insert the group data
+    r.db(dbname).table(tbgroups).insert({
+        'groupname': data.gname,
+        'owner': data.email,
+        'school': data.school,
+        'groupmembers': [data.email],
+        'groupchat': [],
+        'agileboard': {
+            'todo': [],
+            'progress': [],
+            'review': [],
+            'finished': []
+        }
+    }).run()
+    .then(function(response){
+        r.db(dbname).table(tbusers).get(data.email)
+            .update({
+                'groups': r.row('groups').append({
+                    'groupid': response.generated_keys[0]
+                })
+            }).run()
+        .then(function (resp){
+            callback(1);
+        })
+        .catch(function(err){
+            callback(0);
+        })
+    })
+    .catch(function(err){
+        callback(0);
+    });
+}
+
+/**GET Groups */
+var getGROUPS = function(useremail, callback){
+
+    console.log(useremail);
+
+    //get users groups 
+    var g = [];
+    r.db(dbname).table(tbusers).get(useremail).getField('groups').run()
+    .then(function(response){
+
+        //console.log(response)
+
+        //callback the group ids to user
+        for(i = 0; i < response.length; i++){
+            g.push(response[i].groupid);
+        }
+
+        //get data for each group from the groups table
+        r.db(dbname).table(tbgroups).getAll(r.args(g)).run()
+        .then(function(resp){
+            callback(resp);
+        })
+        .catch(function(err){
+            callback(null);
+        });
+    })
+    .catch(function(err){   
+        callback(null);
+    });
+}
+
 /**Export the modules */
 module.exports.addUSER = addUSER;
 module.exports.getUSER = getUSER;
 module.exports.updateSCHOOL = updateSCHOOL;
 module.exports.updatePASSWD = updatePASSWD;
+module.exports.createGROUP = createGROUP;
+module.exports.getGROUPS = getGROUPS;
