@@ -130,7 +130,29 @@ router.post('/user_signin', function(req, res, next){
 /**POST user signup */
 router.post('/user_signup', function(req, res, next){
 
-    console.log(req.body.strpayload);
+    var auth = req.body.auth_method;
+
+    if (auth == "form-auth"){
+        console.log("form auth");
+        var email = req.body.strEmail.toLowerCase();
+        var fname = req.body.strFname;
+        var lname = req.body.strLname;
+
+        var passw1 = req.body.strPassw1;
+        var passw2 = req.body.strPassw2;
+
+        console.log(email, fname, lname, passw1);
+        
+    }else if(auth == "firebase"){
+        console.log("firebase");
+        var payload = JSON.parse(req.body.strpayload);
+
+        console.log(payload);
+    }else{
+        console.log("invalid");
+    }
+    
+
 
     // var email = req.body.strEmail.toLowerCase();
     // var fname = req.body.strFname;

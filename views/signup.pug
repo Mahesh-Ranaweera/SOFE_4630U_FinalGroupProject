@@ -25,6 +25,7 @@ block content
                     .uk-margin
                         label.text-label(for='strPassw2') Re-Enter Password:
                         input.uk-input(name='strPassw2', type='password', required)
+                        input(type='hidden', value='form-auth', name='auth_method')
                     .uk-margin
                         .uk-text-right
                             button.uk-button.uk-button-primary(name='btnSignup', type='submit') SIGN UP

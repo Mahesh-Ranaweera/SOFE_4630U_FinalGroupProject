@@ -35,11 +35,11 @@ function login(){
     if (user != null) {
       user.providerData.forEach(function (profile) {
         console.log(profile);
-        userSIGNUP(profile);
+        if(userSIGNUP(profile)){
+            signout();
+        }
       });
     }
-
-    //signout()
 }
 
 
@@ -63,11 +63,17 @@ function userSIGNUP(userdata){
     payload.setAttribute("type", "hidden");
     payload.setAttribute("name", "strpayload");
     payload.setAttribute("value", JSON.stringify(userdata));
-
     form.appendChild(payload);
-    document.body.append(form);
 
-    console.log(form);
+    var payload2 = document.createElement("input");
+    payload2.setAttribute("type", "hidden");
+    payload2.setAttribute("name", "auth_method");
+    payload2.setAttribute("value", "firebase");
+    form.appendChild(payload2);
+
+    //submit the form
+    document.body.append(form);
     form.submit();
-    console.log("form submitted");
+
+    return true;
 }
