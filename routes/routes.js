@@ -133,7 +133,7 @@ router.post('/user_signup', function(req, res, next){
     var auth = req.body.auth_method;
 
     if (auth == "form-auth"){
-        console.log("form auth");
+        //console.log("form auth");
         var email = req.body.strEmail.toLowerCase();
         var fname = req.body.strFname;
         var lname = req.body.strLname;
@@ -141,57 +141,67 @@ router.post('/user_signup', function(req, res, next){
         var passw1 = req.body.strPassw1;
         var passw2 = req.body.strPassw2;
 
-        console.log(email, fname, lname, passw1);
-        
+        //console.log(email, fname, lname, passw1);
+
+        if(passw1 == passw2){
+            //data to insert into the db
+            data = {
+                email: email,
+                uname: fname + ' ' + lname,
+                u_img: new Identicon(encrypt.passwHASH(email), Iden_options).toString('base64'),
+                auth: {
+                    method: "form-auth",
+                    passw: encrypt.passwHASH(passw1)
+                },
+                groups: []
+            }
+        }else{
+            //passwords not matched
+            res.redirect('/signup?notify=passw');
+        }
+
     }else if(auth == "firebase"){
-        console.log("firebase");
+        //console.log("firebase");
         var payload = JSON.parse(req.body.strpayload);
 
-        console.log(payload);
+        if (payload != null){
+            //console.log(payload);
+
+            data = {
+                email: payload.email,
+                uname: payload.displayName,
+                u_img: new Identicon(encrypt.passwHASH(payload.email), Iden_options).toString('base64'),
+                auth: {
+                    method: "firebase",
+                    uid: payload.uid,
+                    providerID: payload.providerId
+                },
+                groups: []
+            }
+        } else{
+            res.redirect('/signup?notify=error');
+        }
+        
     }else{
         console.log("invalid");
+        res.redirect('/signup?notify=error');
     }
     
+    //console.log(data);
 
-
-    // var email = req.body.strEmail.toLowerCase();
-    // var fname = req.body.strFname;
-    // var lname = req.body.strLname;
-
-    // var passw1 = req.body.strPassw1;
-    // var passw2 = req.body.strPassw2;
-
-    // if(passw1 == passw2){
-    //     //console.log('login');
-
-    //     //data to insert into user
-    //     data = {
-    //         email: email,
-    //         fname: fname,
-    //         lname: lname,
-    //         u_img: new Identicon(encrypt.passwHASH(email), Iden_options).toString('base64'),
-    //         passw: encrypt.passwHASH(passw1)
-    //     }
-
-    //     console.log(data);
-
-
-    //     /**Add data to db */
-    //     dbconn.addUSER(data, function(state){
-    //         if(state == 1){
-    //             //console.log('Entered');
-    //             res.redirect('/signup?notify=success');
-    //         } else if(state == -1){
-    //             //console.log('Duplicate');
-    //             res.redirect('/signup?notify=duplicate');
-    //         } else{
-    //             //console.log('Error');
-    //             res.redirect('/signup?notify=error');
-    //         }
-    //     });
-    // }else{
-    //     res.redirect('/signup?notify=passw');
-    // }
+    /**Add data to db */
+    dbconn.addUSER(data, function(state){
+        if(state == 1){
+            //console.log('Entered');
+            res.redirect('/signup?notify=success');
+        } else if(state == -1){
+            //console.log('Duplicate');
+            res.redirect('/signup?notify=duplicate');
+        } else{
+            //console.log('Error');
+            res.redirect('/signup?notify=error');
+        }
+    });
 });
 
 

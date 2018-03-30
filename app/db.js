@@ -61,13 +61,7 @@ var addUSER = function(data, callback) {
                 console.log('user not exists');
 
                 //insert the new user
-                r.db(dbname).table(tbusers).insert({
-                    'email': data.email,
-                    'uname': data.fname + ' ' + data.lname,
-                    'passw': data.passw,
-                    'u_img': data.u_img,
-                    'groups': []
-                }).run();
+                r.db(dbname).table(tbusers).insert(data).run();
 
                 callback(1);
             } else {
