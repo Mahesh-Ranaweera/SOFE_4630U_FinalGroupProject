@@ -17,40 +17,46 @@ block dashb
                 .group-txt
                     | Join Group
 
-            .group-search
-                form.uk-search.uk-search-default.uk-width-1-1
-                    input.uk-search-input(type='search' placeholder='Seach Groups...')
+            
+            //- .group-search
+            //-     form.uk-search.uk-search-default.uk-width-1-1
+            //-         input.uk-search-input(type='search' placeholder='Seach Groups...')
 
     .section
-        .card-holder.three_w
-            a(href='/groupboard')
-                .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
-                    .card-body.smooth
-                        .uk-card-title Group name
-                        .uk-margin | university name
-                        .uk-margin
-                            progress.uk-progress(value='10' max='100')
-                    .card-footer
-                        .date-info 
-                            | date
+        if groups != null
+            for item, i in groups
+                - var targetDEL = 'target: #delete' + i
+                - var modalDEL = 'delete' + i
 
-        .card-holder.three_w
-            a(href='/groupboard')
-                .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
-                    .card-body.smooth
-                        .uk-card-title SOFE 4690
-                        .uk-margin
-                            progress.uk-progress(value='10' max='100')
-                    .card-footer
-                        .date-info
+                .card-holder.three_w
+                    .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
+                        - var url = '/grouproom/'+item.groupid
+                        a(href=url)
+                            .card-body.smooth
+                                .uk-card-title #{item.groupname}
+                                .uk-margin #{item.school}
+                                .uk-margin
+                                    progress.uk-progress(value='10' max='100')
+                        .card-footer
+                            if item.owner == udata.email
+                                .date-info 
+                                    span.uk-label.uk-label-danger(uk-toggle=targetDEL) DELETE
 
-        .card-holder.three_w
-            a(href='/groupboard')
-                .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
-                    .card-body.smooth
-                        .uk-card-title
-                    .card-footer
-                        .date-info
+                //-delete the group that is own by the owner
+                if item.owner == udata.email
+                    div.uk-flex-top(id=modalDEL, uk-modal)
+                        .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+                            button.uk-modal-close-default(type='button', uk-close)
+                            .uk-modal-header
+                                h2.uk-modal-title DELETE GROUP
+                                p Are you sure you want to delete the group <b>#{item.groupname}</b> ?
+                            .uk-modal-footer.uk-text-right
+                                form(method='POST', action='/delete_group')
+                                    input(type='hidden', name='strGID', value=item.groupid)
+                                    button.uk-button.uk-button-primary(type='submit') YES
+                                    button.uk-button.uk-modal-close.uk-button-default(type='button') NO
+
+
 
 
     //-modal for creating and joining groups
@@ -92,6 +98,10 @@ block dashb
         script.
             UIkit.notification({message: 'Group Added', status: 'primary', pos: 'top-center'})
 
+    if (alert == 'deleted')
+        script.
+            UIkit.notification({message: 'Group Deleted', status: 'primary', pos: 'top-center'})
+
     if (alert == 'error')
         script.
             UIkit.notification({message: 'Something went wrong, try again', status: 'warning', pos: 'top-center'})
@@ -99,3 +109,7 @@ block dashb
     if (alert == 'invalidid')
         script.
             UIkit.notification({message: 'Invalid groupID, makesure you enter the correct groupID', status: 'danger', pos: 'top-center'})
+
+    if (alert == 'registered')
+        script.
+            UIkit.notification({message: 'You are already registered', status: 'primary', pos: 'top-center'})

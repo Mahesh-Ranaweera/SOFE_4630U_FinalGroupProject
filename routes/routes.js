@@ -80,12 +80,10 @@ router.get('/dashboard', function(req, res, next){
             alert = req.query.notify;
         }
 
-        console.log(req.session.udata.email);
-
         //get the groups for the user
         dbconn.getGROUPS(req.session.udata.email, function(state){
 
-            console.log(state);
+            //console.log(state);
 
             res.render('dashboard', {
                 title: 'Dashboard',
@@ -310,10 +308,14 @@ router.get('/groups', function(req, res, next){
             alert = req.query.notify;
         }
 
-        res.render('groups', {
-            title: 'Groups',
-            udata: req.session.udata,
-            alert: alert
+        //get the groups for the user
+        dbconn.getGROUPS(req.session.udata.email, function(state){
+            res.render('groups', {
+                title: 'Groups',
+                udata: req.session.udata,
+                groups: state,
+                alert: alert
+            });
         });
     } else {
         res.redirect('/');
@@ -322,7 +324,7 @@ router.get('/groups', function(req, res, next){
 
 /**SET the session for the group**/
 router.get('/grouproom/:gid', function(req, res, next){
-    console.log(req.params.gid);
+    //console.log(req.params.gid);
     /*makesure session exists*/
     if(req.session.usersess){
         //get the data of group
@@ -486,6 +488,28 @@ router.post('/create_group', function(req, res, next){
 /**join group **/
 router.post('/join_group', function(req, res, next){
 
+    data = {
+        gid: req.body.groupID,
+        email: req.session.udata.email
+    }
+
+    //validate the id
+    if(data.gid.length == 36){
+        //join given id
+        dbconn.joinGROUP(data, function(state){
+            console.log(state);
+
+            if(state == 1){
+                res.redirect('/groups?notify=added');
+            }else if(state == -1){
+                res.redirect('/groups?notify=registered');
+            }else{
+                res.redirect('/groups?notify=error');
+            }
+        })
+    }else{
+        res.redirect('/groups?notify=invalidid');
+    }
 });
 
 /**search group**/
@@ -493,6 +517,23 @@ router.post('/search_group', function(req, res, next){
 
 });
 
+/**Delete group **/
+router.post('/delete_group', function(req, res, next){
+    
+    data = {
+        gid: req.body.strGID,
+        email: req.session.udata.email
+    }
+
+    //delete the group
+    dbconn.deleteGROUP(data, function(state){
+        if(state == 1){
+            res.redirect('/groups?notify=deleted');
+        }else{
+            res.redirect('/groups?notify=error');
+        }
+    })
+});
 
 /**SIGNOUT*/
 router.get('/signout', function(req, res, next) {

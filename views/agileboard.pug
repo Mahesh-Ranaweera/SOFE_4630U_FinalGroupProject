@@ -2,6 +2,20 @@ extends dashb_layout
 
 block dashb
     include group_menu
+    script(src='/js/board.js')
+
+    .section
+        .group-header
+            .group-icon-g.smooth(uk-toggle="target: #createTodo")
+                .group-icon
+                    span(uk-icon='icon: plus')
+                .group-txt
+                    | Add Todo
+
+            .group-search
+                | Overall Progress:
+                progress.uk-progress(value='10' max='100')
+
 
     .section
         .four_w.card-holder
@@ -80,3 +94,28 @@ block dashb
                     .todo_btn.todo_close
                         span(uk-icon='icon: close')
                     .date-info 2018
+
+
+    //-modal for creating and joining groups
+    div.uk-flex-top(id="createTodo", uk-modal)
+        .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+            button.uk-modal-close-default(type='button', uk-close)
+            .uk-modal-header
+                h2.uk-modal-title Create New Group
+            
+            .uk-modal-body
+                form.uk-grid-small#agileboard
+                    .uk-width-1-1
+                        label(for='groupName') Enter TODO:
+                        input.uk-input(name='strTodo', type='text', required)
+                    .uk-width-1-1
+                        label(for='groupName') Assign Member:
+                        input.uk-input(name='strMember', type='text', required)
+                    .uk-width-1-1
+                        label(for='groupName') Date to complete:
+                        input.uk-input(name='strDate', type='date', required)
+                        input#group_data(type='hidden', name='grop_data' value=gdata.group)
+
+                    .uk-margin
+                        .uk-text-right
+                            button.uk-button.uk-button-primary(name='btncreateTodo', type='submit') ADD TODO

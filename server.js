@@ -9,6 +9,9 @@ var indexRouter = require('./routes/routes');
 var app = express();
 var server = require('http').Server(app);
 
+/**handle agile board **/
+var sockets = require('./app/boardhandler')(server);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

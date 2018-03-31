@@ -169,7 +169,7 @@ var createGROUP = function(data, callback){
 /**GET Groups */
 var getGROUPS = function(useremail, callback){
 
-    console.log(useremail);
+    //console.log(useremail);
 
     //get users groups 
     var g = [];
@@ -202,7 +202,7 @@ var groupDATA = function(groupid, callback){
     //get the requested group data including member info
     r.db(dbname).table(tbgroups).get(groupid).run()
     .then(function(response){
-        console.log(response.groupmembers);
+        //console.log(response.groupmembers);
 
         r.db(dbname).table(tbusers).getAll(r.args(response.groupmembers)).run()
         .then(function(resp){
@@ -219,7 +219,70 @@ var groupDATA = function(groupid, callback){
     })
     .catch(function(err){
         console.log(err);
+        callback(null)
+    });
+}
+
+/**JOIN to to group**/
+var joinGROUP = function(data, callback){
+    //add the given id to user group
+    r.db(dbname).table(tbusers).get(data.email).run()
+    .then(function(response){
+        //get current users 
+        var usergroups = response.groups;
+        var found = false;
+
+        //go through arr and check user is already in the given group
+        for(i = 0; i < usergroups.length; i++){
+            if(usergroups[i].groupid === data.gid)
+                found = true;
+        }
+
+        if(found){
+            //already in the given group
+            callback(-1);
+        }else{
+            //add group to users and email to members
+            r.expr([
+                r.db(dbname).table(tbusers).get(data.email)
+                .update({
+                    'groups': r.row('groups').append({
+                        'groupid': data.gid
+                    })
+                }),
+                r.db(dbname).table(tbgroups).get(data.gid)
+                .update({
+                    'groupmembers': r.row('groupmembers').append(data.email)
+                })]
+            ).run()
+            .then(function (resp){
+                callback(1);
+            })
+            .catch(function(err){
+                callback(0);
+            })
+        }
     })
+    .catch(function(err){
+        callback(0); 
+    });
+}
+
+/** DELETE group **/
+var deleteGROUP = function(data, callback){
+    /**delete the given id and unsubscribe the members**/
+    r.db(dbname).table(tbgroups).get(data.gid).delete().run()
+    .then(function(response){
+        //callback the deleted status
+        if(response.deleted == 1){
+            callback(1);
+        }else{
+            callback(0);
+        }
+    })  
+    .catch(function(err){
+        callback(0);
+    });
 }
 
 /**Export the modules */
@@ -230,3 +293,5 @@ module.exports.updatePASSWD = updatePASSWD;
 module.exports.createGROUP = createGROUP;
 module.exports.getGROUPS = getGROUPS;
 module.exports.groupDATA = groupDATA;
+module.exports.joinGROUP = joinGROUP;
+module.exports.deleteGROUP = deleteGROUP;
