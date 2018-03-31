@@ -1,0 +1,67 @@
+extends dashb_layout
+
+block dashb
+	include group_menu
+	.section
+		.group-header
+			.group-icon-g.smooth(uk-toggle="target: #createGroup")
+				.group-icon
+					span(uk-icon='icon: plus')
+				.group-txt
+					| Create a new chatroom
+
+			.group-icon-g.smooth(uk-toggle="target: #joinGroup")
+				.group-icon
+					span(uk-icon='icon: users')
+				.group-txt
+					| Join an existing chatroom
+
+	.section(id='activeGroups')
+
+
+	//- Create group modal
+	div.uk-flex-top(id="createGroup", uk-modal)
+		.uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+			button.uk-modal-close-default(type='button', uk-close)
+			.uk-modal-header
+				h2.uk-modal-title Create group
+			
+			.uk-modal-body
+				.uk-width-1-1
+					label(for='groupName') New group name:
+					input.uk-input(name='groupName', id='groupName', type='text', required)
+
+				.uk-margin
+					.uk-text-right
+						button.uk-button.uk-button-primary(name='btncreateGroup', onclick='createChatRoom()') Create
+			
+
+	div.uk-flex-top(id="joinGroup", uk-modal)
+		.uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+			button.uk-modal-close-default(type='button', uk-close)
+			.uk-modal-header
+				h2.uk-modal-title Join group
+
+			.uk-modal-body
+				.uk-width-1-1
+					label(for='groupID') Enter group ID:
+					input.uk-input(name='groupID', id='groupID', type='password' required)
+
+				.uk-margin
+					.uk-text-right
+						button.uk-button.uk-button-primary(name='btnjoinGroup', onclick='joinGroup()') Join
+
+	script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase.js')
+	script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase-auth.js')
+	script.
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyAN2TjQBsWx0TH3epeHpWSFnOxAzrH6PJM",
+			authDomain: "cloud-final-3d3f6.firebaseapp.com",
+			databaseURL: "https://cloud-final-3d3f6.firebaseio.com",
+			projectId: "cloud-final-3d3f6",
+			storageBucket: "cloud-final-3d3f6.appspot.com",
+			messagingSenderId: "987346344951"
+		};
+		firebase.initializeApp(config);
+	script(src='/js/chat.js')
