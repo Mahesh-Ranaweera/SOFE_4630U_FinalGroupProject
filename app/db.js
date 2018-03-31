@@ -285,6 +285,18 @@ var deleteGROUP = function(data, callback){
     });
 }
 
+/**ADD todo from agileboard*/
+var addTODO = function(data, callback){
+    /**append todo to specific group */
+    r.db(dbname).table(tbgroups).get(data.gid).run()
+    .then(function(response){
+
+    })
+    .catch(function(err){
+        
+    })
+}
+
 /**Export the modules */
 module.exports.addUSER = addUSER;
 module.exports.getUSER = getUSER;

@@ -107,14 +107,14 @@ block dashb
                 form.uk-grid-small#agileboard
                     .uk-width-1-1
                         label(for='groupName') Enter TODO:
-                        input.uk-input(name='strTodo', type='text', required)
+                        input.uk-input#strTodo(name='strTodo', type='text', required)
                     .uk-width-1-1
                         label(for='groupName') Assign Member:
-                        input.uk-input(name='strMember', type='text', required)
+                        input.uk-input#strMember(name='strMember', type='text', required)
                     .uk-width-1-1
                         label(for='groupName') Date to complete:
-                        input.uk-input(name='strDate', type='date', required)
-                        input#group_data(type='hidden', name='grop_data' value=gdata.group)
+                        input.uk-input#strDate(name='strDate', type='date', required)
+                        input#group_data(type='hidden', name='group_data' value=gdata.group)
 
                     .uk-margin
                         .uk-text-right
