@@ -99,11 +99,6 @@ router.get('/dashboard', function(req, res, next){
     }
 });
 
-/**GET user group**/
-router.get('/grouproom/:gid', function(req, res, next){
-    
-})
-
 /**POST user signin */
 router.post('/user_signin', function(req, res, next){
 
@@ -142,6 +137,7 @@ router.post('/user_signin', function(req, res, next){
                         auth: state.auth.method,
                         univ: state.school
                     }
+                    req.session.gdata = null;
 
                     //console.log(req.session);
                     res.redirect('/dashboard');
@@ -164,6 +160,7 @@ router.post('/user_signin', function(req, res, next){
                         auth: state.auth.method,
                         univ: state.school
                     }
+                    req.session.gdata = null;
 
                     //console.log(req.session);
                     res.redirect('/dashboard');
@@ -323,10 +320,25 @@ router.get('/groups', function(req, res, next){
     }
 });
 
+/**SET the session for the group**/
+router.get('/grouproom/:gid', function(req, res, next){
+    console.log(req.params.gid);
+    /*makesure session exists*/
+    if(req.session.usersess){
+        //get the data of group
+        req.session.gdata = req.params.gid;
+        res.redirect('/groupboard')
+    }else{
+        res.redirect('/');
+    }
+});
+
 /**GET user groups  /groupboard/:gid */
 router.get('/groupboard', function(req, res, next){
     /**Makesure user session exists */
-    if (req.session.usersess) {
+    if (req.session.usersess && req.session.gdata != null) {
+
+        console.log('Curr Group session', req.session.gdata);
 
         var alert = null;
 
@@ -334,20 +346,25 @@ router.get('/groupboard', function(req, res, next){
             alert = req.query.notify;
         }
 
-        res.render('agileboard', {
-            title: 'Group Board',
-            udata: req.session.udata,
-            alert: alert
+        dbconn.groupDATA(req.session.gdata, function(state){
+            res.render('agileboard', {
+                title: 'Group Board',
+                udata: req.session.udata,
+                gdata: state,
+                alert: alert
+            });
         });
     } else {
         res.redirect('/');
     }
 });
 
-/**GET user groups  /groupchat/:gid */
+/**GET group chat */
 router.get('/groupchat', function(req, res, next){
     /**Makesure user session exists */
-    if (req.session.usersess) {
+    if (req.session.usersess && req.session.gdata != null) {
+
+        console.log('Curr Group session', req.session.gdata);
 
         var alert = null;
 
@@ -355,15 +372,43 @@ router.get('/groupchat', function(req, res, next){
             alert = req.query.notify;
         }
 
-        res.render('agileboard', {
-            title: 'Groups',
-            udata: req.session.udata,
-            alert: alert
+        dbconn.groupDATA(req.session.gdata, function(state){
+             res.render('groupchat', {
+                title: 'Group Chat',
+                udata: req.session.udata,
+                gdata: state,
+                alert: alert
+            });
         });
     } else {
         res.redirect('/');
     }
 });
+
+/**GET group members */
+router.get('/groupmembers', function(req, res, next){
+    /**Makesure user session exists */
+    if (req.session.usersess && req.session.gdata != null) {
+
+        var alert = null;
+
+        if(req.query.notify != null){
+            alert = req.query.notify;
+        }
+
+        dbconn.groupDATA(req.session.gdata, function(state){
+            res.render('groupmembers', {
+                title: 'Group Chat',
+                udata: req.session.udata,
+                gdata: state,
+                alert: alert
+            });
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
 
 
 /** Dashboard actions **/

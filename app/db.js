@@ -197,6 +197,31 @@ var getGROUPS = function(useremail, callback){
     });
 }
 
+/**GET specific group data*/
+var groupDATA = function(groupid, callback){
+    //get the requested group data including member info
+    r.db(dbname).table(tbgroups).get(groupid).run()
+    .then(function(response){
+        console.log(response.groupmembers);
+
+        r.db(dbname).table(tbusers).getAll(r.args(response.groupmembers)).run()
+        .then(function(resp){
+            group_data = {
+                group: response,
+                users: resp
+            }
+
+            callback(group_data);
+        })
+        .catch(function(err){
+            callback(null);
+        })
+    })
+    .catch(function(err){
+        console.log(err);
+    })
+}
+
 /**Export the modules */
 module.exports.addUSER = addUSER;
 module.exports.getUSER = getUSER;
@@ -204,3 +229,4 @@ module.exports.updateSCHOOL = updateSCHOOL;
 module.exports.updatePASSWD = updatePASSWD;
 module.exports.createGROUP = createGROUP;
 module.exports.getGROUPS = getGROUPS;
+module.exports.groupDATA = groupDATA;

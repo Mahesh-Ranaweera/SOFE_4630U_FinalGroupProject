@@ -24,10 +24,10 @@ block dashb
                                     input.uk-input(type='text' value=udata.name disabled)
 
                             .uk-margin
-                                label.uk-form-label University/Colleage:
+                                label.uk-form-label University/College:
                                 .uk-form-controls
                                     select.uk-select(name='strSchool')
-                                        option(value="0") Select your University/Colleage
+                                        option(value="0") Select your University/College
                                         for item, i in univ_list
                                             if item.university == udata.univ
                                                 option(value=item.university selected) #{item.university}
