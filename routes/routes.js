@@ -362,7 +362,7 @@ router.get('/groupboard', function(req, res, next){
 });
 
 /**GET group chat */
-router.get('/groupchat', function(req, res, next){
+router.get('/chat', function(req, res, next){
     /**Makesure user session exists */
     if (req.session.usersess && req.session.gdata != null) {
 
@@ -375,7 +375,7 @@ router.get('/groupchat', function(req, res, next){
         }
 
         dbconn.groupDATA(req.session.gdata, function(state){
-             res.render('groupchat', {
+             res.render('chat', {
                 title: 'Group Chat',
                 udata: req.session.udata,
                 gdata: state,
@@ -541,7 +541,7 @@ router.get('/signout', function(req, res, next) {
         if (err) {
             console.log(err);
         } else {
-            res.redirect('/');
+            res.render('signout');
         }
     });
 });
