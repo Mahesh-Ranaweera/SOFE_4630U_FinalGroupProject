@@ -1,5 +1,5 @@
 /** Handle the agileboard with sockets **/
-var socket, metadata, todoCont, progCont, reviewCont, finiCont
+var socket, metadata, todoCont, progCont, reviewCont, finiCont, progressBar
 
 /**submit the todo to board**/
 $(function (){
@@ -11,9 +11,13 @@ $(function (){
 	progCont = $('#progress_section');
 	reviewCont = $('#review_section');
 	finiCont = $('#finish_section');
+	progressBar = $('#progBar');
 
 	//join the group
 	socket.emit('joinroom', metadata.groupid);
+
+	//load the progressbar
+	update_progress();
 
 	//send todo
 	$('#agileboard').submit(function(e){
@@ -123,6 +127,7 @@ function displaycard(cardid){
 //refresh page
 function refresh(){
 	$("#agilecontent").load(location.href+" #agilecontent");
+	update_progress();
 }
 
 //upgrade items

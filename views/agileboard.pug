@@ -13,8 +13,7 @@ block dashb
                     | Add Todo
 
             .group-search
-                | Overall Progress:
-                progress.uk-progress(value='10' max='100')
+                #progBar
 
 
     .section#agilecontent
@@ -36,10 +35,10 @@ block dashb
                         .todo_desc
                             | #{item.todo}
                         .todo_footer
-                            .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"todo","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                            .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"todo","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Upgrade')
                                 span(uk-icon='icon: chevron-up')
 
-                            //- .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"todo","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                            //- .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"todo","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Downgrade')
                             //-     span(uk-icon='icon: chevron-down')
                                 
                             .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"todo");', title='Delete Item')
@@ -66,10 +65,10 @@ block dashb
                         .todo_desc
                             | #{item.todo}
                         .todo_footer
-                            .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"progress","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Review')
+                            .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"progress","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Upgrade')
                                 span(uk-icon='icon: chevron-up')
 
-                            .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"progress","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                            .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"progress","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Downgrade')
                                 span(uk-icon='icon: chevron-down')
                                 
                             //- .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"progress");', title='Delete Item')
@@ -96,10 +95,10 @@ block dashb
                         .todo_desc
                             | #{item.todo}
                         .todo_footer
-                            .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"review","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Finished')
+                            .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"review","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Upgrade')
                                 span(uk-icon='icon: chevron-up')
 
-                            .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"review","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                            .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"review","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Downgrade')
                                 span(uk-icon='icon: chevron-down')
                                 
                             //- .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"review");', title='Delete Item')
@@ -127,10 +126,10 @@ block dashb
                             | #{item.todo}
                         .todo_footer
 
-                            //- .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"finished","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                            //- .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"finished","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Upgrade')
                             //-     span(uk-icon='icon: chevron-up')
 
-                            .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"finished","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                            .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"finished","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Downgrade')
                                 span(uk-icon='icon: chevron-down')
                                 
                             //- .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"finished");', title='Delete Item')
@@ -170,3 +169,51 @@ block dashb
                     .uk-margin
                         .uk-text-right
                             button.uk-button.uk-button-primary(name='btncreateTodo', type='submit') ADD TODO
+
+
+    script.
+        //initialize the progress bar
+        var bar = new ProgressBar.Line(progBar, {
+            strokeWidth: 4,
+            easing: 'easeInOut',
+            duration: 1400,
+            color: '#FFEA82',
+            trailColor: '#eee',
+            trailWidth: 1,
+            svgStyle: {width: '100%', height: '10px'},
+            from: {color: '#68768C'},
+            to: {color: '#3093EB'},
+            text: {
+            style: {
+                color: '#999',
+                position: 'absolute',
+                right: '20px',
+                top: '32px',
+                padding: 0,
+                margin: 0,
+                transform: null
+            },
+            autoStyleContainer: false
+            },
+            step: (state, bar) => {
+                bar.path.setAttribute('stroke', state.color);
+                bar.setText('Project Progress: ' + Math.round(bar.value() * 100) + ' %');
+            }
+        });
+
+        function update_progress(){
+            //get the number of cards 
+            var num_todo_cards = $('#todo_section').find('.todo_card').length;
+            var num_review_cards = $('#progress_section').find('.todo_card').length;
+            var num_progress_cards = $('#review_section').find('.todo_card').length;
+            var num_finished_cards = $('#finish_section').find('.todo_card').length;
+
+            var total_cards = num_todo_cards + num_review_cards + num_progress_cards + num_finished_cards;
+
+            var score = (num_finished_cards / total_cards);
+            //console.log(score)
+
+            bar.animate(score);
+        }
+
+        update_progress();
