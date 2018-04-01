@@ -63,3 +63,17 @@ function deleteitem(itemid, type){
 	socket.emit('deleteitem', deletedata);
 }
 
+//upgrade the item
+function upgradeitem(itemid, type, content, member, date){
+	var upgradedata = {
+		gid: metadata.groupid,
+		type: type,
+		itemid: itemid,
+		content: content,
+		member: member,
+		date: date
+	}
+
+	socket.emit('upgradeitem', upgradedata);
+	//move the item to next column, so hide and append
+}

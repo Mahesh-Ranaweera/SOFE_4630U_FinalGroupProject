@@ -36,26 +36,13 @@ block dashb
                         .todo_desc
                             | #{item.todo}
                         .todo_footer
-                            .todo_btn.todo_check(type='submit', name='btnChange', action='')
+                            .todo_btn.todo_check(type='submit', name='btnChange', onclick='upgradeitem('+cardid+',"todo","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
                                 span(uk-icon='icon: check')
                                 
-                            .todo_btn.todo_close(type='submit', name='btnDelete', onclick='deleteitem('+cardid+',"todo");')
+                            .todo_btn.todo_close(type='submit', name='btnDelete', onclick='deleteitem('+cardid+',"todo");', title='Delete Item')
                                 span(uk-icon='icon: close')
 
                             .date-info #{item.date}
-
-
-                //- .todo_card
-                //-     .uk-label.uk-label-success
-                //-         | Important
-                //-     .todo_desc
-                //-         | Description
-                //-     .todo_footer
-                //-         .todo_btn.todo_check
-                //-             span(uk-icon='icon: check')
-                //-         .todo_btn.todo_close
-                //-             span(uk-icon='icon: close')
-                //-         .date-info 2018
 
 
         .four_w.card-holder
@@ -64,7 +51,9 @@ block dashb
 
             #progress_section
                 for item, i in gdata.group.agileboard.progress
-                    .todo_card
+                    - var cardid = item.stamp
+                    
+                    .todo_card(id=cardid)
                         .uk-label.uk-label-success
                             for user, j in gdata.users
                                 //-get the name of the email
@@ -74,11 +63,14 @@ block dashb
                         .todo_desc
                             | #{item.todo}
                         .todo_footer
-                            .todo_btn.todo_check
+                            .todo_btn.todo_check(type='submit', name='btnChange', onclick='upgradeitem('+cardid+',"progress","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Review')
                                 span(uk-icon='icon: check')
-                            .todo_btn.todo_close
+                                
+                            .todo_btn.todo_close(type='submit', name='btnDelete', onclick='deleteitem('+cardid+',"progress");', title='Delete Item')
                                 span(uk-icon='icon: close')
+
                             .date-info #{item.date}
+
 
         .four_w.card-holder
             .todo_header
@@ -86,7 +78,9 @@ block dashb
 
             #review_section
                 for item, i in gdata.group.agileboard.review
-                    .todo_card
+                    - var cardid = item.stamp
+                    
+                    .todo_card(id=cardid)
                         .uk-label.uk-label-success
                             for user, j in gdata.users
                                 //-get the name of the email
@@ -96,10 +90,12 @@ block dashb
                         .todo_desc
                             | #{item.todo}
                         .todo_footer
-                            .todo_btn.todo_check
+                            .todo_btn.todo_check(type='submit', name='btnChange', onclick='upgradeitem('+cardid+',"review","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Finished')
                                 span(uk-icon='icon: check')
-                            .todo_btn.todo_close
+                                
+                            .todo_btn.todo_close(type='submit', name='btnDelete', onclick='deleteitem('+cardid+',"review");', title='Delete Item')
                                 span(uk-icon='icon: close')
+
                             .date-info #{item.date}
 
 
@@ -109,7 +105,9 @@ block dashb
 
             #finish_section
                 for item, i in gdata.group.agileboard.finished
-                    .todo_card
+                    - var cardid = item.stamp
+                    
+                    .todo_card(id=cardid)
                         .uk-label.uk-label-success
                             for user, j in gdata.users
                                 //-get the name of the email
@@ -119,10 +117,13 @@ block dashb
                         .todo_desc
                             | #{item.todo}
                         .todo_footer
-                            .todo_btn.todo_check
-                                span(uk-icon='icon: check')
-                            .todo_btn.todo_close
-                                span(uk-icon='icon: close')
+
+                            //- .todo_btn.todo_check(type='submit', name='btnChange', onclick='upgradeitem('+cardid+',"finished","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                            //-     span(uk-icon='icon: check')
+                                
+                            //- .todo_btn.todo_close(type='submit', name='btnDelete', onclick='deleteitem('+cardid+',"finished");', title='Delete Item')
+                            //-     span(uk-icon='icon: close')
+
                             .date-info #{item.date}
 
 

@@ -394,8 +394,84 @@ var deleteTODO = function(data, callback){
     }
 }
 
-//r.db('web_db').table('groups').get('d63fd146-00a2-45cd-9f9c-c109827fe608')
-//  .update({'agileboard':{'todo': r.row('agileboard')('todo').filter('stamp').ne(1522542225418)}})
+
+/** UPGRADE the items **/
+var upgradeTODO = function(data, callback){
+
+    var payload = {
+        todo: data.content,
+        member: data.member,
+        date: data.date,
+        stamp: data.itemid
+    }
+    
+    if(data.type == "todo"){
+        //if todo upgrade to progress
+        deleteTODO(data, function(state){
+            if(state==1){
+                //append to progress group
+                r.db(dbname).table(tbgroups).get(data.gid).update({
+                'agileboard':{
+                    'progress': r.row('agileboard')('progress').append(payload)
+                }
+                }).run()
+                .then(function(response){
+                    callback(1);
+                })
+                .catch(function(err){
+                    callback(0);
+                })
+            }else{
+                callback(0);
+            }
+        });
+    }else if(data.type == "progress"){
+        //if progress upgrade to review
+        //if todo upgrade to progress
+        deleteTODO(data, function(state){
+            if(state==1){
+                //append to progress group
+                r.db(dbname).table(tbgroups).get(data.gid).update({
+                'agileboard':{
+                    'review': r.row('agileboard')('review').append(payload)
+                }
+                }).run()
+                .then(function(response){
+                    callback(1);
+                })
+                .catch(function(err){
+                    callback(0);
+                })
+            }else{
+                callback(0);
+            }
+        });
+    }else if(data.type == "review"){
+        //if review upgrade to finished
+        //if todo upgrade to progress
+        deleteTODO(data, function(state){
+            if(state==1){
+                //append to progress group
+                r.db(dbname).table(tbgroups).get(data.gid).update({
+                'agileboard':{
+                    'finished': r.row('agileboard')('finished').append(payload)
+                }
+                }).run()
+                .then(function(response){
+                    callback(1);
+                })
+                .catch(function(err){
+                    callback(0);
+                })
+            }else{
+                callback(0);
+            }
+        });
+    }else{
+        callback(0);
+    }
+}
+
 
 module.exports.addUSER = addUSER;
 module.exports.getUSER = getUSER;
@@ -408,3 +484,4 @@ module.exports.joinGROUP = joinGROUP;
 module.exports.deleteGROUP = deleteGROUP;
 module.exports.addTODO = addTODO;
 module.exports.deleteTODO = deleteTODO;
+module.exports.upgradeTODO = upgradeTODO;

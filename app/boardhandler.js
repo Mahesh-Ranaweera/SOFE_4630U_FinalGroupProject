@@ -35,7 +35,18 @@ module.exports = function(server){
 					console.log("deleted");
 				}
 			})
-		})
+		});
+
+		//upgrade todo item
+		socket.on('upgradeitem', function(data){
+			console.log(data);
+
+			dbconn.upgradeTODO(data, function(state){
+				if(state==1){
+					console.log("upgraded");
+				}
+			})
+		});
 
 		/** Disconnect sockets **/
 		socket.on('disconnect', function(){
