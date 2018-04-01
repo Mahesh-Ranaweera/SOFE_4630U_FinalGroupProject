@@ -287,13 +287,27 @@ var deleteGROUP = function(data, callback){
 
 /**ADD todo from agileboard*/
 var addTODO = function(data, callback){
-    /**append todo to specific group */
-    r.db(dbname).table(tbgroups).get(data.gid).run()
-    .then(function(response){
 
+    var payload = {
+        todo: data.todo,
+        member: data.member,
+        date: data.date,
+        stamp: data.stamp
+    }
+
+    //console.log(payload);
+
+    /**append todo to specific group */
+    r.db(dbname).table(tbgroups).get(data.gid).update({
+        'agileboard':{
+            'todo': r.row('agileboard')('todo').append(payload)
+        }
+    }).run()
+    .then(function(response){
+        callback(1);
     })
     .catch(function(err){
-        
+        callback(0);
     })
 }
 
@@ -307,3 +321,4 @@ module.exports.getGROUPS = getGROUPS;
 module.exports.groupDATA = groupDATA;
 module.exports.joinGROUP = joinGROUP;
 module.exports.deleteGROUP = deleteGROUP;
+module.exports.addTODO = addTODO;

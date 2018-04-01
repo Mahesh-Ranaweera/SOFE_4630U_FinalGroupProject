@@ -15,9 +15,15 @@ module.exports = function(server){
 
 		//add todo to the board
 		socket.on('tododata', function(tododata){
-			console.log(todo);
 
 			//insert todo to group
+			dbconn.addTODO(tododata, function(state){
+				//console.log(state);
+				if(state==1){
+					//broadcast the change to everyone
+					io.sockets.in(tododata.gid).emit('recievetodo', tododata)
+				}
+			});
 		});
 
 		/** Disconnect sockets **/

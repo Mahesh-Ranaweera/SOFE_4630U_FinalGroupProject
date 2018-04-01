@@ -22,78 +22,104 @@ block dashb
             .todo_header
                 b TODO
 
-            .todo_card
-                .uk-label.uk-label-success
-                    | Important
-                .todo_desc
-                    | Description
-                .todo_footer
-                    .todo_btn.todo_check
-                        span(uk-icon='icon: check')
-                    .todo_btn.todo_close
-                        span(uk-icon='icon: close')
-                    .date-info 2018
+            #todo_section
+                for item, i in gdata.group.agileboard.todo
+                    .todo_card
+                        .uk-label.uk-label-success
+                            for user, j in gdata.users
+                                //-get the name of the email
+                                if item.member == user.email
+                                    | #{gdata.users[j].uname}
+                            
+                        .todo_desc
+                            | #{item.todo}
+                        .todo_footer
+                            .todo_btn.todo_check
+                                span(uk-icon='icon: check')
+                            .todo_btn.todo_close
+                                span(uk-icon='icon: close')
+                            .date-info #{item.date}
+
+
+                //- .todo_card
+                //-     .uk-label.uk-label-success
+                //-         | Important
+                //-     .todo_desc
+                //-         | Description
+                //-     .todo_footer
+                //-         .todo_btn.todo_check
+                //-             span(uk-icon='icon: check')
+                //-         .todo_btn.todo_close
+                //-             span(uk-icon='icon: close')
+                //-         .date-info 2018
 
 
         .four_w.card-holder
             .todo_header
                 b IN PROGRESS
 
-            .todo_card
-                .uk-label.uk-label-success
-                    | Important
-                .todo_desc
-                    | Description
-                .todo_footer
-                    .todo_btn.todo_check
-                        span(uk-icon='icon: check')
-                    .todo_btn.todo_close
-                        span(uk-icon='icon: close')
-                    .date-info 2018
+            #progress_section
+                for item, i in gdata.group.agileboard.progress
+                    .todo_card
+                        .uk-label.uk-label-success
+                            for user, j in gdata.users
+                                //-get the name of the email
+                                if item.member == user.email
+                                    | #{gdata.users[j].uname}
+                            
+                        .todo_desc
+                            | #{item.todo}
+                        .todo_footer
+                            .todo_btn.todo_check
+                                span(uk-icon='icon: check')
+                            .todo_btn.todo_close
+                                span(uk-icon='icon: close')
+                            .date-info #{item.date}
 
         .four_w.card-holder
             .todo_header
                 b IN REVIEW
 
-            .todo_card
-                .uk-label.uk-label-success
-                    | Important
-                .todo_desc
-                    | Description
-                .todo_footer
-                    .todo_btn.todo_check
-                        span(uk-icon='icon: check')
-                    .todo_btn.todo_close
-                        span(uk-icon='icon: close')
-                    .date-info 2018
-                    
-            .todo_card
-                .uk-label.uk-label-success
-                    | Important
-                .todo_desc
-                    | Description
-                .todo_footer
-                    .todo_btn.todo_check
-                        span(uk-icon='icon: check')
-                    .todo_btn.todo_close
-                        span(uk-icon='icon: close')
-                    .date-info 2018
+            #review_section
+                for item, i in gdata.group.agileboard.review
+                    .todo_card
+                        .uk-label.uk-label-success
+                            for user, j in gdata.users
+                                //-get the name of the email
+                                if item.member == user.email
+                                    | #{gdata.users[j].uname}
+                            
+                        .todo_desc
+                            | #{item.todo}
+                        .todo_footer
+                            .todo_btn.todo_check
+                                span(uk-icon='icon: check')
+                            .todo_btn.todo_close
+                                span(uk-icon='icon: close')
+                            .date-info #{item.date}
+
 
         .four_w.card-holder
             .todo_header 
                 b FINISHED
 
-            .todo_card
-                .uk-label.uk-label-success
-                    | Important
-                .todo_desc
-                    | Description
-                .todo_footer
-                    .todo_btn.todo_check
-                        span(uk-icon='icon: check')
-                    .todo_btn.todo_close
-                        span(uk-icon='icon: close')
-                    .date-info 2018
+            #finish_section
+                for item, i in gdata.group.agileboard.finished
+                    .todo_card
+                        .uk-label.uk-label-success
+                            for user, j in gdata.users
+                                //-get the name of the email
+                                if item.member == user.email
+                                    | #{gdata.users[j].uname}
+                            
+                        .todo_desc
+                            | #{item.todo}
+                        .todo_footer
+                            .todo_btn.todo_check
+                                span(uk-icon='icon: check')
+                            .todo_btn.todo_close
+                                span(uk-icon='icon: close')
+                            .date-info #{item.date}
 
 
     //-modal for creating and joining groups
@@ -110,7 +136,15 @@ block dashb
                         input.uk-input#strTodo(name='strTodo', type='text', required)
                     .uk-width-1-1
                         label(for='groupName') Assign Member:
-                        input.uk-input#strMember(name='strMember', type='text', required)
+                        select.uk-input#strMember(name='strMember', required)
+                            option(value='0') Assign group member
+                            for item, i in gdata.group.groupmembers
+
+                                for user, j in gdata.users
+                                    //-get the name of the email
+                                    if item == user.email
+                                        - var name = gdata.users[i].uname
+                                        option(value=item) #{name}
                     .uk-width-1-1
                         label(for='groupName') Date to complete:
                         input.uk-input#strDate(name='strDate', type='date', required)
