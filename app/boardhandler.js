@@ -14,14 +14,14 @@ module.exports = function(server){
 		});
 
 		//add todo to the board
-		socket.on('tododata', function(tododata){
+		socket.on('tododata', function(data){
 
 			//insert todo to group
-			dbconn.addTODO(tododata, function(state){
+			dbconn.addTODO(data, function(state){
 				//console.log(state);
-				if(state==1){
+				if(state == 1){
 					//broadcast the change to everyone
-					io.sockets.in(tododata.gid).emit('recievetodo', tododata)
+					io.sockets.in(data.gid).emit('recieveresp', data)
 				}
 			});
 		});
@@ -31,22 +31,36 @@ module.exports = function(server){
 			//console.log(data);
 
 			dbconn.deleteTODO(data, function(state){
-				if(state==1){
-					console.log("deleted");
+				if(state == 1){
+					//broadcast the change to everyone
+					io.sockets.in(data.gid).emit('recieveresp', data)
 				}
 			})
 		});
 
 		//upgrade todo item
 		socket.on('upgradeitem', function(data){
-			console.log(data);
+			//console.log(data);
 
 			dbconn.upgradeTODO(data, function(state){
-				if(state==1){
-					console.log("upgraded");
+				if(state == 1){
+					//broadcast the change to everyone
+					io.sockets.in(data.gid).emit('recieveresp', data)
 				}
 			})
 		});
+
+		//downgrade the item
+		socket.on('downgradeitem', function(data){
+			//console.log(data)
+
+			dbconn.downgradeTODO(data, function(state){
+				if(state == 1){
+					//broadcast the change to everyone
+					io.sockets.in(data.gid).emit('recieveresp', data)
+				}
+			})
+		})
 
 		/** Disconnect sockets **/
 		socket.on('disconnect', function(){

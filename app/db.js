@@ -289,7 +289,7 @@ var deleteGROUP = function(data, callback){
 var addTODO = function(data, callback){
 
     var payload = {
-        todo: data.todo,
+        todo: data.content,
         member: data.member,
         date: data.date,
         stamp: data.stamp
@@ -320,7 +320,7 @@ var deleteTODO = function(data, callback){
             return{
                 'agileboard':{
                     'todo': row('agileboard')('todo').filter(function(item){
-                        return item('stamp').ne(data.itemid)
+                        return item('stamp').ne(data.stamp)
                     })
                 }
             }
@@ -339,7 +339,7 @@ var deleteTODO = function(data, callback){
             return{
                 'agileboard':{
                     'progress': row('agileboard')('progress').filter(function(item){
-                        return item('stamp').ne(data.itemid)
+                        return item('stamp').ne(data.stamp)
                     })
                 }
             }
@@ -358,7 +358,7 @@ var deleteTODO = function(data, callback){
             return{
                 'agileboard':{
                     'review': row('agileboard')('review').filter(function(item){
-                        return item('stamp').ne(data.itemid)
+                        return item('stamp').ne(data.stamp)
                     })
                 }
             }
@@ -377,7 +377,7 @@ var deleteTODO = function(data, callback){
             return{
                 'agileboard':{
                     'finished': row('agileboard')('finished').filter(function(item){
-                        return item('stamp').ne(data.itemid)
+                        return item('stamp').ne(data.stamp)
                     })
                 }
             }
@@ -402,7 +402,7 @@ var upgradeTODO = function(data, callback){
         todo: data.content,
         member: data.member,
         date: data.date,
-        stamp: data.itemid
+        stamp: data.stamp
     }
     
     if(data.type == "todo"){
@@ -427,7 +427,6 @@ var upgradeTODO = function(data, callback){
         });
     }else if(data.type == "progress"){
         //if progress upgrade to review
-        //if todo upgrade to progress
         deleteTODO(data, function(state){
             if(state==1){
                 //append to progress group
@@ -448,13 +447,87 @@ var upgradeTODO = function(data, callback){
         });
     }else if(data.type == "review"){
         //if review upgrade to finished
-        //if todo upgrade to progress
         deleteTODO(data, function(state){
             if(state==1){
                 //append to progress group
                 r.db(dbname).table(tbgroups).get(data.gid).update({
                 'agileboard':{
                     'finished': r.row('agileboard')('finished').append(payload)
+                }
+                }).run()
+                .then(function(response){
+                    callback(1);
+                })
+                .catch(function(err){
+                    callback(0);
+                })
+            }else{
+                callback(0);
+            }
+        });
+    }else{
+        callback(0);
+    }
+}
+
+/** DOWNGRADE the items **/
+var downgradeTODO = function(data, callback){
+
+    var payload = {
+        todo: data.content,
+        member: data.member,
+        date: data.date,
+        stamp: data.stamp
+    }
+    
+    if(data.type == "progress"){
+        //if progress down to todo
+        deleteTODO(data, function(state){
+            if(state==1){
+                //append to progress group
+                r.db(dbname).table(tbgroups).get(data.gid).update({
+                'agileboard':{
+                    'todo': r.row('agileboard')('todo').append(payload)
+                }
+                }).run()
+                .then(function(response){
+                    callback(1);
+                })
+                .catch(function(err){
+                    callback(0);
+                })
+            }else{
+                callback(0);
+            }
+        });
+    }else if(data.type == "review"){
+        //if review down to progress
+        deleteTODO(data, function(state){
+            if(state==1){
+                //append to progress group
+                r.db(dbname).table(tbgroups).get(data.gid).update({
+                'agileboard':{
+                    'progress': r.row('agileboard')('progress').append(payload)
+                }
+                }).run()
+                .then(function(response){
+                    callback(1);
+                })
+                .catch(function(err){
+                    callback(0);
+                })
+            }else{
+                callback(0);
+            }
+        });
+    }else if(data.type == "finished"){
+        //if finished down to review
+        deleteTODO(data, function(state){
+            if(state==1){
+                //append to progress group
+                r.db(dbname).table(tbgroups).get(data.gid).update({
+                'agileboard':{
+                    'review': r.row('agileboard')('review').append(payload)
                 }
                 }).run()
                 .then(function(response){
@@ -485,3 +558,4 @@ module.exports.deleteGROUP = deleteGROUP;
 module.exports.addTODO = addTODO;
 module.exports.deleteTODO = deleteTODO;
 module.exports.upgradeTODO = upgradeTODO;
+module.exports.downgradeTODO = downgradeTODO;

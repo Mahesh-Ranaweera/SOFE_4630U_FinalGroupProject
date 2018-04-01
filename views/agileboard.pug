@@ -17,7 +17,7 @@ block dashb
                 progress.uk-progress(value='10' max='100')
 
 
-    .section
+    .section#agilecontent
         .four_w.card-holder
             .todo_header
                 b TODO
@@ -36,10 +36,13 @@ block dashb
                         .todo_desc
                             | #{item.todo}
                         .todo_footer
-                            .todo_btn.todo_check(type='submit', name='btnChange', onclick='upgradeitem('+cardid+',"todo","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
-                                span(uk-icon='icon: check')
+                            .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"todo","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                                span(uk-icon='icon: chevron-up')
+
+                            //- .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"todo","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                            //-     span(uk-icon='icon: chevron-down')
                                 
-                            .todo_btn.todo_close(type='submit', name='btnDelete', onclick='deleteitem('+cardid+',"todo");', title='Delete Item')
+                            .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"todo");', title='Delete Item')
                                 span(uk-icon='icon: close')
 
                             .date-info #{item.date}
@@ -63,11 +66,14 @@ block dashb
                         .todo_desc
                             | #{item.todo}
                         .todo_footer
-                            .todo_btn.todo_check(type='submit', name='btnChange', onclick='upgradeitem('+cardid+',"progress","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Review')
-                                span(uk-icon='icon: check')
+                            .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"progress","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Review')
+                                span(uk-icon='icon: chevron-up')
+
+                            .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"progress","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                                span(uk-icon='icon: chevron-down')
                                 
-                            .todo_btn.todo_close(type='submit', name='btnDelete', onclick='deleteitem('+cardid+',"progress");', title='Delete Item')
-                                span(uk-icon='icon: close')
+                            //- .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"progress");', title='Delete Item')
+                            //-     span(uk-icon='icon: close')
 
                             .date-info #{item.date}
 
@@ -90,11 +96,14 @@ block dashb
                         .todo_desc
                             | #{item.todo}
                         .todo_footer
-                            .todo_btn.todo_check(type='submit', name='btnChange', onclick='upgradeitem('+cardid+',"review","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Finished')
-                                span(uk-icon='icon: check')
+                            .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"review","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Finished')
+                                span(uk-icon='icon: chevron-up')
+
+                            .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"review","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                                span(uk-icon='icon: chevron-down')
                                 
-                            .todo_btn.todo_close(type='submit', name='btnDelete', onclick='deleteitem('+cardid+',"review");', title='Delete Item')
-                                span(uk-icon='icon: close')
+                            //- .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"review");', title='Delete Item')
+                            //-     span(uk-icon='icon: close')
 
                             .date-info #{item.date}
 
@@ -118,10 +127,13 @@ block dashb
                             | #{item.todo}
                         .todo_footer
 
-                            //- .todo_btn.todo_check(type='submit', name='btnChange', onclick='upgradeitem('+cardid+',"finished","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
-                            //-     span(uk-icon='icon: check')
+                            //- .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"finished","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                            //-     span(uk-icon='icon: chevron-up')
+
+                            .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"finished","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Add to Progress')
+                                span(uk-icon='icon: chevron-down')
                                 
-                            //- .todo_btn.todo_close(type='submit', name='btnDelete', onclick='deleteitem('+cardid+',"finished");', title='Delete Item')
+                            //- .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"finished");', title='Delete Item')
                             //-     span(uk-icon='icon: close')
 
                             .date-info #{item.date}
