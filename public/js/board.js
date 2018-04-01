@@ -195,9 +195,9 @@ function card(data){
 				    <div class="todo_footer">\
 				        <div class="todo_btn todo_check" name="btnChange" onclick="upgradeitem('+data.stamp+',&quot;'+data.type+'&quot;,&quot;'+data.content+'&quot;,&quot;'+data.member+'&quot;,&quot;'+data.date+'&quot;)"\
 				            title="Add to Progress">\
-				            <span uk-icon="icon: chevron-up" class="uk-icon"></span></div>\
+				            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg></div>\
 				        <div class="todo_btn todo_close" name="btnDelete" onclick="deleteitem('+data.stamp+',&quot;'+data.type+'&quot;);" title="Delete Item">\
-				            <span uk-icon="icon: close" class="uk-icon"></span></div>\
+				            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></div>\
 				        <div class="date-info">'+data.date+'</div></div></div>';
 
 	return content;

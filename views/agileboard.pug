@@ -8,7 +8,7 @@ block dashb
         .group-header
             .group-icon-g.smooth(uk-toggle="target: #createTodo")
                 .group-icon
-                    span(uk-icon='icon: plus')
+                    i(data-feather='plus' style='width:24px; height:24px;')
                 .group-txt
                     | Add Todo
 
@@ -36,13 +36,13 @@ block dashb
                             | #{item.todo}
                         .todo_footer
                             .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"todo","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Upgrade')
-                                span(uk-icon='icon: chevron-up')
+                                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-up'><polyline points='18 15 12 9 6 15'></polyline></svg>
 
                             //- .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"todo","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Downgrade')
-                            //-     span(uk-icon='icon: chevron-down')
+                            //-     <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'><polyline points='6 9 12 15 18 9'></polyline></svg>
                                 
                             .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"todo");', title='Delete Item')
-                                span(uk-icon='icon: close')
+                                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path></svg>
 
                             .date-info #{item.date}
 
@@ -66,13 +66,13 @@ block dashb
                             | #{item.todo}
                         .todo_footer
                             .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"progress","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Upgrade')
-                                span(uk-icon='icon: chevron-up')
+                                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-up'><polyline points='18 15 12 9 6 15'></polyline></svg>
 
                             .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"progress","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Downgrade')
-                                span(uk-icon='icon: chevron-down')
+                                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'><polyline points='6 9 12 15 18 9'></polyline></svg>
                                 
                             //- .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"progress");', title='Delete Item')
-                            //-     span(uk-icon='icon: close')
+                            //-     <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path></svg>
 
                             .date-info #{item.date}
 
@@ -96,13 +96,13 @@ block dashb
                             | #{item.todo}
                         .todo_footer
                             .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"review","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Upgrade')
-                                span(uk-icon='icon: chevron-up')
+                                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-up'><polyline points='18 15 12 9 6 15'></polyline></svg>
 
                             .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"review","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Downgrade')
-                                span(uk-icon='icon: chevron-down')
+                                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'><polyline points='6 9 12 15 18 9'></polyline></svg>
                                 
                             //- .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"review");', title='Delete Item')
-                            //-     span(uk-icon='icon: close')
+                            //-     <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path></svg>
 
                             .date-info #{item.date}
 
@@ -127,13 +127,13 @@ block dashb
                         .todo_footer
 
                             //- .todo_btn.todo_check(name='btnChange', onclick='upgradeitem('+cardid+',"finished","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Upgrade')
-                            //-     span(uk-icon='icon: chevron-up')
+                            //-     <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-up'><polyline points='18 15 12 9 6 15'></polyline></svg>
 
                             .todo_btn.todo_check(name='btnChange', onclick='downgradeitem('+cardid+',"finished","'+item.todo+'","'+item.member+'","'+item.date+'")', title='Downgrade')
-                                span(uk-icon='icon: chevron-down')
+                                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'><polyline points='6 9 12 15 18 9'></polyline></svg>
                                 
                             //- .todo_btn.todo_close(name='btnDelete', onclick='deleteitem('+cardid+',"finished");', title='Delete Item')
-                            //-     span(uk-icon='icon: close')
+                            //-     <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path></svg>
 
                             .date-info #{item.date}
 

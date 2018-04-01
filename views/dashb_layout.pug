@@ -5,7 +5,7 @@ block content
     .app-menu
         .app-nav-left
             .app-logo(uk-toggle='target: #dashb_menu')
-                span(uk-icon="icon: menu; ratio: 2")
+                i(data-feather='menu' style='width:34px; height:34px;')
             .app-name
                 | #{title}
 
@@ -17,7 +17,7 @@ block content
                 | #{udata.name}
             a(href='/signout')
                 .app-nav-title
-                    span(uk-icon='icon: sign-out' title='SIGN OUT')
+                    i(data-feather='log-out' style='width:20px; height:20px;')
 
     .app-content
         block dashb
