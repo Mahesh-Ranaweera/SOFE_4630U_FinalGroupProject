@@ -908,20 +908,22 @@ a {
     line-height: 40px;
     text-align: center;
     cursor: pointer;
+    border-style: none;
+    background-color: transparent;
 }
 
 .todo_check{
-    color: var(--green-prim);
+    color: var(--green-prim) !important;
 }
 
 .todo_check:hover{
-    color: var(--green-sec);
+    color: var(--green-sec) !important;
 }
 
 .todo_close{
-    color: var(--red-prim);
+    color: var(--red-prim) !important;
 }
 
 .todo_close:hover{
-    color: var(--red-sec);
+    color: var(--red-sec) !important;
 }

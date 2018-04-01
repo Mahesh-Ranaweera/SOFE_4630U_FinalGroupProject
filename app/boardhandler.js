@@ -26,6 +26,17 @@ module.exports = function(server){
 			});
 		});
 
+		//delete todo item
+		socket.on('deleteitem', function(data){
+			//console.log(data);
+
+			dbconn.deleteTODO(data, function(state){
+				if(state==1){
+					console.log("deleted");
+				}
+			})
+		})
+
 		/** Disconnect sockets **/
 		socket.on('disconnect', function(){
 			console.log('user disconnected');

@@ -311,7 +311,92 @@ var addTODO = function(data, callback){
     })
 }
 
-/**Export the modules */
+/**DELETE todo item from db **/
+var deleteTODO = function(data, callback){
+    if(data.type == 'todo'){
+        //todo delete
+        r.db(dbname).table(tbgroups).get(data.gid).update(
+        function(row){
+            return{
+                'agileboard':{
+                    'todo': row('agileboard')('todo').filter(function(item){
+                        return item('stamp').ne(data.itemid)
+                    })
+                }
+            }
+        }).run()
+        .then(function(response){
+            //console.log(response);
+            callback(1);
+        }).catch(function(err){
+            //console.log(err);
+            callback(0);
+        })
+    }else if(data.type == 'progress'){
+        //todo delete
+        r.db(dbname).table(tbgroups).get(data.gid).update(
+        function(row){
+            return{
+                'agileboard':{
+                    'progress': row('agileboard')('progress').filter(function(item){
+                        return item('stamp').ne(data.itemid)
+                    })
+                }
+            }
+        }).run()
+        .then(function(response){
+            //console.log(response);
+            callback(1);
+        }).catch(function(err){
+            //console.log(err);
+            callback(0);
+        })
+    }else if(data.type == 'review'){
+        //todo delete
+        r.db(dbname).table(tbgroups).get(data.gid).update(
+        function(row){
+            return{
+                'agileboard':{
+                    'review': row('agileboard')('review').filter(function(item){
+                        return item('stamp').ne(data.itemid)
+                    })
+                }
+            }
+        }).run()
+        .then(function(response){
+            //console.log(response);
+            callback(1);
+        }).catch(function(err){
+            //console.log(err);
+            callback(0);
+        })
+    }else if(data.type == 'finished'){
+        //todo delete
+        r.db(dbname).table(tbgroups).get(data.gid).update(
+        function(row){
+            return{
+                'agileboard':{
+                    'finished': row('agileboard')('finished').filter(function(item){
+                        return item('stamp').ne(data.itemid)
+                    })
+                }
+            }
+        }).run()
+        .then(function(response){
+            //console.log(response);
+            callback(1);
+        }).catch(function(err){
+            //console.log(err);
+            callback(0);
+        })
+    }else{
+        callback(0);
+    }
+}
+
+//r.db('web_db').table('groups').get('d63fd146-00a2-45cd-9f9c-c109827fe608')
+//  .update({'agileboard':{'todo': r.row('agileboard')('todo').filter('stamp').ne(1522542225418)}})
+
 module.exports.addUSER = addUSER;
 module.exports.getUSER = getUSER;
 module.exports.updateSCHOOL = updateSCHOOL;
@@ -322,3 +407,4 @@ module.exports.groupDATA = groupDATA;
 module.exports.joinGROUP = joinGROUP;
 module.exports.deleteGROUP = deleteGROUP;
 module.exports.addTODO = addTODO;
+module.exports.deleteTODO = deleteTODO;

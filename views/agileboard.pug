@@ -24,7 +24,9 @@ block dashb
 
             #todo_section
                 for item, i in gdata.group.agileboard.todo
-                    .todo_card
+                    - var cardid = item.stamp
+                    
+                    .todo_card(id=cardid)
                         .uk-label.uk-label-success
                             for user, j in gdata.users
                                 //-get the name of the email
@@ -34,10 +36,12 @@ block dashb
                         .todo_desc
                             | #{item.todo}
                         .todo_footer
-                            .todo_btn.todo_check
+                            .todo_btn.todo_check(type='submit', name='btnChange', action='')
                                 span(uk-icon='icon: check')
-                            .todo_btn.todo_close
+                                
+                            .todo_btn.todo_close(type='submit', name='btnDelete', onclick='deleteitem('+cardid+',"todo");')
                                 span(uk-icon='icon: close')
+
                             .date-info #{item.date}
 
 

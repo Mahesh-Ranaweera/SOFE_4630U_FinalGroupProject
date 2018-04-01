@@ -1,10 +1,11 @@
 /** Handle the agileboard with sockets **/
-
+var socket;
+var metadata;
 
 /**submit the todo to board**/
 $(function (){
-	var socket = io();
-	var metadata = JSON.parse($('#group_data').val());
+	socket = io();
+	metadata = JSON.parse($('#group_data').val());
 	
 	//define appending containers
 	var todoCont = $('#todo_section');
@@ -12,8 +13,10 @@ $(function (){
 	var reviewCont = $('#review_section');
 	var finiCont = $('#finish_section');
 
+	//join the group
 	socket.emit('joinroom', metadata.groupid);
 
+	//send todo
 	$('#agileboard').submit(function(e){
 		var url = '/sendtodo';
 		var tododata = {
@@ -46,4 +49,17 @@ $(function (){
 
 		todoCont.append(todo);
 	})
-});''
+});
+
+//delete the item
+function deleteitem(itemid, type){
+	var deletedata = {
+		gid: metadata.groupid,
+		itemid: itemid,
+		type: type
+	}
+	//hide the item
+	document.getElementById(itemid).style.display = 'none';
+	socket.emit('deleteitem', deletedata);
+}
+
