@@ -16,8 +16,8 @@ $(function (){
 	//join the group
 	socket.emit('joinroom', metadata.groupid);
 
-	//load the progressbar
-	update_progress();
+	//run the function to update the bar
+	bar.animate(update_progress());
 
 	//send todo
 	$('#agileboard').submit(function(e){
@@ -43,6 +43,9 @@ $(function (){
 	//socket recieve todo data
 	socket.on('recieveresp', function(data){
 		//console.log(data);
+
+		//update the score of the progress bar
+		bar.animate(update_progress());
 
 		//manage incoming broadcasts
 		if(data.task == 'addtodo'){
@@ -127,6 +130,7 @@ function displaycard(cardid){
 //refresh page
 function refresh(){
 	$("#agilecontent").load(location.href+" #agilecontent");
+	//update the graph
 	update_progress();
 }
 

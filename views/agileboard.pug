@@ -2,7 +2,6 @@ extends dashb_layout
 
 block dashb
     include group_menu
-    script(src='/js/board.js')
 
     .section
         .group-header
@@ -202,18 +201,22 @@ block dashb
         });
 
         function update_progress(){
-            //get the number of cards 
-            var num_todo_cards = $('#todo_section').find('.todo_card').length;
-            var num_review_cards = $('#progress_section').find('.todo_card').length;
-            var num_progress_cards = $('#review_section').find('.todo_card').length;
-            var num_finished_cards = $('#finish_section').find('.todo_card').length;
+            var num_todo_cards, num_review_cards, num_progress_cards, num_finished_cards, score;
+
+            num_todo_cards = $('#todo_section').find('.todo_card').length;
+            num_review_cards = $('#review_section').find('.todo_card').length;
+            num_progress_cards = $('#progress_section').find('.todo_card').length;
+            num_finished_cards = $('#finish_section').find('.todo_card').length;
 
             var total_cards = num_todo_cards + num_review_cards + num_progress_cards + num_finished_cards;
+            //console.log(total_cards);
+            if(total_cards > 0){
+                score = (num_finished_cards / total_cards);
+            }else{
+                score = 0;
+            }
 
-            var score = (num_finished_cards / total_cards);
-            //console.log(score)
-
-            bar.animate(score);
+            return score;
         }
 
-        update_progress();
+    script(src='/js/board.js')
