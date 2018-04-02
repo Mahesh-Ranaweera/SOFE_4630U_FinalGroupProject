@@ -2,6 +2,133 @@ extends dashb_layout
 
 block dashb
     include group_menu
-    //.content-card
+    //-header
     .section
-        | Group Members
+        .group-header
+            .group-icon-g.smooth(title='Find group members', uk-toggle="target: #toggle-animation; animation: uk-animation-fade")
+                .group-icon
+                    i(data-feather='plus' style='width:20px; height:20px;')
+                .group-txt
+                    | Add Members
+            .group-icon-g.smooth(title='Share group id to invite members', onclick='copyid();')
+                .group-icon
+                    i(data-feather='clipboard' style='width:20px; height:20px;')
+                .group-txt
+                    | Share GroupID
+            .fl-right
+                input#clipboard.uk-input(type='text' value=gdata.group.groupid)
+
+    //-search members
+    .section#toggle-animation(hidden)
+        .card-holder.full_w
+            .uk-card.uk-card-default.uk-card-body
+                p 
+                    b Add New Members: <br>
+                    b Note: Following list is based on the University/College
+                p   #{gdata.group.school}
+
+                .section
+                    for newuser, j in schoolusers
+                        - var targetADD = 'target: #add' + j
+                        - var modalADD = 'add' + j
+                        - var src = 'data:image/svg+xml;utf8,'+newuser.u_img
+
+                        .mem-wrapper
+                            .mem-row
+                                .mem-img
+                                    img(src=src, width=40, height=40, style='border-radius: 50%;')
+                                .mem-cont 
+                                    .chat-row 
+                                        b #{newuser.uname}
+                                    .chat-row 
+                                        | #{newuser.email}
+
+                            if(newuser.email != udata.email)
+                                .uk-label.uk-label.fl-right(uk-toggle=targetADD)
+                                    | ADD
+
+                            else
+                                .uk-label.uk-label-success.fl-right
+                                    | Already a member
+
+                        if(newuser.email != udata.email)
+                            //-delete the user
+                            div.uk-flex-top(id=modalADD, uk-modal)
+                                .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+                                    button.uk-modal-close-default(type='button', uk-close)
+                                    .uk-modal-header
+                                        h2.uk-modal-title 
+                                            img(src=src, width=40, height=40, style='border-radius: 50%;')
+                                            |  ADD MEMBER
+
+                                        p Do you want to add <b>#{newuser.uname}</b> to the group ?
+                                    .uk-modal-footer.uk-text-right
+                                        form(method='POST', action='/add_member')
+                                            input(type='hidden', name='strEmail', value=newuser.email)
+                                            button.uk-button.uk-button-primary(type='submit') YES
+                                            button.uk-button.uk-modal-close.uk-button-default(type='button') NO
+
+
+
+    //-members section
+    .section
+        .card-holder.full_w
+            .uk-card.uk-card-default.uk-card-body
+                p 
+                    b Current Members:
+
+                .section
+                    for user, i in gdata.users
+                        - var targetDEL = 'target: #delete' + i
+                        - var modalDEL = 'delete' + i
+
+                        .mem-wrapper
+                            .mem-row
+                                .mem-img
+                                    - var src = 'data:image/svg+xml;utf8,'+user.u_img
+                                    img(src=src, width=40, height=40, style='border-radius: 50%;')
+                                .mem-cont 
+                                    .chat-row 
+                                        b #{user.uname}
+                                    .chat-row 
+                                        | #{user.email}
+
+                            if(user.email != udata.email)
+                                .uk-label.uk-label-danger.fl-right(uk-toggle=targetDEL)
+                                    | DELETE
+
+                        if(user.email != udata.email)
+                            //-delete the user
+                            div.uk-flex-top(id=modalDEL, uk-modal)
+                                .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+                                    button.uk-modal-close-default(type='button', uk-close)
+                                    .uk-modal-header
+                                        h2.uk-modal-title REMOVE MEMBER
+                                        p Are you sure you want to remove <b>#{user.uname}</b> from the group ?
+                                    .uk-modal-footer.uk-text-right
+                                        form(method='POST', action='/remove_member')
+                                            input(type='hidden', name='strEmail', value=user.email)
+                                            button.uk-button.uk-button-primary(type='submit') YES
+                                            button.uk-button.uk-modal-close.uk-button-default(type='button') NO
+
+    if (alert == 'added')
+        script.
+            UIkit.notification({message: 'Member Added', status: 'primary', pos: 'top-center'})
+
+    if (alert == 'deleted')
+        script.
+            UIkit.notification({message: 'Member Deleted', status: 'primary', pos: 'top-center'})
+
+    if (alert == 'error')
+        script.
+            UIkit.notification({message: 'Something went wrong, try again', status: 'warning', pos: 'top-center'})
+
+
+    script.
+        function copyid(){
+            var groupid = document.getElementById('clipboard');
+            groupid.select();
+            document.execCommand("copy");
+
+            UIkit.notification({message: 'Group Id copied to clipboard', status: 'primary', pos: 'top-center'})
+        }

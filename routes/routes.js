@@ -402,12 +402,16 @@ router.get('/groupmembers', function(req, res, next){
         }
 
         dbconn.groupDATA(req.session.gdata, function(state){
-            res.render('groupmembers', {
-                title: 'Group Chat',
-                udata: req.session.udata,
-                gdata: state,
-                alert: alert
-            });
+            //get all members who are in the same school
+            dbconn.getUNIVMEM(state.group.school, function(state2){
+                res.render('groupmembers', {
+                    title: 'Group Members',
+                    udata: req.session.udata,
+                    gdata: state,
+                    schoolusers: state2,
+                    alert: alert
+                });
+            })
         });
     } else {
         res.redirect('/');
@@ -543,6 +547,41 @@ router.post('/delete_group', function(req, res, next){
         }
     })
 });
+
+/**Remove member**/
+router.post('/remove_member', function(req, res, next){
+
+    data = {
+        gid: req.session.gdata,
+        email: req.body.strEmail
+    }
+
+    //delete the member
+    dbconn.deleteMEMBER(data, function(state){
+        if(state == 1){
+            res.redirect('/groupmembers?notify=deleted');
+        }else{
+            res.redirect('/groupmembers?notify=error');
+        }
+    });
+})
+
+//**Add member**/
+router.post('/add_member', function(req, res, next){
+
+    data = {
+        gid: req.session.gdata,
+        email: req.body.strEmail
+    }
+
+    dbconn.addMEMBER(data, function(state){
+        if(state == 1){
+            res.redirect('/groupmembers?notify=added');
+        }else{
+            res.redirect('/groupmembers?notify=error');
+        }
+    });
+})
 
 /**SIGNOUT*/
 router.get('/signout', function(req, res, next) {
