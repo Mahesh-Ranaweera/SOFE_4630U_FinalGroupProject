@@ -514,10 +514,6 @@ a {
     cursor: pointer;
 }
 
-.card-body:hover {
-    background-color: rgba(33, 150, 243, 0.05);
-}
-
 .f-icon {
     width: 40px;
     height: 40px;
@@ -558,6 +554,7 @@ a {
     line-height: 40px;
     height: 40px;
     padding-right: 10px;
+    padding-left: 10px;
     opacity: 0.84;
     float: right;
 }

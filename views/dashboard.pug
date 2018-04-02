@@ -6,23 +6,44 @@ block dashb
     .section
         .card-holder.full_w
             .uk-card.uk-card-default.uk-card-body
-                | Page
+                h4 Your Groups:
+
+                if (udata.univ == null)
+                   .uk-alert-danger(uk-alert)
+                        | Please set your university/college(allows to find members easily) : <a href='/settings'>Set University/College</a>
+
+                if (groups.length == 0)
+                    .uk-alert-primary(uk-alert)
+                        | Currently you are not enrolled in any groups : <a href='/groups'>Create/join group</a>
+
+
 
     .section
         if groups != null
             for item, i in groups
-                .card-holder.three_w
+                - var school = 'This group belongs to ' + item.school
+                
+                .card-holder.three_w(title=school)
                     - var url = '/grouproom/'+item.groupid
                     a(href=url)
                         .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
                             .card-body.smooth
                                 .uk-card-title #{item.groupname}
-                                .uk-margin #{item.school}
                                 .uk-margin
-                                    progress.uk-progress(value='10' max='100')
+                                    p Project Progress:
+                                    - var num_finish = item.agileboard.finished.length
+                                    - var num_progre = item.agileboard.progress.length
+                                    - var num_review = item.agileboard.review.length
+                                    - var num_todo   = item.agileboard.todo.length
+                                    - var val = (num_finish / (num_finish+num_progre+num_review+num_todo)) * 100
+
+                                    progress.uk-progress(value=val max='100')
                             .card-footer
+                                //- .date-info.fl-left
+                                //-     b #{item.school}
                                 .date-info 
-                                    | date
+                                    | #Members: 
+                                    .uk-badge #{item.groupmembers.length}
 
 
     if (alert == 'registered')
