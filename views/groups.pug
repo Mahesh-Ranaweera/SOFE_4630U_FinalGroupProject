@@ -50,7 +50,7 @@ block dashb
                                     | #Members: 
                                     .uk-badge #{item.groupmembers.length}
                                 .date-info 
-                                    span.uk-label.uk-label-danger(uk-toggle=targetDEL) DELETE
+                                    span.uk-label.uk-label-danger.selected(uk-toggle=targetDEL) DELETE
 
                 //-delete the group that is own by the owner
                 if item.owner == udata.email
@@ -59,7 +59,7 @@ block dashb
                             button.uk-modal-close-default(type='button', uk-close)
                             .uk-modal-header
                                 h2.uk-modal-title DELETE GROUP
-                                p Are you sure you want to delete the group <b>#{item.groupname}</b> ?
+                                p Are you sure, you want to delete the group <b>#{item.groupname}</b> ?
                             .uk-modal-footer.uk-text-right
                                 form(method='POST', action='/delete_group')
                                     input(type='hidden', name='strGID', value=item.groupid)

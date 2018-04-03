@@ -250,7 +250,7 @@ svg{
     width: 100%;
     height: 54px;
     position: fixed;
-    z-index: 1000;
+    z-index: 1020;
 }
 
 .app-menu {
@@ -880,7 +880,7 @@ a {
     font-size: 12px;
     margin-bottom: 6px;
     border-radius: 2px;
-    border: 1px solid var(--darkgrey-sec);
+    border: 1px solid #eee;
 }
 
 .todo_desc{
@@ -937,6 +937,10 @@ a {
     border: 1px solid #eee;
     border-radius: 2.5px;
     margin-bottom: 5px;
+}
+
+.selected{
+    cursor: pointer;
 }
 
 .mem-img{

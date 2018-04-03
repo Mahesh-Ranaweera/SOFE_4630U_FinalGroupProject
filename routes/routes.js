@@ -596,6 +596,23 @@ router.post('/add_member', function(req, res, next){
     });
 })
 
+//**Leave from group**/
+router.post('/leave_group', function(req, res, next){
+
+    data = {
+        gid: req.session.gdata,
+        email: req.body.strEmail
+    }
+
+    dbconn.deleteMEMBER(data, function(state){
+        if(state == 1){
+            res.redirect('/dashboard');
+        }else{
+            res.redirect('/groupmembers?notify=error');
+        }
+    });
+})
+
 /**SIGNOUT*/
 router.get('/signout', function(req, res, next) {
     req.session.destroy(function(err) {

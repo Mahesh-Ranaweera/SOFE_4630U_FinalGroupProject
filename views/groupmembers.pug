@@ -33,7 +33,7 @@ block dashb
                         - var modalADD = 'add' + j
                         - var src = 'data:image/svg+xml;utf8,'+newuser.u_img
 
-                        .mem-wrapper
+                        .mem-wrapper.selected(uk-toggle=targetADD)
                             .mem-row
                                 .mem-img
                                     img(src=src, width=40, height=40, style='border-radius: 50%;')
@@ -44,7 +44,7 @@ block dashb
                                         | #{newuser.email}
 
                             if(newuser.email != udata.email)
-                                .uk-label.uk-label.fl-right(uk-toggle=targetADD)
+                                .uk-label.uk-label.fl-right
                                     | ADD
 
                             else
@@ -93,11 +93,16 @@ block dashb
                                     .chat-row 
                                         | #{user.email}
 
-                            if(user.email != udata.email)
-                                .uk-label.uk-label-danger.fl-right(uk-toggle=targetDEL)
+                            if(gdata.group.owner == udata.email && user.email != udata.email)
+                                .uk-label.uk-label-danger.fl-right.selected(uk-toggle=targetDEL)
                                     | DELETE
 
-                        if(user.email != udata.email)
+                            if(gdata.group.owner != udata.email && user.email == udata.email)
+                                .uk-label.uk-label-warning.fl-right.selected(uk-toggle=targetDEL)
+                                    | LEAVE GROUP
+
+
+                        if(gdata.group.owner == udata.email && user.email != udata.email)
                             //-delete the user
                             div.uk-flex-top(id=modalDEL, uk-modal)
                                 .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
@@ -106,12 +111,30 @@ block dashb
                                         h2.uk-modal-title
                                             img(src=src, width=40, height=40, style='border-radius: 50%;') 
                                             |  REMOVE MEMBER
-                                        p Are you sure you want to remove <b>#{user.uname}</b> from the group ?
+                                        p Are you sure, you want to remove <b>#{user.uname}</b> from the group ?
                                     .uk-modal-footer.uk-text-right
                                         form(method='POST', action='/remove_member')
                                             input(type='hidden', name='strEmail', value=user.email)
                                             button.uk-button.uk-button-primary(type='submit') YES
                                             button.uk-button.uk-modal-close.uk-button-default(type='button') NO
+
+
+                        if(gdata.group.owner != udata.email && user.email == udata.email)
+                            //-delete the user
+                            div.uk-flex-top(id=modalDEL, uk-modal)
+                                .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+                                    button.uk-modal-close-default(type='button', uk-close)
+                                    .uk-modal-header
+                                        h2.uk-modal-title
+                                            img(src=src, width=40, height=40, style='border-radius: 50%;') 
+                                            |  LEAVE GROUP
+                                        p <b>#{user.uname}</b> are you sure, you want to leave the group ?
+                                    .uk-modal-footer.uk-text-right
+                                        form(method='POST', action='/leave_group')
+                                            input(type='hidden', name='strEmail', value=user.email)
+                                            button.uk-button.uk-button-primary(type='submit') YES
+                                            button.uk-button.uk-modal-close.uk-button-default(type='button') NO
+
 
     if (alert == 'added')
         script.
