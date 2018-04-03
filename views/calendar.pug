@@ -5,88 +5,132 @@ block dashb
     //.content-card
     .section
 
-        for item, i in groups
+        - var todolen = false
+
+        for g, i in groups
+            for todo, j in g.agileboard.todo
+                if todo.member == udata.email
+                    - todolen = true
+
+        if(todolen)
             .card-holder.full_w
                 .uk-card.uk-card-default.uk-card-body
                     .uk-overflow-auto
                         table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
                             caption 
-                                h4 March 2018
+                                h4 TODO SECTION
                             thead
                                 tr
-                                    th.uk-table-shrink
-                                    th.uk-table-shrink Date
+                                    th.uk-width-small
+                                    th.uk-width-small Date
                                     th.uk-table-expand Reminder
-                                    th.uk-table-shrink.uk-text-nowrap Info 
+                                    th.uk-table-shrink.uk-text-nowrap Group Name
                             tbody
+                                for group, i in groups
+                                    for todo, j in group.agileboard.todo
+                                        if todo.member == udata.email
+                                            tr
+                                                td
+                                                    input.uk-checkbox(type='checkbox')
+                                                td #{todo.date}
+                                                td 
+                                                    p #{todo.todo}
+                                                td #{group.groupname}
+
+        - var proglen = false
+
+        for g, i in groups
+            for prog, j in g.agileboard.progress
+                if prog.member == udata.email
+                    - proglen = true
+
+        if(proglen)
+            .card-holder.full_w
+                .uk-card.uk-card-default.uk-card-body
+                    .uk-overflow-auto
+                        table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
+                            caption 
+                                h4 PROGRESS SECTION
+                            thead
                                 tr
-                                    td
-                                        input.uk-checkbox(type='checkbox')
-                                    td 2018-05-26
-                                    td 
-                                        p Tasks to complete
-                                    td Group 5
+                                    th.uk-width-small
+                                    th.uk-width-small Date
+                                    th.uk-table-expand Reminder
+                                    th.uk-table-shrink.uk-text-nowrap Group Name
+                            tbody
+                                for group, i in groups
+                                    for prog, j in group.agileboard.progress
+                                        if prog.member == udata.email
+                                            tr
+                                                td
+                                                    input.uk-checkbox(type='checkbox')
+                                                td #{prog.date}
+                                                td 
+                                                    p #{prog.todo}
+                                                td #{group.groupname}
+
+
+        - var reviewlen = false
+
+        for g, i in groups
+            for rev, j in g.agileboard.review
+                if rev.member == udata.email
+                    - reviewlen = true
+
+        if(reviewlen)
+            .card-holder.full_w
+                .uk-card.uk-card-default.uk-card-body
+                    .uk-overflow-auto
+                        table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
+                            caption 
+                                h4 REVIEW SECTION
+                            thead
                                 tr
-                                    td
-                                        input.uk-checkbox(type='checkbox')
-                                    td 2018-05-26
-                                    td 
-                                        p Tasks to complete
-                                    td Group 5
+                                    th.uk-width-small
+                                    th.uk-width-small Date
+                                    th.uk-table-expand Reminder
+                                    th.uk-table-shrink.uk-text-nowrap Group Name
+                            tbody
+                                for group, i in groups
+                                    for rev, j in group.agileboard.review
+                                        if rev.member == udata.email
+                                            tr
+                                                td
+                                                    input.uk-checkbox(type='checkbox')
+                                                td #{rev.date}
+                                                td 
+                                                    p #{rev.todo}
+                                                td #{group.groupname}
+
+
+        - var finilen = false
+
+        for g, i in groups
+            for fin, j in g.agileboard.finished
+                if fin.member == udata.email
+                    - finilen = true
+
+        if(finilen)
+            .card-holder.full_w
+                .uk-card.uk-card-default.uk-card-body
+                    .uk-overflow-auto
+                        table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
+                            caption 
+                                h4 COMPLETED
+                            thead
                                 tr
-                                    td
-                                        input.uk-checkbox(type='checkbox')
-                                    td 2018-05-26
-                                    td 
-                                        p Tasks to complete
-                                    td Group 5
-
-        //- .card-holder.full_w
-        //-     .uk-card.uk-card-default.uk-card-body
-
-        //-         .uk-overflow-auto
-        //-             table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
-        //-                 caption 
-        //-                     h4 April 2018
-        //-                 thead
-        //-                     tr
-        //-                         th.uk-table-shrink
-        //-                         th.uk-table-shrink Date
-        //-                         th.uk-table-expand Reminder
-        //-                         th.uk-table-shrink.uk-text-nowrap Info 
-        //-                 tbody
-        //-                     tr
-        //-                         td
-        //-                             input.uk-checkbox(type='checkbox')
-        //-                         td 2018-05-26
-        //-                         td 
-        //-                             p Tasks to complete
-        //-                         td Group 5
-        //-                     tr
-        //-                         td
-        //-                             input.uk-checkbox(type='checkbox')
-        //-                         td 2018-05-26
-        //-                         td 
-        //-                             p Tasks to complete
-        //-                         td Group 5
-        //-                     tr
-        //-                         td
-        //-                             input.uk-checkbox(type='checkbox')
-        //-                         td 2018-05-26
-        //-                         td 
-        //-                             p Tasks to complete
-        //-                         td Group 5
-
-
-
-    if (alert == 'registered')
-        script.
-            UIkit.notification({message: 'Already Registered', status: 'primary', pos: 'top-center'})
-
-    if (alert == 'error')
-        script.
-            UIkit.notification({message: 'Something went wrong, try again', status: 'warning', pos: 'top-center'})
-
-    if (alert == 'invalidid')
-        script.
-            UIkit.notification({message: 'Invalid groupID, makesure you enter the correct groupID', status: 'danger', pos: 'top-center'})
+                                    th.uk-width-small
+                                    th.uk-width-small Date
+                                    th.uk-table-expand Reminder
+                                    th.uk-table-shrink.uk-text-nowrap Group Name
+                            tbody
+                                for group, i in groups
+                                    for fin, j in group.agileboard.finished
+                                        if fin.member == udata.email
+                                            tr
+                                                td
+                                                    input.uk-checkbox(type='checkbox')
+                                                td #{fin.date}
+                                                td 
+                                                    p #{fin.todo}
+                                                td #{group.groupname}

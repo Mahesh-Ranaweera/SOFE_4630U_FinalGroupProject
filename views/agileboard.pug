@@ -158,7 +158,7 @@ block dashb
                                 for user, j in gdata.users
                                     //-get the name of the email
                                     if item == user.email
-                                        - var name = gdata.users[i].uname
+                                        - var name = gdata.users[j].uname
                                         option(value=item) #{name}
                     .uk-width-1-1
                         label(for='groupName') Date to complete:
