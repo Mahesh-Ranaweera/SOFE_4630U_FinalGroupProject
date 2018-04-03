@@ -27,18 +27,28 @@ block dashb
             for item, i in groups
                 - var targetDEL = 'target: #delete' + i
                 - var modalDEL = 'delete' + i
+                - var school = 'This group belongs to ' + item.school
 
-                .card-holder.three_w
+                .card-holder.three_w(title=school)
                     .uk-card.uk-card-default.uk-card-hover.uk-card-body.card-height.uk-padding-small
                         - var url = '/grouproom/'+item.groupid
                         a(href=url)
                             .card-body.smooth
                                 .uk-card-title #{item.groupname}
-                                .uk-margin #{item.school}
                                 .uk-margin
-                                    progress.uk-progress(value='10' max='100')
+                                    p Project Progress:
+                                    - var num_finish = item.agileboard.finished.length
+                                    - var num_progre = item.agileboard.progress.length
+                                    - var num_review = item.agileboard.review.length
+                                    - var num_todo   = item.agileboard.todo.length
+                                    - var val = (num_finish / (num_finish+num_progre+num_review+num_todo)) * 100
+
+                                    progress.uk-progress(value=val max='100')
                         .card-footer
                             if item.owner == udata.email
+                                .date-info.fl-left
+                                    | #Members: 
+                                    .uk-badge #{item.groupmembers.length}
                                 .date-info 
                                     span.uk-label.uk-label-danger(uk-toggle=targetDEL) DELETE
 
@@ -113,3 +123,7 @@ block dashb
     if (alert == 'registered')
         script.
             UIkit.notification({message: 'You are already registered', status: 'primary', pos: 'top-center'})
+
+    if (alert == 'univerr')
+        script.
+            UIkit.notification({message: 'Error, you need to set your university/college: <a href=\'/settings\'>Set University/College</a>', status: 'warning', pos: 'top-center'})

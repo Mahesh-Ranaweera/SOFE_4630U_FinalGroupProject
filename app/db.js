@@ -545,6 +545,64 @@ var downgradeTODO = function(data, callback){
     }
 }
 
+/** GET members on the same school **/
+var getUNIVMEM = function(getschool, callback){
+    /**get user on given school**/
+    r.db(dbname).table(tbusers).filter({school: getschool}).run()
+    .then(function(response){
+        //console.log(response);
+        callback(response);
+    })
+    .catch(function(err){
+        callback(null);
+    })
+}
+
+/** DELETE member from the group **/
+var deleteMEMBER = function(data, callback){
+    //console.log(data);
+
+    //remove from group and users
+    r.expr([
+        r.db(dbname).table(tbusers).get(data.email)
+        .update(
+            function(row){
+                return {
+                    'groups': row('groups').filter(function(item){
+                        return item('groupid').ne(data.gid)
+                    })
+                }
+            }
+        ),
+        r.db(dbname).table(tbgroups).get(data.gid)
+        .update({
+            groupmembers: r.row('groupmembers').difference([data.email])
+        })]
+    ).run()
+    .then(function (resp){
+        //console.log(resp);
+        callback(1);
+    })
+    .catch(function(err){
+        //console.log(err);
+        callback(0);
+    })
+}
+
+/** ADD member to the group**/
+var addMEMBER = function(data, callback){
+    //console.log(data);
+    joinGROUP(data, function(state){
+        //console.log(state)
+
+        if(state == 1 || state == -1){
+            callback(1);
+        }else{
+            callback(0);
+        }
+    })
+}
+
 
 module.exports.addUSER = addUSER;
 module.exports.getUSER = getUSER;
@@ -559,3 +617,6 @@ module.exports.addTODO = addTODO;
 module.exports.deleteTODO = deleteTODO;
 module.exports.upgradeTODO = upgradeTODO;
 module.exports.downgradeTODO = downgradeTODO;
+module.exports.getUNIVMEM = getUNIVMEM;
+module.exports.deleteMEMBER = deleteMEMBER;
+module.exports.addMEMBER = addMEMBER;

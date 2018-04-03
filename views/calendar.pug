@@ -4,76 +4,78 @@ block dashb
     include dashb_menu
     //.content-card
     .section
-        .card-holder.full_w
-            .uk-card.uk-card-default.uk-card-body
-                .uk-overflow-auto
-                    table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
-                        caption 
-                            h4 March 2018
-                        thead
-                            tr
-                                th.uk-table-shrink
-                                th.uk-table-shrink Date
-                                th.uk-table-expand Reminder
-                                th.uk-table-shrink.uk-text-nowrap Info 
-                        tbody
-                            tr
-                                td
-                                    input.uk-checkbox(type='checkbox')
-                                td 2018-05-26
-                                td 
-                                    p Tasks to complete
-                                td Group 5
-                            tr
-                                td
-                                    input.uk-checkbox(type='checkbox')
-                                td 2018-05-26
-                                td 
-                                    p Tasks to complete
-                                td Group 5
-                            tr
-                                td
-                                    input.uk-checkbox(type='checkbox')
-                                td 2018-05-26
-                                td 
-                                    p Tasks to complete
-                                td Group 5
 
-        .card-holder.full_w
-            .uk-card.uk-card-default.uk-card-body
+        for item, i in groups
+            .card-holder.full_w
+                .uk-card.uk-card-default.uk-card-body
+                    .uk-overflow-auto
+                        table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
+                            caption 
+                                h4 March 2018
+                            thead
+                                tr
+                                    th.uk-table-shrink
+                                    th.uk-table-shrink Date
+                                    th.uk-table-expand Reminder
+                                    th.uk-table-shrink.uk-text-nowrap Info 
+                            tbody
+                                tr
+                                    td
+                                        input.uk-checkbox(type='checkbox')
+                                    td 2018-05-26
+                                    td 
+                                        p Tasks to complete
+                                    td Group 5
+                                tr
+                                    td
+                                        input.uk-checkbox(type='checkbox')
+                                    td 2018-05-26
+                                    td 
+                                        p Tasks to complete
+                                    td Group 5
+                                tr
+                                    td
+                                        input.uk-checkbox(type='checkbox')
+                                    td 2018-05-26
+                                    td 
+                                        p Tasks to complete
+                                    td Group 5
 
-                .uk-overflow-auto
-                    table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
-                        caption 
-                            h4 April 2018
-                        thead
-                            tr
-                                th.uk-table-shrink
-                                th.uk-table-shrink Date
-                                th.uk-table-expand Reminder
-                                th.uk-table-shrink.uk-text-nowrap Info 
-                        tbody
-                            tr
-                                td
-                                    input.uk-checkbox(type='checkbox')
-                                td 2018-05-26
-                                td 
-                                    p Tasks to complete
-                                td Group 5
-                            tr
-                                td
-                                    input.uk-checkbox(type='checkbox')
-                                td 2018-05-26
-                                td 
-                                    p Tasks to complete
-                                td Group 5
-                            tr
-                                td
-                                    input.uk-checkbox(type='checkbox')
-                                td 2018-05-26
-                                td 
-                                    p Tasks to complete
-                                td Group 5
+        //- .card-holder.full_w
+        //-     .uk-card.uk-card-default.uk-card-body
+
+        //-         .uk-overflow-auto
+        //-             table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
+        //-                 caption 
+        //-                     h4 April 2018
+        //-                 thead
+        //-                     tr
+        //-                         th.uk-table-shrink
+        //-                         th.uk-table-shrink Date
+        //-                         th.uk-table-expand Reminder
+        //-                         th.uk-table-shrink.uk-text-nowrap Info 
+        //-                 tbody
+        //-                     tr
+        //-                         td
+        //-                             input.uk-checkbox(type='checkbox')
+        //-                         td 2018-05-26
+        //-                         td 
+        //-                             p Tasks to complete
+        //-                         td Group 5
+        //-                     tr
+        //-                         td
+        //-                             input.uk-checkbox(type='checkbox')
+        //-                         td 2018-05-26
+        //-                         td 
+        //-                             p Tasks to complete
+        //-                         td Group 5
+        //-                     tr
+        //-                         td
+        //-                             input.uk-checkbox(type='checkbox')
+        //-                         td 2018-05-26
+        //-                         td 
+        //-                             p Tasks to complete
+        //-                         td Group 5
 
 
 

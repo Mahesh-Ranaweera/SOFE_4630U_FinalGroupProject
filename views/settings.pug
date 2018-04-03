@@ -24,15 +24,19 @@ block dashb
                                     input.uk-input(type='text' value=udata.name disabled)
 
                             .uk-margin
-                                label.uk-form-label University/College:
+                                label.uk-form-label University/College ():
                                 .uk-form-controls
-                                    select.uk-select(name='strSchool')
-                                        option(value="0") Select your University/College
-                                        for item, i in univ_list
-                                            if item.university == udata.univ
-                                                option(value=item.university selected) #{item.university}
-                                            else
-                                                option(value=item.university) #{item.university}
+                                    //- select.uk-select(name='strSchool')
+                                    //-     option(value="0") Select your University/College
+                                    //-     for item, i in univ_list
+                                    //-         if item.university == udata.univ
+                                    //-             option(value=item.university selected) #{item.university}
+                                    //-         else
+                                    //-             option(value=item.university) #{item.university}
+
+                                    input.uk-input(type='text', name='strSchool', id='univ_search', list='univ_datalist', placeholder='', value=udata.univ)
+                                    //-store the university list
+                                    datalist(id='univ_datalist')
 
                             .uk-margin
                                 .uk-text-right
@@ -82,3 +86,43 @@ block dashb
     if (alert == 'oldpassw')
         script.
             UIkit.notification({message: 'Makesure current password is correct', status: 'warning', pos: 'top-center'})
+
+
+
+    script.
+        var searchinput = document.getElementById('univ_search');
+        var datalist = document.getElementById('univ_datalist');
+
+        var request = new XMLHttpRequest();
+
+        request.onreadystatechange = function(response){
+            if(request.readyState === 4){
+                if(request.status === 200){
+                    var optionsFound = JSON.parse(request.response);
+
+                    //console.log(optionsFound)
+
+                    //go through the json data
+                    optionsFound.forEach(function(item){
+                        //append the found university/College
+                        var option = document.createElement('option');
+                        option.value = item.university;
+
+                        //append the options
+                        datalist.appendChild(option);
+                    });
+
+                    searchinput.placeholder = 'Search for University/College';
+                }else{
+                    //if error
+                    searchinput.placeholder = 'Failed to load data..please try again later'
+                }
+            }
+        };
+
+        searchinput.placeholder = '....';
+
+        //request the jsondata
+        request.open('GET', '/js/univ_list.json', true);
+        request.send();
+

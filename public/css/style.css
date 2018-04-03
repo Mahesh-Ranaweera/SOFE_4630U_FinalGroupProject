@@ -514,10 +514,6 @@ a {
     cursor: pointer;
 }
 
-.card-body:hover {
-    background-color: rgba(33, 150, 243, 0.05);
-}
-
 .f-icon {
     width: 40px;
     height: 40px;
@@ -558,6 +554,7 @@ a {
     line-height: 40px;
     height: 40px;
     padding-right: 10px;
+    padding-left: 10px;
     opacity: 0.84;
     float: right;
 }
@@ -929,4 +926,47 @@ a {
 
 .todo_close:hover{
     color: var(--red-sec) !important;
+}
+
+/** Member section **/
+.mem-wrapper{
+    width: 100%;
+    height: auto;
+    padding: 10px 0 0 0;
+    float: left;
+    border: 1px solid #eee;
+    border-radius: 2.5px;
+    margin-bottom: 5px;
+}
+
+.mem-img{
+    width: 40px;
+    height: 40px;
+    margin: 6px;
+    border-radius: 50%;
+    background-color: #eee;
+}
+
+.mem-row{
+    width: 100%;
+    float: right;
+    display: flex;
+}
+
+.mem-cont{
+    width: 100%;
+    height: auto;
+    float: left;
+    flex: 1;
+}
+
+.mem-footer{
+    width: 100%;
+    height: 32px;
+    float: left;
+    background-color: #eee;
+}
+
+#clipboard{
+    margin: 10px 0 10px 0;
 }

@@ -8,11 +8,11 @@ var Identicon= require('identicon.js');
 
 /**Options for indenticon**/
 var Iden_options = {
-    foreground: [Math.floor(Math.random() * 254), Math.floor(Math.random() * 254), Math.floor(Math.random() * 254), 255],    
-    background: [238, 238, 238, 238], 
-    margin: 0.2,    
-    size: 32,               
-    format: 'svg'   
+    foreground: [Math.floor(Math.random() * 254), Math.floor(Math.random() * 254), Math.floor(Math.random() * 254), 255],
+    background: [238, 238, 238, 238],
+    margin: 0.2,
+    size: 32,
+    format: 'svg'
 };
 
 
@@ -130,7 +130,7 @@ router.post('/user_signin', function(req, res, next){
                     req.session.usersess = true;
                     req.session.udata = {
                         email: state.email,
-                        name: state.uname, 
+                        name: state.uname,
                         uimg: state.u_img,
                         auth: state.auth.method,
                         univ: state.school
@@ -153,7 +153,7 @@ router.post('/user_signin', function(req, res, next){
                     req.session.usersess = true;
                     req.session.udata = {
                         email: state.email,
-                        name: state.uname, 
+                        name: state.uname,
                         uimg: state.u_img,
                         auth: state.auth.method,
                         univ: state.school
@@ -229,12 +229,12 @@ router.post('/user_signup', function(req, res, next){
         } else{
             res.redirect('/signup?notify=error');
         }
-        
+
     }else{
         console.log("invalid");
         res.redirect('/signup?notify=error');
     }
-    
+
     //console.log(data);
 
     /**Add data to db */
@@ -264,10 +264,13 @@ router.get('/calendar', function(req, res, next){
             alert = req.query.notify;
         }
 
-        res.render('calendar', {
-            title: 'Calendar',
-            udata: req.session.udata,
-            alert: alert
+        dbconn.getGROUPS(req.session.udata.email, function(state){
+            res.render('calendar', {
+                title: 'Calendar',
+                udata: req.session.udata,
+                groups: state,
+                alert: alert
+            });
         });
     } else {
         res.redirect('/');
@@ -399,12 +402,29 @@ router.get('/groupmembers', function(req, res, next){
         }
 
         dbconn.groupDATA(req.session.gdata, function(state){
-            res.render('groupmembers', {
-                title: 'Group Chat',
-                udata: req.session.udata,
-                gdata: state,
-                alert: alert
-            });
+            //get all members who are in the same school
+            dbconn.getUNIVMEM(state.group.school, function(state2){
+
+                // //loop curr members
+                for(i = 0; i < state.group.groupmembers.length; i++){
+                    for(j = 0; j < state2.length; j++){
+                        //check emails are the same, if same remove them
+                        if(state.group.groupmembers[i] == state2[j].email){
+                            //console.log("found");
+                            //remove found items
+                            state2.splice(j, 1);
+                        }
+                    }
+                }
+
+                res.render('groupmembers', {
+                    title: 'Group Members',
+                    udata: req.session.udata,
+                    gdata: state,
+                    schoolusers: state2,
+                    alert: alert
+                });
+            })
         });
     } else {
         res.redirect('/');
@@ -475,14 +495,20 @@ router.post('/create_group', function(req, res, next){
         school: req.session.udata.univ
     }
 
-    //create user group
-    dbconn.createGROUP(data, function(state){
-        if(state == 1){
-            res.redirect('/groups?notify=added');
-        }else{
-            res.redirect('/groups?notify=error')
-        }
-    });
+    //makesure university is set
+    if(req.session.udata.univ != null){
+
+        //create user group
+        dbconn.createGROUP(data, function(state){
+            if(state == 1){
+                res.redirect('/groups?notify=added');
+            }else{
+                res.redirect('/groups?notify=error')
+            }
+        });
+    }else{
+        res.redirect('/groups?notify=univerr')
+    }
 });
 
 /**join group **/
@@ -519,7 +545,7 @@ router.post('/search_group', function(req, res, next){
 
 /**Delete group **/
 router.post('/delete_group', function(req, res, next){
-    
+
     data = {
         gid: req.body.strGID,
         email: req.session.udata.email
@@ -534,6 +560,41 @@ router.post('/delete_group', function(req, res, next){
         }
     })
 });
+
+/**Remove member**/
+router.post('/remove_member', function(req, res, next){
+
+    data = {
+        gid: req.session.gdata,
+        email: req.body.strEmail
+    }
+
+    //delete the member
+    dbconn.deleteMEMBER(data, function(state){
+        if(state == 1){
+            res.redirect('/groupmembers?notify=deleted');
+        }else{
+            res.redirect('/groupmembers?notify=error');
+        }
+    });
+})
+
+//**Add member**/
+router.post('/add_member', function(req, res, next){
+
+    data = {
+        gid: req.session.gdata,
+        email: req.body.strEmail
+    }
+
+    dbconn.addMEMBER(data, function(state){
+        if(state == 1){
+            res.redirect('/groupmembers?notify=added');
+        }else{
+            res.redirect('/groupmembers?notify=error');
+        }
+    });
+})
 
 /**SIGNOUT*/
 router.get('/signout', function(req, res, next) {
