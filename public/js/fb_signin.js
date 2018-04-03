@@ -1,7 +1,7 @@
-
+var db = firebase.database();
 var ui = new firebaseui.auth.AuthUI(firebase.auth())
 ui.start('#firebase-auth-container', {
-    signInSuccessUrl: '/signin',
+    signInSuccessUrl: '/dashboard',
     signInOptions: [
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -23,8 +23,13 @@ function signin(){
     var user = firebase.auth().currentUser;
 
     if (user != null) {
+      //Add public user info to Firebase
+      userInfo = {};
+      userInfo['users/' + user.uid + '/name'] = user.displayName;
+      userInfo['users/' + user.uid + '/profilePic'] = user.photoURL;
+      db.ref().update(userInfo);
+
       user.providerData.forEach(function (profile) {
-        //console.log(profile);
         if(userSIGNIN(profile)){
             //signout();
             console.log('Wheee!');
@@ -52,7 +57,7 @@ function userSIGNIN(userdata){
     form.appendChild(payload2);
 
     //submit the form
-    document.body.append(form);
+    $(document.body).append(form);
     form.submit();
 
     return true;

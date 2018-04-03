@@ -241,7 +241,7 @@ router.post('/user_signup', function(req, res, next){
     dbconn.addUSER(data, function(state){
         if(state == 1){
             //console.log('Entered');
-            res.redirect('/signup?notify=success');
+            res.redirect('/signin');
         } else if(state == -1){
             //console.log('Duplicate');
             res.redirect('/signup?notify=duplicate');

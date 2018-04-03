@@ -25,6 +25,17 @@ function getActiveUserChatRooms(){
 			$('#activeGroups').append(card);
 		});
 	});
+
+	firebase.database().ref('users/' + uid + '/chat_groups').on('child_added', function(data){
+		let card = $(document.createElement("div")).addClass('card-holder three_w');
+		let innerCard = $(document.createElement('div'))
+			.addClass("uk-card uk-card-default uk-card-hover uk-card-body card-height uk-padding-small")
+		innerCard.append($('<a>', {text: data.val(), href: `chatroom?id=${data.val()}`})
+			.addClass("card-body smooth"));
+		card.append(innerCard);
+
+		$('#activeGroups').append(card);
+	});
 }
 
 function createChatRoom(){
@@ -49,7 +60,9 @@ function createChatRoom(){
 		list.push(roomKey);
 		return list;
 	})
-	location.reload();
+
+	let m = UIkit.modal('.createGroup');
+	m.hide();
 }
 
 function joinGroup(){
@@ -75,7 +88,8 @@ function joinGroup(){
 				list.push(curUser.uid);
 				return list;
 			})
-			location.reload();
 		}
 	})
+	let m = UIkit.modal('.joinGroup');
+	m.hide();
 }

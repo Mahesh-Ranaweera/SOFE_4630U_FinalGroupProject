@@ -3,3 +3,34 @@ extends dashb_layout
 block dashb
 	include group_menu
 	input.form-control(type='hidden', id='roomCode', value=roomCode)
+
+	.section
+		.card-holder.full_w
+			.uk-card.uk-card-default.uk-card-body
+				h4(id='chatTitle') Chatroom title
+
+	.section
+		.card-holder.full_w
+			.uk-card.uk-card-default
+				input.form-control(type='text', id='chatmsg')
+				input.form-control(type='button', id='submitMsg', value='Send')
+
+	.section
+		.card-holder.full_w
+			.uk-card.uk-card-default.uk-card-body(id='chatLog')
+
+
+	script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase.js')
+	script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase-auth.js')
+	script.
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyAN2TjQBsWx0TH3epeHpWSFnOxAzrH6PJM",
+			authDomain: "cloud-final-3d3f6.firebaseapp.com",
+			databaseURL: "https://cloud-final-3d3f6.firebaseio.com",
+			projectId: "cloud-final-3d3f6",
+			storageBucket: "cloud-final-3d3f6.appspot.com",
+			messagingSenderId: "987346344951"
+		};
+		firebase.initializeApp(config);
+	script(src='/js/chatroom.js')

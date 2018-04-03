@@ -974,3 +974,25 @@ a {
 #clipboard{
     margin: 10px 0 10px 0;
 }
+
+#chatLog {
+    overflow: scroll;
+}
+
+.messageHead {
+    font-size: 50%;
+    color: #555;
+}
+
+.messageBody {
+    border-color: #00B7FF;
+    border-radius: 5px;
+}
+
+#chatmsg {
+    width: 90%;
+}
+
+#submitMsg {
+    width: 7.5%;
+}
