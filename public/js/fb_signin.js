@@ -27,7 +27,7 @@ function signin(){
         //console.log(profile);
         if(userSIGNIN(profile)){
             //signout();
-            //console.log('Wheee!');
+            console.log('Wheee!');
         }
       });
     }

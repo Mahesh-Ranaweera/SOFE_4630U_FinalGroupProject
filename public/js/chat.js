@@ -13,6 +13,7 @@ function getActiveUserChatRooms(){
 	var uid = curUser.uid;
 	firebase.database().ref('users/' + uid + '/chat_groups').once('value').then(function(snapshot){
 		//Append the active chats to a div
+		$('#activeGroups').empty();
 		snapshot.forEach(function(childSnap){
 			let card = $(document.createElement("div")).addClass('card-holder three_w');
 			let innerCard = $(document.createElement('div'))
@@ -48,6 +49,7 @@ function createChatRoom(){
 		list.push(roomKey);
 		return list;
 	})
+	location.reload();
 }
 
 function joinGroup(){
@@ -73,6 +75,7 @@ function joinGroup(){
 				list.push(curUser.uid);
 				return list;
 			})
+			location.reload();
 		}
 	})
 }
