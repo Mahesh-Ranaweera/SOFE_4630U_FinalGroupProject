@@ -390,6 +390,33 @@ router.get('/chat', function(req, res, next){
     }
 });
 
+/**GET group chat */
+router.get('/chatroom', function(req, res, next){
+    /**Makesure user session exists */
+    if (req.session.usersess && req.session.gdata != null) {
+
+        console.log('Curr Group session', req.session.gdata);
+
+        var alert = null;
+
+        if(req.query.notify != null){
+            alert = req.query.notify;
+        }
+
+        dbconn.groupDATA(req.session.gdata, function(state){
+             res.render('chatroom', {
+                title: 'Group Chat',
+                udata: req.session.udata,
+                gdata: state,
+                alert: alert,
+                roomCode: req.query.id
+            });
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
 /**GET group members */
 router.get('/groupmembers', function(req, res, next){
     /**Makesure user session exists */
