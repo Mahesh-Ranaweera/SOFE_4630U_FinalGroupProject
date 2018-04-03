@@ -978,13 +978,18 @@ a {
     overflow: scroll;
 }
 
+.messageContainer {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 .messageHead {
-    font-size: 50%;
-    color: #555;
+    font-size: 75%;
+    color: #333;
 }
 
 .messageBody {
-    border-color: #00B7FF;
+    background-color: #aff;
     border-radius: 5px;
 }
 
