@@ -24,7 +24,7 @@ block dashb
                 for item, i in gdata.group.agileboard.todo
                     - var cardid = item.stamp
                     
-                    .todo_card(id=cardid)
+                    .todo_card.uk-card.uk-card-default(id=cardid)
                         .uk-label.uk-label-success
                             for user, j in gdata.users
                                 //-get the name of the email
@@ -54,7 +54,7 @@ block dashb
                 for item, i in gdata.group.agileboard.progress
                     - var cardid = item.stamp
                     
-                    .todo_card(id=cardid)
+                    .todo_card.uk-card.uk-card-default(id=cardid)
                         .uk-label.uk-label-success
                             for user, j in gdata.users
                                 //-get the name of the email
@@ -84,7 +84,7 @@ block dashb
                 for item, i in gdata.group.agileboard.review
                     - var cardid = item.stamp
                     
-                    .todo_card(id=cardid)
+                    .todo_card.uk-card.uk-card-default(id=cardid)
                         .uk-label.uk-label-success
                             for user, j in gdata.users
                                 //-get the name of the email
@@ -114,7 +114,7 @@ block dashb
                 for item, i in gdata.group.agileboard.finished
                     - var cardid = item.stamp
                     
-                    .todo_card(id=cardid)
+                    .todo_card.uk-card.uk-card-primary(id=cardid)
                         .uk-label.uk-label-success
                             for user, j in gdata.users
                                 //-get the name of the email

@@ -1,10 +1,16 @@
 var express = require('express');
 var router = express.Router();
 var session = require('express-session');
+var multer = require('multer');
+
 var dbconn = require('../app/db');
 var encrypt = require('../app/encrypt');
 var univ_list = require('../app/univ_list.json');
 var Identicon= require('identicon.js');
+
+router.use(multer({
+    dest: 'temp/' 
+}).any());
 
 /**Options for indenticon**/
 var Iden_options = {
@@ -459,6 +465,33 @@ router.get('/groupmembers', function(req, res, next){
 });
 
 
+/**GET groupdocs page**/
+router.get('/groupdocs', function(req, res, next){
+    /**Makesure user session exists **/
+    if (req.session.usersess && req.session.gdata != null) {
+
+        console.log('Curr Group session', req.session.gdata);
+
+        var alert = null;
+
+        if(req.query.notify != null){
+            alert = req.query.notify;
+        }
+
+        dbconn.groupDATA(req.session.gdata, function(state){
+             res.render('groupdocs', {
+                title: 'Group Docs',
+                udata: req.session.udata,
+                gdata: state,
+                docs: 'docs',
+                alert: alert
+            });
+         });
+    } else {
+        res.redirect('/');
+    }
+});
+
 
 /** Dashboard actions **/
 /** Update the user school **/
@@ -638,6 +671,37 @@ router.post('/leave_group', function(req, res, next){
             res.redirect('/groupmembers?notify=error');
         }
     });
+})
+
+/**File upload**/
+router.post('/file_upload', function(req, res, next){
+    if(req.files){
+        console.log(req.files);
+        //limit the upload file size to 5MB
+        if(req.files.size <= 5000){
+
+            res.redirect('/groupdocs?notify=uploaded');
+        }else{
+            res.redirect('/groupdocs?notify=largef');
+        }
+    }else{
+        res.redirect('/groupdocs');
+    }
+})
+
+/**task complete todo upgrade**/
+router.post('/task_complete', function(req, res, next){
+    data = JSON.parse(req.body.strPayload);
+
+    dbconn.upgradeTODO(data, function(state){
+
+        console.log(state);
+        if(state == 1){
+            res.redirect('/calendar');
+        }else{
+            res.redirect('/calendar');
+        }
+    })
 })
 
 /**SIGNOUT*/

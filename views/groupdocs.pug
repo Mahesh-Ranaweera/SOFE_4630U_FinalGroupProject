@@ -1,0 +1,48 @@
+extends dashb_layout
+
+block dashb
+    include group_menu
+    //-header
+    .section
+        .group-header
+            .group-icon-g.smooth(title='Find group members', uk-toggle="target: #upload-docs; animation: uk-animation-fade")
+                .group-icon
+                    i(data-feather='file-plus' style='width:20px; height:20px;')
+                .group-txt
+                    | Upload Documents
+
+
+    //-upload documents
+    .section#upload-docs(hidden)
+        .card-holder.full_w
+            .uk-card.uk-card-default.uk-card-body
+                p
+                    b Upload Documents:
+
+                .js-upload.uk-placeholder.uk-text-center
+                    i(data-feather='file-plus' style='width:20px; height:20px;')
+
+                    form#file_upload(role='form', action='/file_upload', method='POST', enctype='multipart/form-data')
+                        div(uk-form-custom)
+                            input(type='file', name='docs')
+                            span.uk-link Select File to upload
+
+                    
+                button.uk-button(type='submit' onclick='submit_files();') FILE UPLOAD
+
+                progress#uploadprog.uk-progress(value='0' max='100' hidden)
+
+
+    //-existing docs
+    .section
+        .card-holder.full_w
+            .uk-card.uk-card-default.uk-card-body
+                p 
+                    b Shared Documents:
+
+
+    script.
+        function submit_files(){
+            document.getElementById('file_upload').submit();
+        }
+    

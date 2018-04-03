@@ -5,7 +5,7 @@ block dashb
     //-header
     .section
         .group-header
-            .group-icon-g.smooth(title='Find group members', uk-toggle="target: #toggle-animation; animation: uk-animation-fade")
+            .group-icon-g.smooth(title='Find group members', uk-toggle="target: #find-mem; animation: uk-animation-fade")
                 .group-icon
                     i(data-feather='plus' style='width:20px; height:20px;')
                 .group-txt
@@ -19,7 +19,7 @@ block dashb
                 input#clipboard.uk-input(type='text' value=gdata.group.groupid)
 
     //-search members
-    .section#toggle-animation(hidden)
+    .section#find-mem(hidden)
         .card-holder.full_w
             .uk-card.uk-card-default.uk-card-body
                 p 

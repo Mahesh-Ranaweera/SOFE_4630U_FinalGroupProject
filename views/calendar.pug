@@ -23,15 +23,18 @@ block dashb
                                 tr
                                     th.uk-width-small
                                     th.uk-width-small Date
-                                    th.uk-table-expand Reminder
+                                    th.uk-table-expand Description
                                     th.uk-table-shrink.uk-text-nowrap Group Name
                             tbody
                                 for group, i in groups
                                     for todo, j in group.agileboard.todo
                                         if todo.member == udata.email
+
+                                            - var payload = '{"gid": "'+group.groupid+'", "stamp": '+todo.stamp+', "member": "'+todo.member+'", "date": "'+todo.date+'", "content": "'+todo.todo+'", "type": "todo", "task": "upgrade"}'
+
                                             tr
                                                 td
-                                                    input.uk-checkbox(type='checkbox')
+                                                    input.uk-checkbox(type='checkbox', value=payload, onclick='check(this);')
                                                 td #{todo.date}
                                                 td 
                                                     p #{todo.todo}
@@ -55,15 +58,18 @@ block dashb
                                 tr
                                     th.uk-width-small
                                     th.uk-width-small Date
-                                    th.uk-table-expand Reminder
+                                    th.uk-table-expand Description
                                     th.uk-table-shrink.uk-text-nowrap Group Name
                             tbody
                                 for group, i in groups
                                     for prog, j in group.agileboard.progress
                                         if prog.member == udata.email
+
+                                            - var payload = '{"gid": "'+group.groupid+'", "stamp": '+prog.stamp+', "member": "'+prog.member+'", "date": "'+prog.date+'", "content": "'+prog.todo+'", "type": "progress", "task": "upgrade"}'
+
                                             tr
                                                 td
-                                                    input.uk-checkbox(type='checkbox')
+                                                    input.uk-checkbox(type='checkbox', value=payload, onclick='check(this);')
                                                 td #{prog.date}
                                                 td 
                                                     p #{prog.todo}
@@ -88,15 +94,18 @@ block dashb
                                 tr
                                     th.uk-width-small
                                     th.uk-width-small Date
-                                    th.uk-table-expand Reminder
+                                    th.uk-table-expand Description
                                     th.uk-table-shrink.uk-text-nowrap Group Name
                             tbody
                                 for group, i in groups
                                     for rev, j in group.agileboard.review
                                         if rev.member == udata.email
+
+                                            - var payload = '{"gid": "'+group.groupid+'", "stamp": '+rev.stamp+', "member": "'+rev.member+'", "date": "'+rev.date+'", "content": "'+rev.todo+'", "type": "review", "task": "upgrade"}'
+
                                             tr
                                                 td
-                                                    input.uk-checkbox(type='checkbox')
+                                                    input.uk-checkbox(type='checkbox', value=payload, onclick='check(this);')
                                                 td #{rev.date}
                                                 td 
                                                     p #{rev.todo}
@@ -112,25 +121,54 @@ block dashb
 
         if(finilen)
             .card-holder.full_w
-                .uk-card.uk-card-default.uk-card-body
+                .uk-card.uk-card-primary.uk-card-body
                     .uk-overflow-auto
                         table.uk-table.uk-table-hover.uk-table-middle.uk-table-divider
                             caption 
                                 h4 COMPLETED
                             thead
                                 tr
-                                    th.uk-width-small
                                     th.uk-width-small Date
-                                    th.uk-table-expand Reminder
+                                    th.uk-table-expand Description
                                     th.uk-table-shrink.uk-text-nowrap Group Name
                             tbody
                                 for group, i in groups
                                     for fin, j in group.agileboard.finished
                                         if fin.member == udata.email
                                             tr
-                                                td
-                                                    input.uk-checkbox(type='checkbox')
                                                 td #{fin.date}
                                                 td 
                                                     p #{fin.todo}
                                                 td #{group.groupname}
+
+
+    script.
+        function check(e){
+            if (e.checked == true){
+                console.log('checked ', e.value);
+                console.log(submitcomplete(e.value));
+            }else{
+                console.log('no selected');
+            }
+        }
+
+
+        function submitcomplete(val){
+
+            var form = document.createElement('form');
+            form.setAttribute('method', 'POST');
+            form.setAttribute('action', '/task_complete');
+
+            var data = document.createElement('input');
+            data.setAttribute('type', 'hidden');
+            data.setAttribute('name', 'strPayload');
+            data.setAttribute('value', val);
+
+            form.appendChild(data);
+
+            document.body.append(form);
+            form.submit();
+            return true
+        }
+        
+
