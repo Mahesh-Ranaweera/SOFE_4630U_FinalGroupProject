@@ -404,6 +404,19 @@ router.get('/groupmembers', function(req, res, next){
         dbconn.groupDATA(req.session.gdata, function(state){
             //get all members who are in the same school
             dbconn.getUNIVMEM(state.group.school, function(state2){
+
+                // //loop curr members
+                for(i = 0; i < state.group.groupmembers.length; i++){
+                    for(j = 0; j < state2.length; j++){
+                        //check emails are the same, if same remove them
+                        if(state.group.groupmembers[i] == state2[j].email){
+                            //console.log("found");
+                            //remove found items
+                            state2.splice(j, 1);
+                        }
+                    }
+                }
+
                 res.render('groupmembers', {
                     title: 'Group Members',
                     udata: req.session.udata,

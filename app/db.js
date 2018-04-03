@@ -560,7 +560,7 @@ var getUNIVMEM = function(getschool, callback){
 
 /** DELETE member from the group **/
 var deleteMEMBER = function(data, callback){
-    console.log(data);
+    //console.log(data);
 
     //remove from group and users
     r.expr([
@@ -580,12 +580,11 @@ var deleteMEMBER = function(data, callback){
         })]
     ).run()
     .then(function (resp){
-
-        console.log(resp);
+        //console.log(resp);
         callback(1);
     })
     .catch(function(err){
-        console.log(err);
+        //console.log(err);
         callback(0);
     })
 }
@@ -594,7 +593,7 @@ var deleteMEMBER = function(data, callback){
 var addMEMBER = function(data, callback){
     //console.log(data);
     joinGROUP(data, function(state){
-        console.log(state)
+        //console.log(state)
 
         if(state == 1 || state == -1){
             callback(1);
