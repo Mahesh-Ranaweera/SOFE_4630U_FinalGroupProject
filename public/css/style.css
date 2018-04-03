@@ -438,6 +438,7 @@ svg{
     padding: 0px 4px 4px 4px;
     box-sizing: border-box;
     position: relative;
+    margin-bottom: 10px;
 }
 
 .card-holder:hover {
@@ -875,12 +876,10 @@ a {
     width: 100%;
     height: auto;
     float: left;
-    background-color: var(--white-prim);
     box-sizing: border-box;;
     font-size: 12px;
     margin-bottom: 6px;
     border-radius: 2px;
-    border: 1px solid #eee;
 }
 
 .todo_desc{
