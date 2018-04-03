@@ -81,11 +81,11 @@ block dashb
                     for user, i in gdata.users
                         - var targetDEL = 'target: #delete' + i
                         - var modalDEL = 'delete' + i
+                        - var src = 'data:image/svg+xml;utf8,'+user.u_img
 
                         .mem-wrapper
                             .mem-row
                                 .mem-img
-                                    - var src = 'data:image/svg+xml;utf8,'+user.u_img
                                     img(src=src, width=40, height=40, style='border-radius: 50%;')
                                 .mem-cont 
                                     .chat-row 
@@ -103,7 +103,9 @@ block dashb
                                 .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
                                     button.uk-modal-close-default(type='button', uk-close)
                                     .uk-modal-header
-                                        h2.uk-modal-title REMOVE MEMBER
+                                        h2.uk-modal-title
+                                            img(src=src, width=40, height=40, style='border-radius: 50%;') 
+                                            |  REMOVE MEMBER
                                         p Are you sure you want to remove <b>#{user.uname}</b> from the group ?
                                     .uk-modal-footer.uk-text-right
                                         form(method='POST', action='/remove_member')

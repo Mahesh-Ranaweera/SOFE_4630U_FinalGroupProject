@@ -562,6 +562,32 @@ var getUNIVMEM = function(getschool, callback){
 var deleteMEMBER = function(data, callback){
     console.log(data);
 
+    //remove from group and users
+    r.expr([
+        r.db(dbname).table(tbusers).get(data.email)
+        .update(
+            function(row){
+                return {
+                    'groups': row('groups').filter(function(item){
+                        return item('groupid').ne(data.gid)
+                    })
+                }
+            }
+        ),
+        r.db(dbname).table(tbgroups).get(data.gid)
+        .update({
+            groupmembers: r.row('groupmembers').difference([data.email])
+        })]
+    ).run()
+    .then(function (resp){
+
+        console.log(resp);
+        callback(1);
+    })
+    .catch(function(err){
+        console.log(err);
+        callback(0);
+    })
 }
 
 /** ADD member to the group**/

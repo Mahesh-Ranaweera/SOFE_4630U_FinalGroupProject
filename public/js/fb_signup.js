@@ -26,7 +26,7 @@ function signup(){
       user.providerData.forEach(function (profile) {
         //console.log(profile);
         if(userSIGNUP(profile)){
-            signout();
+            //signout();
             //console.log('Wheee!');
         }
       });
