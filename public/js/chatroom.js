@@ -1,42 +1,62 @@
 var db = firebase.database();
 var curUser = null;
+var names = {};
 
 firebase.auth().onAuthStateChanged(function(user){
 	if(user){
 		curUser = user;
-		$(document).ready(initializeChatRoom);
+		$(document).ready(getChatNames);
 	}
 	else console.log('Not logged in.')
 })
 
+function copyCode(){
+	var code = document.querySelector('#roomCode');
+	var range = document.createRange();
+	range.selectNode(code);
+	window.getSelection().addRange(range);
+	try {
+		if(document.execCommand('copy'))
+			console.log('Copied!');
+		else console.log("Didn't copy!");
+	} catch(err) {
+		console.log("Error while copying")
+		console.log(err);
+	}
+}
+
+function getChatNames(){
+	let roomCode = $('#roomCode').val();
+	db.ref('chat_groups/' + roomCode + '/creator').once('value', function(data){
+		var cid = data.val();
+		db.ref('users/' + cid + '/name').once('value', function(cdata){
+			names[cid] = cdata.val();
+		});
+	});
+	db.ref('chat_groups/' + roomCode + '/members').once('value', function(data){
+		data.forEach(function(member){
+			db.ref('users/' + member.val() + '/name').once('value', function(name){
+				names[member.val()] = name.val();
+			})
+		})
+		initializeChatRoom();
+	});
+}
+
 function initializeChatRoom(){
 	let roomCode = $('#roomCode').val();
-
-	// db.ref('chat_groups/' + roomCode + '/messages').orderByChild('postTime').once('value', function(snapshot){
-	// 	snapshot.forEach(function(childSnap){
-	// 		let message = $(document.createElement('div')).addClass('messageContainer');
-	// 		let messageHead = $(document.createElement('div')).addClass('messageHead');
-	// 		let messageBody = $(document.createElement('div')).addClass('messageBody');
 	
-	// 		let dt = new Date(childSnap.val().postTime*1000);
-	// 		messageHead.append(childSnap.val().user + ' [' + dt.toDateString() + ' ' + dt.toTimeString() + ']');
-			
-	// 		messageBody.append(childSnap.val().text);
-			
-	// 		message.append(messageHead);
-	// 		message.append(messageBody);
-	// 		$('#chatLog').append(message);
-	// 	});
-	// });
+	db.ref('chat_groups/' + roomCode + '/name').once('value', function(snap){
+		$('#chatTitle').html(snap.val());
+	});
 
 	db.ref('chat_groups/' + roomCode + '/messages').on('child_added', function(data){
 		let message = $(document.createElement('div')).addClass('messageContainer');
 		let messageHead = $(document.createElement('div')).addClass('messageHead');
 		let messageBody = $(document.createElement('div')).addClass('messageBody');
 
-		console.log(data.val())
 		let dt = new Date(data.val().postTime*1000);
-		messageHead.append(data.val().user + ' [' + dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString() + ']');
+		messageHead.append(names[data.val().user] + ' [' + dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString() + ']');
 		
 		messageBody.append(data.val().text);
 		

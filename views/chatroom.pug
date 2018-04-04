@@ -2,12 +2,19 @@ extends dashb_layout
 
 block dashb
 	include group_menu
-	input.form-control(type='hidden', id='roomCode', value=roomCode)
 
 	.section
 		.card-holder.full_w
 			.uk-card.uk-card-default.uk-card-body
 				h4(id='chatTitle') Chatroom title
+
+	.section
+		.group-header
+			.group-icon-g.smooth(uk-toggle="target: #shareCode")
+				.group-icon
+					i(data-feather='share' style='width:20px; height:20px;')
+				.group-txt
+					| Room share code
 
 	.section
 		.card-holder.full_w
@@ -18,6 +25,20 @@ block dashb
 	.section
 		.card-holder.full_w
 			.uk-card.uk-card-default.uk-card-body(id='chatLog')
+
+	div.uk-flex-top(id="shareCode", uk-modal)
+		.uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+			button.uk-modal-close-default(type='button', uk-close)
+			.uk-modal-header
+				h2.uk-modal-title Room sharing code
+			
+			.uk-modal-body
+				.uk-width-1-1
+					label(for='roomCode') Copy this code and share it with others so they can join this chat room
+					input.form-control(type='text', id='roomCode', value=roomCode, disabled)
+			.uk-margin
+					.uk-text-right
+						button.uk-button.uk-button-primary(name='btncopyCode', onclick='copyCode()') Copy to clipboard
 
 
 	script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase.js')
