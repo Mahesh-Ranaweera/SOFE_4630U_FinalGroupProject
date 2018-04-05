@@ -603,6 +603,17 @@ var addMEMBER = function(data, callback){
     })
 }
 
+/**File upload to the db**/
+var addFILE = function(data, callback){
+    console.log(data.mimetype);
+    callback(1);
+}
+
+/**File delete**/
+var deleteFILE = function(data, callback){
+
+}
+
 
 module.exports.addUSER = addUSER;
 module.exports.getUSER = getUSER;
@@ -620,3 +631,5 @@ module.exports.downgradeTODO = downgradeTODO;
 module.exports.getUNIVMEM = getUNIVMEM;
 module.exports.deleteMEMBER = deleteMEMBER;
 module.exports.addMEMBER = addMEMBER;
+module.exports.addFILE = addFILE;
+module.exports.deleteFILE = deleteFILE;

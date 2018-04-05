@@ -8,9 +8,13 @@ var encrypt = require('../app/encrypt');
 var univ_list = require('../app/univ_list.json');
 var Identicon= require('identicon.js');
 
-router.use(multer({
-    dest: 'temp/' 
-}).any());
+//setup multer for file uploads
+var storage = multer.memoryStorage();
+var upload = multer({
+    limits: {
+        fileSize: 1 * 1024 * 1024 //limit to 1 MB
+    }, storage: storage
+});
 
 /**Options for indenticon**/
 var Iden_options = {
@@ -674,16 +678,17 @@ router.post('/leave_group', function(req, res, next){
 })
 
 /**File upload**/
-router.post('/file_upload', function(req, res, next){
-    if(req.files){
-        console.log(req.files);
-        //limit the upload file size to 5MB
-        if(req.files.size <= 5000){
+router.post('/file_upload', upload.single('docs'), function(req, res, next){
+    if(req.file){
 
-            res.redirect('/groupdocs?notify=uploaded');
-        }else{
-            res.redirect('/groupdocs?notify=largef');
-        }
+        //upload the file to the db
+        dbconn.addFILE(req.file, function(state){
+            if(state == 1){
+                res.redirect('/groupdocs?notify=uploaded');
+            }else{
+                res.redirect('/groupdocs?notify=error');
+            }
+        })
     }else{
         res.redirect('/groupdocs');
     }
@@ -695,7 +700,7 @@ router.post('/task_complete', function(req, res, next){
 
     dbconn.upgradeTODO(data, function(state){
 
-        console.log(state);
+        //console.log(state);
         if(state == 1){
             res.redirect('/calendar');
         }else{
@@ -713,6 +718,16 @@ router.get('/signout', function(req, res, next) {
             res.render('signout');
         }
     });
-});
+})
+
+/**handle the Large file error**/
+router.use(function(err, req, res, next) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            console.log('FILE TOO LARGE');
+            //res.send({result: 'fail', error:{code: 1001, message:'File is too big'}})
+            req.session['msgerror'] = 2;
+            res.redirect('/groupdocs?notify=filelarge');
+        }
+})
 
 module.exports = router;
