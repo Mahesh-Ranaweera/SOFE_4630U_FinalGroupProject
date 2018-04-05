@@ -2,6 +2,12 @@ extends dashb_layout
 
 block dashb
 	include group_menu
+
+	.section
+		.card-holder.full_w
+			.uk-card.uk-card-default.uk-card-body
+				h4 Your active chat rooms
+
 	.section
 		.group-header
 			.group-icon-g.smooth(uk-toggle="target: #createGroup")
@@ -17,7 +23,6 @@ block dashb
 					| Join an existing chatroom
 
 	.section(id='activeGroups')
-		| Loading active chat rooms...
 
 
 	//- Create group modal
@@ -51,7 +56,7 @@ block dashb
 				.uk-margin
 					.uk-text-right
 						button.uk-button.uk-button-primary(name='btnjoinGroup', onclick='joinGroup()') Join
-
+	
 	script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase.js')
 	script(src='https://www.gstatic.com/firebasejs/4.12.0/firebase-auth.js')
 	script.

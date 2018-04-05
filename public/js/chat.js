@@ -9,16 +9,32 @@ firebase.auth().onAuthStateChanged(function(user){
 	else console.log('Not logged in.')
 })
 
+
 function getActiveUserChatRooms(){
 	var uid = curUser.uid;
-	firebase.database().ref('users/' + uid + '/chat_groups').once('value').then(function(snapshot){
-		//Append the active chats to a div
-		$('#activeGroups').empty();
-		snapshot.forEach(function(childSnap){
+	// firebase.database().ref('users/' + uid + '/chat_groups').once('value').then(function(snapshot){
+	// 	//Append the active chats to a div
+	// 	$('#activeGroups').empty();
+	// 	snapshot.forEach(function(childSnap){
+	// 		db.ref('chat_groups/' + childSnap.val() + '/name').once('value', function(data){
+	// 			let card = $(document.createElement("div")).addClass('card-holder three_w');
+	// 			let innerCard = $(document.createElement('div'))
+	// 				.addClass("uk-card uk-card-default uk-card-hover uk-card-body card-height uk-padding-small")
+	// 			innerCard.append($('<a>', {text: data.val(), href: `chatroom?id=${childSnap.val()}`})
+	// 				.addClass("card-body smooth"));
+	// 			card.append(innerCard);
+
+	// 			$('#activeGroups').append(card);
+	// 		});
+	// 	});
+	// });
+
+	firebase.database().ref('users/' + uid + '/chat_groups').on('child_added', function(data){
+		db.ref('chat_groups/' + data.val() + '/name').once('value', function(roomName){
 			let card = $(document.createElement("div")).addClass('card-holder three_w');
 			let innerCard = $(document.createElement('div'))
-				.addClass("uk-card uk-card-default uk-card-hover uk-card-body card-height uk-padding-small")
-			innerCard.append($('<a>', {text: childSnap.val(), href: `chatroom?id=${childSnap.val()}`})
+				.addClass("uk-card uk-card-default uk-card-hover uk-card-body uk-padding-small")
+			innerCard.append($('<a>', {text: roomName.val(), href: `chatroom?id=${data.val()}`})
 				.addClass("card-body smooth"));
 			card.append(innerCard);
 
@@ -49,7 +65,9 @@ function createChatRoom(){
 		list.push(roomKey);
 		return list;
 	})
-	location.reload();
+
+	let m = UIkit.modal('.createGroup');
+	m.hide();
 }
 
 function joinGroup(){
@@ -75,7 +93,8 @@ function joinGroup(){
 				list.push(curUser.uid);
 				return list;
 			})
-			location.reload();
 		}
 	})
+	let m = UIkit.modal('.joinGroup');
+	m.hide();
 }

@@ -247,7 +247,7 @@ router.post('/user_signup', function(req, res, next){
     dbconn.addUSER(data, function(state){
         if(state == 1){
             //console.log('Entered');
-            res.redirect('/signup?notify=success');
+            res.redirect('/signin');
         } else if(state == -1){
             //console.log('Duplicate');
             res.redirect('/signup?notify=duplicate');
@@ -678,7 +678,7 @@ router.post('/file_upload', function(req, res, next){
     if(req.files){
         console.log(req.files);
         //limit the upload file size to 5MB
-        if(req.files.size < 1000){
+        if(req.files.size <= 5000){
 
             res.redirect('/groupdocs?notify=uploaded');
         }else{

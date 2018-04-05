@@ -973,3 +973,30 @@ a {
 #clipboard{
     margin: 10px 0 10px 0;
 }
+
+#chatLog {
+    overflow: scroll;
+}
+
+.messageContainer {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.messageHead {
+    font-size: 75%;
+    color: #333;
+}
+
+.messageBody {
+    background-color: #aff;
+    border-radius: 5px;
+}
+
+#chatmsg {
+    width: 90%;
+}
+
+#submitMsg {
+    width: 7.5%;
+}

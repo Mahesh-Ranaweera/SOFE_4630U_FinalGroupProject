@@ -1,7 +1,7 @@
-
+var db = firebase.database();
 var ui = new firebaseui.auth.AuthUI(firebase.auth())
 ui.start('#firebase-auth-container', {
-    signInSuccessUrl: '/signup',
+    signInSuccessUrl: '/dashboard',
     signInOptions: [
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -20,17 +20,22 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 function signup(){
-    var user = firebase.auth().currentUser;
+  var user = firebase.auth().currentUser;
 
-    if (user != null) {
-      user.providerData.forEach(function (profile) {
-        //console.log(profile);
-        if(userSIGNUP(profile)){
-            //signout();
-            console.log('Wheee!');
-        }
-      });
-    }
+  if (user != null) {
+    //Add public user info to Firebase
+    userInfo = {};
+    userInfo['users/' + user.uid + '/name'] = user.displayName;
+    userInfo['users/' + user.uid + '/profilePic'] = user.photoURL;
+    db.ref().update(userInfo);
+
+    user.providerData.forEach(function (profile) {
+      if(userSIGNUP(profile)){
+          //signout();
+          console.log('Wheee!');
+      }
+    });
+  }
 }
 
 function userSIGNUP(userdata){
@@ -52,7 +57,7 @@ function userSIGNUP(userdata){
     form.appendChild(payload2);
 
     //submit the form
-    document.body.append(form);
+    $(document.body).append(form);
     form.submit();
 
     return true;
