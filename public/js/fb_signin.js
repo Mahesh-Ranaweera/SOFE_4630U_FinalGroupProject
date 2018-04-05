@@ -32,7 +32,7 @@ function signin(){
       user.providerData.forEach(function (profile) {
         if(userSIGNIN(profile)){
             //signout();
-            console.log('Wheee!');
+            //console.log('Wheee!');
         }
       });
     }
@@ -42,19 +42,14 @@ function userSIGNIN(userdata){
     //perform the post request
     var form = document.createElement("form");
     form.setAttribute("method", "POST");
-    form.setAttribute("action", "/user_signin");
+    form.setAttribute("action", "/user_auth");
 
+    /**send signin/signup data to db**/
     var payload = document.createElement("input");
     payload.setAttribute("type", "hidden");
     payload.setAttribute("name", "strpayload");
     payload.setAttribute("value", JSON.stringify(userdata));
     form.appendChild(payload);
-
-    var payload2 = document.createElement("input");
-    payload2.setAttribute("type", "hidden");
-    payload2.setAttribute("name", "auth_method");
-    payload2.setAttribute("value", "firebase");
-    form.appendChild(payload2);
 
     //submit the form
     $(document.body).append(form);

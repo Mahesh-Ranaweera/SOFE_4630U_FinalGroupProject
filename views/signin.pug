@@ -8,33 +8,9 @@ block content
         .signup-content
             .uk-card.uk-card-default.uk-card-body
                     .uk-card-title
-                        | SIGN IN 
+                        | USER SIGN UP/SIGN IN
 
-                    #firebase-auth-container
-                    form.uk-grid-small(method='POST', action='/user_signin')
-                        .uk-margin
-                            //- .uk-width-1-1
-                            //-     label.text-label(for='strEmail') Email:
-                            //-     input.uk-input(name='strEmail', type='email', required)
-                            //- .uk-margin
-                            //-     label.text-label(for='strPassw') Re-Enter Password:
-                            //-     input.uk-input(name='strPassw', type='password', required)
-                            //-     input(type='hidden', value='form-auth', name='auth_method')
-                            .uk-margin
-                                .uk-text-right
-                                    button.uk-button.uk-button-primary(name='btnSigin', type='submit') SIGN IN
-
-                                    a(href='/signup')
-                                        button.uk-button.uk-button-default(type='button') SIGN UP
-
-                    
-
-                    //Alert the user
-                    if (alert == 'passw')
-                        .uk-margin
-                            .uk-alert-warning(uk-alert)
-                                a.uk-alert-close(uk-close)
-                                p Authentication failed, Try Again
+                    #firebase-auth-container                    
 
                     if (alert == 'notfound')
                         .uk-margin
@@ -42,8 +18,20 @@ block content
                                 a.uk-alert-close(uk-close)
                                 p User email not found, <a href='/signup'>Sign Up<a>
 
+                    if (alert == 'signinerror')
+                        .uk-margin
+                            .uk-alert-danger(uk-alert)
+                                a.uk-alert-close(uk-close)
+                                p Signin Error, please try again
+
+                    if (alert == 'signuperror')
+                        .uk-margin
+                            .uk-alert-danger(uk-alert)
+                                a.uk-alert-close(uk-close)
+                                p Signup Error, please try again
+
                     if (alert == 'error')
                         .uk-margin
                             .uk-alert-danger(uk-alert)
                                 a.uk-alert-close(uk-close)
-                                p Something went wrong, Try Again
+                                p Something went wrong, please try again

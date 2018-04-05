@@ -107,161 +107,96 @@ router.get('/dashboard', function(req, res, next){
     }
 });
 
-/**POST user signin */
-router.post('/user_signin', function(req, res, next){
-
-    var auth = req.body.auth_method;
-
-    if (auth == "form-auth"){
-        var email = req.body.strEmail.toLowerCase();
-        var passw = req.body.strPassw;
-    }else if(auth == "firebase"){
-        var payload = JSON.parse(req.body.strpayload);
-        var email = payload.email;
-    }else{
-        console.log("invalid");
-        res.redirect('/signin?notify=error');
-    }
-
-
-    dbconn.getUSER(email, function(state){
-        //console.log(state);
-
-        /**check if user exists */
-        if(state != null){
-
-            //form-auth
-            if(state.auth.method == "form-auth"){
-                //auth from email and password
-                if(state.email == email && encrypt.compareHASH(passw, state.auth.passw)){
-                    /**Create a user session */
-                    sess = req.session;
-                    sess.usersess = true;
-                    req.session.usersess = true;
-                    req.session.udata = {
-                        email: state.email,
-                        name: state.uname,
-                        uimg: state.u_img,
-                        auth: state.auth.method,
-                        univ: state.school
-                    }
-                    req.session.gdata = null;
-
-                    //console.log(req.session);
-                    res.redirect('/dashboard');
-                }else{
-                    res.redirect('/signin?notify=passw');
-                }
-            }
-
-            if(state.auth.method == "firebase"){
-                //auth from email, provider and uid
-                if(state.email == email && state.auth.uid == payload.uid && state.auth.providerID == payload.providerId){
-                    /**Create a user session */
-                    sess = req.session;
-                    sess.usersess = true;
-                    req.session.usersess = true;
-                    req.session.udata = {
-                        email: state.email,
-                        name: state.uname,
-                        uimg: state.u_img,
-                        auth: state.auth.method,
-                        univ: state.school
-                    }
-                    req.session.gdata = null;
-
-                    //console.log(req.session);
-                    res.redirect('/dashboard');
-                }else{
-                    res.redirect('/signin?notify=error');
-                }
-            }
-        }else{
-            res.redirect('/signin?notify=notfound');
-        }
-    });
-});
-
 
 /**POST user signup */
-router.post('/user_signup', function(req, res, next){
-
-    var auth = req.body.auth_method;
+router.post('/user_auth', function(req, res, next){
 
     var data = {};
+    //console.log("firebase");
+    var payload = JSON.parse(req.body.strpayload);
 
-    if (auth == "form-auth"){
-        //console.log("form auth");
-        var email = req.body.strEmail.toLowerCase();
-        var fname = req.body.strFname;
-        var lname = req.body.strLname;
 
-        var passw1 = req.body.strPassw1;
-        var passw2 = req.body.strPassw2;
+    if (payload != null){
+        //console.log(payload);
 
-        //console.log(email, fname, lname, passw1);
-
-        if(passw1 == passw2){
-            //data to insert into the db
-            data = {
-                email: email,
-                uname: fname + ' ' + lname,
-                u_img: new Identicon(encrypt.passwHASH(email), Iden_options).toString('base64'),
-                auth: {
-                    method: "form-auth",
-                    passw: encrypt.passwHASH(passw1)
-                },
-                school: null,
-                groups: []
-            }
-        }else{
-            //passwords not matched
-            res.redirect('/signup?notify=passw');
+        data = {
+            email: payload.email,
+            uname: payload.displayName,
+            u_img: new Identicon(encrypt.passwHASH(payload.email), Iden_options).toString('base64'),
+            auth: {
+                uid: payload.uid,
+                providerID: payload.providerId
+            },
+            school: null,
+            groups: []
         }
 
-    }else if(auth == "firebase"){
-        //console.log("firebase");
-        var payload = JSON.parse(req.body.strpayload);
 
-        if (payload != null){
-            //console.log(payload);
+        /**Add data to db*/
+        dbconn.addUSER(data, function(state){
+            if(state == 1){
+                console.log('just signed up');
 
-            data = {
-                email: payload.email,
-                uname: payload.displayName,
-                u_img: new Identicon(encrypt.passwHASH(payload.email), Iden_options).toString('base64'),
-                auth: {
-                    method: "firebase",
-                    uid: payload.uid,
-                    providerID: payload.providerId
-                },
-                school: null,
-                groups: []
+                /**if just signed in create users session and go to dashboard**/
+                /**Create a user session */
+                sess = req.session;
+                sess.usersess = true;
+                req.session.usersess = true;
+                req.session.udata = {
+                    email: data.email,
+                    name: data.uname,
+                    uimg: data.u_img,
+                    auth: data.auth.method,
+                    univ: data.school
+                }
+                req.session.gdata = null;
+
+                //goto dashboard with the user session
+                res.redirect('/dashboard');
+
+            } else if(state == -1){
+                //user already exists
+
+                console.log('duplicate user so signin');
+
+                /**if user already exists**/
+                dbconn.getUSER(data.email, function(userdata){
+
+                    if(userdata != null){
+                        if(userdata.email == data.email && userdata.auth.uid == data.auth.uid){
+                            console.log('logged in')
+
+                            /**Create a user session */
+                            sess = req.session;
+                            sess.usersess = true;
+                            req.session.usersess = true;
+                            req.session.udata = {
+                                email: userdata.email,
+                                name: userdata.uname,
+                                uimg: userdata.u_img,
+                                auth: userdata.auth.method,
+                                univ: userdata.school
+                            }
+                            req.session.gdata = null;
+
+                            //goto dashboard with the user session
+                            res.redirect('/dashboard');
+                        }
+                    }else{  
+                        console.log('signin error');
+                    }
+                });
+
+            } else{
+                //console.log('Error');
+                res.redirect('/signin?notify=error');
             }
-        } else{
-            res.redirect('/signup?notify=error');
-        }
 
-    }else{
-        console.log("invalid");
-        res.redirect('/signup?notify=error');
+        });
+
+    } else{
+        res.redirect('/signin?notify=error');
     }
-
-    //console.log(data);
-
-    /**Add data to db */
-    dbconn.addUSER(data, function(state){
-        if(state == 1){
-            //console.log('Entered');
-            res.redirect('/signin');
-        } else if(state == -1){
-            //console.log('Duplicate');
-            res.redirect('/signup?notify=duplicate');
-        } else{
-            //console.log('Error');
-            res.redirect('/signup?notify=error');
-        }
-    });
 });
 
 
@@ -735,7 +670,7 @@ router.post('/file_download', function(req, res, next){
             console.log(state)
 
             //set the header to download the file
-            
+
         }else{
             res.redirect('/groupdocs?notify=error');
         }
