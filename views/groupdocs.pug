@@ -61,25 +61,25 @@ block dashb
                             .uk-label.uk-label-success.fl-right.selected(uk-toggle=targetDOWN)
                                 | DOWNLOAD FILE
 
-                            if(gdata.group.owner == udata.email || user.email == udata.email)
-                                .uk-label.uk-label-warning.fl-right.selected(uk-toggle=targetDEL)
-                                    | DELETE FILE
+                            //- /if(gdata.group.owner == udata.email || user.email == udata.email)
+                            .uk-label.uk-label-warning.fl-right.selected(uk-toggle=targetDEL)
+                                | DELETE FILE
 
 
-                        if(gdata.group.owner == udata.email || user.email == udata.email)
-                            //-delete the file
-                            div.uk-flex-top(id=modalDEL, uk-modal)
-                                .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
-                                    button.uk-modal-close-default(type='button', uk-close)
-                                    .uk-modal-header
-                                        h2.uk-modal-title
-                                            |  DELETE FILE
-                                        p Are you sure, you want to delete <b>#{item.filename}</b> ?
-                                    .uk-modal-footer.uk-text-right
-                                        form(method='POST', action='/file_delete')
-                                            input(type='hidden', name='strFID', value=item.fid)
-                                            button.uk-button.uk-button-primary(type='submit') YES
-                                            button.uk-button.uk-modal-close.uk-button-default(type='button') NO
+                        //-if(gdata.group.owner == udata.email || user.email == udata.email)
+                        //-delete the file
+                        div.uk-flex-top(id=modalDEL, uk-modal)
+                            .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+                                button.uk-modal-close-default(type='button', uk-close)
+                                .uk-modal-header
+                                    h2.uk-modal-title
+                                        |  DELETE FILE
+                                    p Are you sure, you want to delete <b>#{item.filename}</b> ?
+                                .uk-modal-footer.uk-text-right
+                                    form(method='POST', action='/file_delete')
+                                        input(type='hidden', name='strFID', value=item.fid)
+                                        button.uk-button.uk-button-primary(type='submit') YES
+                                        button.uk-button.uk-modal-close.uk-button-default(type='button') NO
 
 
                         //-download the file
@@ -94,6 +94,14 @@ block dashb
                                         input(type='hidden', name='strFID', value=item.fid)
                                         button.uk-button.uk-button-primary(type='submit') YES
                                         button.uk-button.uk-modal-close.uk-button-default(type='button') NO
+
+    if (alert == 'filelarge')
+        script.
+            UIkit.notification({message: 'File must be under 1MB', status: 'warning', pos: 'top-center'})
+
+    if (alert == 'error')
+        script.
+            UIkit.notification({message: 'Something went wrong, please try again', status: 'warning', pos: 'top-center'})
 
 
     script.

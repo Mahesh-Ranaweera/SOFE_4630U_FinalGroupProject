@@ -271,8 +271,7 @@ svg{
     float: left;
     padding: 10px;
     box-sizing: border-box;
-    background-color: aquamarine;
-    background: url(../assets/hive_logo.svg);
+    background: url(../assets/logo.svg);
 }
 
 .app-name {

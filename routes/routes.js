@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var session = require('express-session');
 var multer = require('multer');
+var fs = require('fs');
 
 var dbconn = require('../app/db');
 var encrypt = require('../app/encrypt');
@@ -670,7 +671,12 @@ router.post('/file_download', function(req, res, next){
             console.log(state)
 
             //set the header to download the file
+            res.writeHead(200, 
+                {'Content-disposition': 'attachment; filename=' + state.filename,
+                 'Content-Type': state.mimetype
+                })
 
+            res.end(state.buffer);
         }else{
             res.redirect('/groupdocs?notify=error');
         }
