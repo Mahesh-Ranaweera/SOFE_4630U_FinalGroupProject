@@ -4,11 +4,6 @@ block dashb
 	include group_menu
 
 	.section
-		.card-holder.full_w
-			.uk-card.uk-card-default.uk-card-body
-				h4(id='chatTitle') Chatroom title
-
-	.section
 		.group-header
 			.group-icon-g.smooth(uk-toggle="target: #shareCode")
 				.group-icon
@@ -16,15 +11,22 @@ block dashb
 				.group-txt
 					| Room share code
 
-	.section
-		.card-holder.full_w
-			.uk-card.uk-card-default
-				input.form-control(type='text', id='chatmsg')
-				input.form-control(type='button', id='submitMsg', value='Send')
+	.content-card
+		h4(id='chatTitle') Chatroom title
 
-	.section
-		.card-holder.full_w
-			.uk-card.uk-card-default.uk-card-body(id='chatLog')
+		.chat-wrapper
+
+			//-display the chat data
+			.chat-content(id='chatLog')
+
+			.chat-footer
+				.chat-footer-3w
+					input.form-control.chat-input(type='text', id='chatmsg')
+				.chat-footer-w
+					button.chat-btns(type='button', id='submitMsg', value='Send')
+						i(data-feather='send' style='width:20px; height:20px;')
+
+
 
 	div.uk-flex-top(id="shareCode", uk-modal)
 		.uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
@@ -35,7 +37,7 @@ block dashb
 			.uk-modal-body
 				.uk-width-1-1
 					label(for='roomCode') Copy this code and share it with others so they can join this chat room
-					input.form-control(type='text', id='roomCode', value=roomCode, disabled)
+					input.form-control(type='text', id='roomCode', value=roomCode)
 			.uk-margin
 					.uk-text-right
 						button.uk-button.uk-button-primary(name='btncopyCode', onclick='copyCode()') Copy to clipboard
@@ -55,3 +57,8 @@ block dashb
 		};
 		firebase.initializeApp(config);
 	script(src='/js/chatroom.js')
+
+
+
+
+

@@ -578,7 +578,7 @@ a {
 .chat-wrapper{
     /*height: calc(100vh - 80px);*/
     /*height: 100vh;*/
-    height: calc(100vh - 200px);
+    height: calc(100vh - 300px);
     width: 100%;
     /*background-color: #00B7FF;*/
 }
@@ -990,13 +990,8 @@ a {
 
 .messageBody {
     background-color: #aff;
+    line-height: 32px;
+    padding: 5px;
+    box-sizing: border-box;
     border-radius: 5px;
-}
-
-#chatmsg {
-    width: 90%;
-}
-
-#submitMsg {
-    width: 7.5%;
 }

@@ -11,18 +11,9 @@ firebase.auth().onAuthStateChanged(function(user){
 })
 
 function copyCode(){
-	var code = document.querySelector('#roomCode');
-	var range = document.createRange();
-	range.selectNode(code);
-	window.getSelection().addRange(range);
-	try {
-		if(document.execCommand('copy'))
-			console.log('Copied!');
-		else console.log("Didn't copy!");
-	} catch(err) {
-		console.log("Error while copying")
-		console.log(err);
-	}
+	var code = document.getElementById('roomCode');
+    code.select();
+    document.execCommand("copy");
 }
 
 function getChatNames(){
@@ -62,7 +53,9 @@ function initializeChatRoom(){
 		
 		message.append(messageHead);
 		message.append(messageBody);
-		$('#chatLog').prepend(message);
+		$('#chatLog').append(message);
+		
+		updateScroll();
 	});
 }
 
@@ -92,3 +85,11 @@ $('#chatmsg').on('keydown', function(e){
 $('#submitMsg').click(function(){
 	sendMsg();
 });
+
+//update chat scroll
+function updateScroll(){
+    var chatCont = document.getElementById('chatLog');
+    var height   = chatCont.scrollHeight;
+    chatCont.scrollTop = height;
+    console.log("chatwindow-height", height);
+}

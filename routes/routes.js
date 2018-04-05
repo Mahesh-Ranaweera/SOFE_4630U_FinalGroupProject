@@ -157,14 +157,14 @@ router.post('/user_auth', function(req, res, next){
             } else if(state == -1){
                 //user already exists
 
-                console.log('duplicate user so signin');
+                //console.log('duplicate user so signin');
 
                 /**if user already exists**/
                 dbconn.getUSER(data.email, function(userdata){
 
                     if(userdata != null){
                         if(userdata.email == data.email && userdata.auth.uid == data.auth.uid){
-                            console.log('logged in')
+                            //console.log('logged in')
 
                             /**Create a user session */
                             sess = req.session;
