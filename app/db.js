@@ -604,11 +604,12 @@ var addMEMBER = function(data, callback){
     })
 }
 
-/**File upload to the db**/
+/**UPLOAD file to the db**/
 var addFILE = function(data, callback){
 
     //upload the file content 
     var payload = {
+        fid: 'file_'+Date.now(),
         member: data.email,
         filename: data.filename,
         mimetype: data.mimetype,
@@ -630,10 +631,44 @@ var addFILE = function(data, callback){
     })
 }
 
-/**File delete**/
+/**DELETE file**/
 var deleteFILE = function(data, callback){
+    //delete the given file id
 
+    console.log(data);
+
+    r.db(dbname).table(tbgroups).get(data.gid)
+    .update(function(row){
+        return {
+            'sharedocs': row('sharedocs').filter(function(item){
+                return item('fid').ne(data.fid)
+            })
+        }
+    }).run()
+    .then(function(response){
+        console.log(response)
+        callback(1);
+    })
+    .catch(function(err){
+        console.log(err)
+        callback(0);
+    })
 }
+
+/**GET specific file**/
+var getFILE = function(data, callback){
+    r.db(dbname).table(tbgroups)('sharedocs').run()
+    .then(function(response){
+
+        //get the required file only
+        for (var i = 0; i < response.length; i++){
+            console.log(response[i]);
+        }
+    })
+    .catch(function(err){
+        callback(0);
+    })
+} 
 
 
 module.exports.addUSER = addUSER;
@@ -654,3 +689,4 @@ module.exports.deleteMEMBER = deleteMEMBER;
 module.exports.addMEMBER = addMEMBER;
 module.exports.addFILE = addFILE;
 module.exports.deleteFILE = deleteFILE;
+module.exports.getFILE = getFILE;

@@ -705,6 +705,41 @@ router.post('/file_upload', upload.single('docs'), function(req, res, next){
     }
 })
 
+/**File Delete**/
+router.post('/file_delete', function(req, res, next){
+
+    var data = {
+        gid: req.session.gdata,
+        fid: req.body.strFID
+    }
+
+    dbconn.deleteFILE(data, function(state){
+        if(state == 1){
+            res.redirect('/groupdocs?notify=deleted');
+        }else{
+            res.redirect('/groupdocs?notify=error');
+        }
+    })
+})
+
+/**File download**/
+router.post('/file_download', function(req, res, next){
+    console.log('download')
+     var data = {
+        gid: req.session.gdata,
+        fid: req.body.strFID
+    }
+
+    dbconn.getFILE(data, function(state){
+        if(state == 1){
+            
+        }else{
+            res.redirect('/groupdocs?notify=error');
+        }
+    })
+
+})
+
 /**task complete todo upgrade**/
 router.post('/task_complete', function(req, res, next){
     data = JSON.parse(req.body.strPayload);
