@@ -678,7 +678,7 @@ router.post('/file_upload', function(req, res, next){
     if(req.files){
         console.log(req.files);
         //limit the upload file size to 5MB
-        if(req.files.size <= 5000){
+        if(req.files.size < 1000){
 
             res.redirect('/groupdocs?notify=uploaded');
         }else{
