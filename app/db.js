@@ -657,13 +657,25 @@ var deleteFILE = function(data, callback){
 
 /**GET specific file**/
 var getFILE = function(data, callback){
-    r.db(dbname).table(tbgroups)('sharedocs').run()
+    r.db(dbname).table(tbgroups).get(data.gid)('sharedocs').run()
     .then(function(response){
 
+        var sendback = {}
+
         //get the required file only
-        for (var i = 0; i < response.length; i++){
-            console.log(response[i]);
+        for (i in response){
+            
+            if(response[i].fid == data.fid){
+                //set the send back data
+                sendback = response[i]
+            }
         }
+
+        if(sendback != null)
+            //send the data back to front end
+            callback(sendback);
+        else
+            callback(0);
     })
     .catch(function(err){
         callback(0);

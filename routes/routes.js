@@ -731,7 +731,10 @@ router.post('/file_download', function(req, res, next){
     }
 
     dbconn.getFILE(data, function(state){
-        if(state == 1){
+        if(state != null){
+            console.log(state)
+
+            //set the header to download the file
             
         }else{
             res.redirect('/groupdocs?notify=error');
