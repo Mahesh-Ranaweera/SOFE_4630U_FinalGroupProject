@@ -10,15 +10,16 @@ block content
                     .uk-card-title
                         | SIGN IN 
 
+                    #firebase-auth-container
                     form.uk-grid-small(method='POST', action='/user_signin')
                         .uk-margin
-                            .uk-width-1-1
-                                label.text-label(for='strEmail') Email:
-                                input.uk-input(name='strEmail', type='email', required)
-                            .uk-margin
-                                label.text-label(for='strPassw') Re-Enter Password:
-                                input.uk-input(name='strPassw', type='password', required)
-                                input(type='hidden', value='form-auth', name='auth_method')
+                            //- .uk-width-1-1
+                            //-     label.text-label(for='strEmail') Email:
+                            //-     input.uk-input(name='strEmail', type='email', required)
+                            //- .uk-margin
+                            //-     label.text-label(for='strPassw') Re-Enter Password:
+                            //-     input.uk-input(name='strPassw', type='password', required)
+                            //-     input(type='hidden', value='form-auth', name='auth_method')
                             .uk-margin
                                 .uk-text-right
                                     button.uk-button.uk-button-primary(name='btnSigin', type='submit') SIGN IN
@@ -26,7 +27,7 @@ block content
                                     a(href='/signup')
                                         button.uk-button.uk-button-default(type='button') SIGN UP
 
-                    #firebase-auth-container
+                    
 
                     //Alert the user
                     if (alert == 'passw')
