@@ -11,31 +11,31 @@ block content
                     | SIGN UP
 
                 form.uk-grid-small(method='POST', action='/user_signup')
+                    //- .uk-margin
+                    //-     label.text-label(for='strEmail') Email:
+                    //-     input.uk-input(name='strEmail', type='email', required)
+                    //- .uk-margin
+                    //-     label.text-label(for='strFname') First Name:
+                    //-     input.uk-input(name='strFname', type='text', required)
+                    //- .uk-margin
+                    //-     label.text-label(for='strLname') Last Name:
+                    //-     input.uk-input(name='strLname', type='text', required)
+                    //- .uk-margin
+                    //-     label.text-label(for='strPassw1') Password:
+                    //-     input.uk-input(name='strPassw1', type='password', required)
+                    //- .uk-margin
+                    //-     label.text-label(for='strPassw2') Re-Enter Password:
+                    //-     input.uk-input(name='strPassw2', type='password', required)
+                    //-     input(type='hidden', value='form-auth', name='auth_method')
+
                     .uk-margin
-                        label.text-label(for='strEmail') Email:
-                        input.uk-input(name='strEmail', type='email', required)
-                    .uk-margin
-                        label.text-label(for='strFname') First Name:
-                        input.uk-input(name='strFname', type='text', required)
-                    .uk-margin
-                        label.text-label(for='strLname') Last Name:
-                        input.uk-input(name='strLname', type='text', required)
-                    .uk-margin
-                        label.text-label(for='strPassw1') Password:
-                        input.uk-input(name='strPassw1', type='password', required)
-                    .uk-margin
-                        label.text-label(for='strPassw2') Re-Enter Password:
-                        input.uk-input(name='strPassw2', type='password', required)
-                        input(type='hidden', value='form-auth', name='auth_method')
+                        #firebase-auth-container
                     .uk-margin
                         .uk-text-right
                             button.uk-button.uk-button-primary(name='btnSignup', type='submit') SIGN UP
 
                             a(href='/signin')
                                 button.uk-button.uk-button-default(type='button') SIGN IN
-
-                    .uk-margin
-                        #firebase-auth-container
 
                 //Alert the user
                 if (alert == 'success')
