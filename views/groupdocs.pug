@@ -40,6 +40,42 @@ block dashb
                 p 
                     b Shared Documents:
 
+                .section
+                    if(gdata.group.sharedocs.lenght != 0)
+                        for item, i in gdata.group.sharedocs
+                            - var targetDEL = 'target: #delete' + i
+                            - var modalDEL = 'delete' + i
+
+                            .mem-wrapper
+                                .mem-row
+                                    .mem-img
+                                        i(data-feather='image' style='width:20px; height:20px;')
+                                    .mem-cont 
+                                        .chat-row 
+                                            b #{item.filename}
+                                        .chat-row 
+                                            | #{item.size}
+
+                                if(gdata.group.owner == udata.email || user.email == udata.email)
+                                    .uk-label.uk-label-warning.fl-right.selected(uk-toggle=targetDEL)
+                                        | DELET FILE
+
+
+                            if(gdata.group.owner == udata.email || user.email == udata.email)
+                                //-delete the file
+                                div.uk-flex-top(id=modalDEL, uk-modal)
+                                    .uk-modal-dialog.uk-modal-body.uk-margin-auto-vertical
+                                        button.uk-modal-close-default(type='button', uk-close)
+                                        .uk-modal-header
+                                            h2.uk-modal-title
+                                                |  LEAVE GROUP
+                                            p Are you sure, you want to delete <b>#{item.filename}</b> ?
+                                        .uk-modal-footer.uk-text-right
+                                            form(method='POST', action='/delete_file')
+                                                input(type='hidden', name='strEmail',)
+                                                button.uk-button.uk-button-primary(type='submit') YES
+                                                button.uk-button.uk-modal-close.uk-button-default(type='button') NO
+
 
     script.
         function submit_files(){

@@ -140,6 +140,7 @@ var createGROUP = function(data, callback){
         'school': data.school,
         'groupmembers': [data.email],
         'groupchat': [],
+        'sharedocs': [],
         'agileboard': {
             'todo': [],
             'progress': [],
@@ -605,8 +606,28 @@ var addMEMBER = function(data, callback){
 
 /**File upload to the db**/
 var addFILE = function(data, callback){
-    console.log(data.mimetype);
-    callback(1);
+
+    //upload the file content 
+    var payload = {
+        member: data.email,
+        filename: data.filename,
+        mimetype: data.mimetype,
+        buffer: data.buffer,
+        size: data.size
+    }
+
+    //console.log(payload);
+
+    /**append todo to specific group */
+    r.db(dbname).table(tbgroups).get(data.gid).update({
+        'sharedocs': r.row('sharedocs').append(payload)
+    }).run()
+    .then(function(response){
+        callback(1);
+    })
+    .catch(function(err){
+        callback(0);
+    })
 }
 
 /**File delete**/

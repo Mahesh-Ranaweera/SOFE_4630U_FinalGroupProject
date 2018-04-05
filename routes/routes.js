@@ -188,6 +188,8 @@ router.post('/user_signup', function(req, res, next){
 
     var auth = req.body.auth_method;
 
+    var data = {};
+
     if (auth == "form-auth"){
         //console.log("form auth");
         var email = req.body.strEmail.toLowerCase();
@@ -502,7 +504,7 @@ router.get('/groupdocs', function(req, res, next){
 router.post('/school_update', function(req, res, next){
     //check school
     if (req.body.strSchool != 0){
-        data = {
+        var data = {
             school: req.body.strSchool,
             email: req.session.udata.email
         }
@@ -527,7 +529,7 @@ router.post('/school_update', function(req, res, next){
 router.post('/passw_update', function(req, res, next){
     //update the users password
     if(req.body.strPassw1 ==  req.body.strPassw2){
-        data = {
+        var data = {
             passw: encrypt.passwHASH(req.body.strPassw1),
             email: req.session.udata.email
         }
@@ -553,7 +555,7 @@ router.post('/passw_update', function(req, res, next){
 /**create group**/
 router.post('/create_group', function(req, res, next){
 
-    data = {
+    var data = {
         gname: req.body.groupName,
         email: req.session.udata.email,
         school: req.session.udata.univ
@@ -578,7 +580,7 @@ router.post('/create_group', function(req, res, next){
 /**join group **/
 router.post('/join_group', function(req, res, next){
 
-    data = {
+    var data = {
         gid: req.body.groupID,
         email: req.session.udata.email
     }
@@ -610,7 +612,7 @@ router.post('/search_group', function(req, res, next){
 /**Delete group **/
 router.post('/delete_group', function(req, res, next){
 
-    data = {
+    var data = {
         gid: req.body.strGID,
         email: req.session.udata.email
     }
@@ -628,7 +630,7 @@ router.post('/delete_group', function(req, res, next){
 /**Remove member**/
 router.post('/remove_member', function(req, res, next){
 
-    data = {
+    var data = {
         gid: req.session.gdata,
         email: req.body.strEmail
     }
@@ -646,7 +648,7 @@ router.post('/remove_member', function(req, res, next){
 //**Add member**/
 router.post('/add_member', function(req, res, next){
 
-    data = {
+    var data = {
         gid: req.session.gdata,
         email: req.body.strEmail
     }
@@ -663,7 +665,7 @@ router.post('/add_member', function(req, res, next){
 //**Leave from group**/
 router.post('/leave_group', function(req, res, next){
 
-    data = {
+    var data = {
         gid: req.session.gdata,
         email: req.body.strEmail
     }
@@ -679,10 +681,19 @@ router.post('/leave_group', function(req, res, next){
 
 /**File upload**/
 router.post('/file_upload', upload.single('docs'), function(req, res, next){
+
     if(req.file){
+        var data = {
+            gid: req.session.gdata,
+            email: req.session.udata.email,
+            filename: req.file.originalname,
+            mimetype: req.file.mimetype,
+            buffer: req.file.buffer,
+            size: req.file.size
+        }
 
         //upload the file to the db
-        dbconn.addFILE(req.file, function(state){
+        dbconn.addFILE(data, function(state){
             if(state == 1){
                 res.redirect('/groupdocs?notify=uploaded');
             }else{
@@ -724,8 +735,6 @@ router.get('/signout', function(req, res, next) {
 router.use(function(err, req, res, next) {
         if (err.code === 'LIMIT_FILE_SIZE') {
             console.log('FILE TOO LARGE');
-            //res.send({result: 'fail', error:{code: 1001, message:'File is too big'}})
-            req.session['msgerror'] = 2;
             res.redirect('/groupdocs?notify=filelarge');
         }
 })
