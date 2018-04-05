@@ -4,13 +4,13 @@ extends header
 block content
     .app-menu
         .app-nav-left
-            .app-logo(uk-toggle='target: #dashb_menu')
+            .menu-icon(uk-toggle='target: #dashb_menu')
                 i(data-feather='menu' style='width:34px; height:34px;')
             .app-name
                 | #{title}
 
         .app-nav-right.smooth
-            .app-logo
+            .menu-icon
                 - var src = 'data:image/svg+xml;utf8,'+udata.uimg
                 img(src=src)
             .app-name
