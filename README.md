@@ -1,5 +1,4 @@
 # SOFE_4630U_FinalGroupProject
-Student Project Management
 
 ![Project Header](https://github.com/Mahesh-Ranaweera/SOFE_4630U_FinalGroupProject/blob/master/public/assets/header.svg?sanitize=true)
 
@@ -43,9 +42,9 @@ Student Project Management
 
 2. Download the source files
 ```sh
-    git clone git@github.com:Mahesh-Ranaweera/Assign2_SOFE-4630U.git
+    https://github.com/Mahesh-Ranaweera/SOFE_4630U_FinalGroupProject
 
-    cd Assign2_SOFE-4630U
+    cd SOFE_4630U_FinalGroupProject
 
     npm install
     npm install nodemon -g
